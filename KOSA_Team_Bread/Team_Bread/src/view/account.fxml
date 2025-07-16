@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sign‑up view generated from provided HTML mock‑up -->
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SignupController"
+             prefWidth="1440" prefHeight="1024" style="-fx-background-color: white;">
+    <!-- Center container equivalent to the 680 × … card with 80 px padding -->
+    <VBox fx:id="card" layoutX="380" layoutY="87" prefWidth="680" alignment="TOP_CENTER"
+          spacing="24" style="-fx-background-color: white; -fx-border-color: #DDE1E6; -fx-border-width: 1;">
+        <!-- Logo / placeholder image -->
+        <ImageView fx:id="logoImage" fitWidth="222" fitHeight="118">
+            <image>
+                <Image url="/Bread.png" />
+            </image>
+        </ImageView>
+
+        <!-- 제목 -->
+        <Label text="회원가입" style="-fx-font-size: 42px; -fx-font-weight: 700; -fx-text-fill: #21272A;" />
+
+        <!-- Form 영역 -->
+        <VBox fx:id="formBox" alignment="TOP_CENTER" spacing="16" maxWidth="520">
+
+            <!-- 이름 -->
+            <VBox alignment="TOP_LEFT" spacing="4" maxWidth="Infinity">
+                <Label text="성함" style="-fx-text-fill: #21272A; -fx-font-size: 14;" />
+                <TextField fx:id="nameField" promptText="홍길동" prefHeight="48"
+                           style="-fx-background-color: #F2F4F8; -fx-border-color: #C1C7CD; -fx-border-width: 0 0 1 0;" />
+            </VBox>
+
+            <!-- 이메일 -->
+            <VBox alignment="TOP_LEFT" spacing="4" maxWidth="Infinity">
+                <Label text="Email" style="-fx-text-fill: #21272A; -fx-font-size: 14;" />
+                <TextField fx:id="emailField" promptText="example@gmail.com" prefHeight="48"
+                           style="-fx-background-color: #F2F4F8; -fx-border-color: #C1C7CD; -fx-border-width: 0 0 1 0;" />
+            </VBox>
+
+            <!-- 비밀번호 -->
+            <VBox alignment="TOP_LEFT" spacing="4" maxWidth="Infinity">
+                <Label text="Password" style="-fx-text-fill: #21272A; -fx-font-size: 14;" />
+                <PasswordField fx:id="passwordField" promptText="password" prefHeight="48"
+                               style="-fx-background-color: #F2F4F8; -fx-border-color: #C1C7CD; -fx-border-width: 0 0 1 0;" />
+            </VBox>
+
+            <!-- 회원가입 버튼-->
+            <Button fx:id="signupButton" text="회원가입" onAction="#onSignup"
+                    maxWidth="Infinity" prefHeight="48"
+                    style="-fx-background-color: #0F62FE; -fx-text-fill: white; -fx-font-weight: 500;" />
+        </VBox>
+
+        <!-- 구분선 -->
+        <Separator prefWidth="520" />
+
+        <!-- 로그인 링크 -->
+        <Label text="로그인" onMouseClicked="#onGotoLogin" style="-fx-text-fill: #001D6C; -fx-font-size: 14;" />
+
+        <!-- 내부 여백 -->
+        <padding><Insets top="80" right="80" bottom="80" left="80" /></padding>
+    </VBox>
+</AnchorPane>
