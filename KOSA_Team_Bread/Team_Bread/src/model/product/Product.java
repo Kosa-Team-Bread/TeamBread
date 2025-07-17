@@ -1,4 +1,4 @@
-package model.dto;
+package model.product;
 import lombok.*;
 import java.time.LocalDate;
 
