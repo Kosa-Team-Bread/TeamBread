@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" spacing="24" prefWidth="1440" prefHeight="1024" style="-fx-background-color: white;">
+    
+    <!-- 상단 네비게이션 바 -->
+    <HBox spacing="8" alignment="CENTER_LEFT" padding="8" style="-fx-background-color: #F2F4F8; -fx-border-color: #DDE1E6; -fx-border-width: 0 0 1 0;" >
+        <HBox spacing="8" HBox.hgrow="ALWAYS">
+            <Button text="재고현황" style="-fx-font-size: 16px; -fx-font-weight: 500;"/>
+            <Button text="입출고관리" style="-fx-font-size: 16px; -fx-font-weight: 500;"/>
+            <Button text="쿠폰관리" style="-fx-font-size: 16px; -fx-font-weight: 500;"/>
+        </HBox>
+        <HBox spacing="8" alignment="CENTER_RIGHT">
+            <Button text="Log In" style="-fx-text-fill: #001D6C; -fx-font-size: 16px; -fx-font-weight: 500;"/>
+        </HBox>
+    </HBox>
+
+    <!-- 타이틀 -->
+    <Label text="쿠폰관리" alignment="CENTER" style="-fx-font-size: 42px; -fx-font-weight: bold; -fx-text-fill: #21272A;" />
+
+    <!-- 카테고리 선택 드롭다운 -->
+    <HBox spacing="12" alignment="CENTER_RIGHT" padding="0 32 0 32">
+        <Label text="카테고리:" style="-fx-font-size: 16px; -fx-font-weight: 500;" />
+        <ComboBox fx:id="categoryComboBox">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="빵" />
+                    <String fx:value="떡" />
+                    <String fx:value="케이크" />
+                </FXCollections>
+            </items>
+        </ComboBox>
+    </HBox>
+
+    <!-- 쿠폰 목록 테이블 -->
+    <TableView fx:id="couponTable" prefHeight="600" padding="0 32 0 32">
+        <columns>
+            <TableColumn text="쿠폰명" prefWidth="400"/>
+            <TableColumn text="Font Weight" prefWidth="160"/>
+            <TableColumn text="Font Size" prefWidth="160"/>
+            <TableColumn text="Line Height" prefWidth="160"/>
+            <TableColumn text="Letter Spacing" prefWidth="160"/>
+        </columns>
+    </TableView>
+
+</VBox>
