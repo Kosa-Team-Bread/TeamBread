@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="KOSA_Team_Bread/Team_Bread/src"/>
-	<classpathentry kind="lib" path="C:/2025_KOSA/dev/IDE/OJDBC8/ojdbc8.jar"/>
-	<classpathentry kind="lib" path="C:/2025_KOSA/dev/IDE/lombok/lombok-1.18.38.jar"/>
-	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
-	<classpathentry kind="output" path="KOSA_Team_Bread/Team_Bread/bin"/>
-</classpath>
