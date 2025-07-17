@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane prefHeight="1024.0" prefWidth="1440.0" style="-fx-background-color: white;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<AnchorPane prefHeight="1024.0" prefWidth="1440.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <children>
        
        <!-- 상단 헤더 -->
@@ -31,8 +31,8 @@
          <children>
                      <Label style="-fx-font-family: 'Roboto'; -fx-font-size: 16px; -fx-font-weight: 500; -fx-text-fill: #21272A;" text="재고현황" />
                      <Label style="-fx-font-family: 'Roboto'; -fx-font-size: 16px; -fx-font-weight: 500; -fx-text-fill: #21272A;" text="입출고관리" />
-                     <Label style="-fx-font-family: 'Roboto'; -fx-font-size: 16px; -fx-font-weight: 500; -fx-text-fill: #21272A;" text="쿠폰관리" />
-                    <Label style="-fx-font-family: 'Roboto'; -fx-font-size: 16px; -fx-font-weight: 500; -fx-text-fill: #21272A;" text="마이페이지" />
+                     <Label fx:id="couponMenu" onMouseClicked="#handleCouponClick" style="-fx-font-family: 'Roboto'; -fx-font-size: 16px; -fx-font-weight: 500; -fx-text-fill: #21272A;" text="쿠폰관리" />
+                    <Label fx:id="mypageMenu" onMouseClicked="#handleMypageClick" style="-fx-font-family: 'Roboto'; -fx-font-size: 16px; -fx-font-weight: 500; -fx-text-fill: #21272A;" text="마이페이지" />
          </children>
               </HBox>
       
@@ -48,6 +48,7 @@
                <Image url="@logo.png" />
            </image>
        </ImageView>
+      <AnchorPane fx:id="mainContent" layoutY="56.0" prefHeight="968.0" prefWidth="1440.0" />
    </children>
 
 </AnchorPane>
