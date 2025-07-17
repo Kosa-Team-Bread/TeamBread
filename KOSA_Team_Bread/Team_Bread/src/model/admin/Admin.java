@@ -1,7 +1,10 @@
+// Admin.java
+
 package model.admin;
 
-import lombok.*;
 import java.time.LocalDate;
+
+import lombok.*;
 
 @Data
 @Builder

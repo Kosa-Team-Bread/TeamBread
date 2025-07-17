@@ -1,6 +1,9 @@
+// Product.java
+
 package model.product;
-import lombok.*;
 import java.time.LocalDate;
+
+import lombok.*;
 
 @Data
 @Builder

@@ -1,6 +1,9 @@
+// Image.java
+
 package model.image;
-import lombok.*;
 import java.time.LocalDate;
+
+import lombok.*;
 
 @Data
 @Builder

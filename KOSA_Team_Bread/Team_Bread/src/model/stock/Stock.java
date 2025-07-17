@@ -1,6 +1,7 @@
 package model.stock;
-import lombok.*;
 import java.time.LocalDate;
+
+import lombok.*;
 
 @Data
 @Builder
