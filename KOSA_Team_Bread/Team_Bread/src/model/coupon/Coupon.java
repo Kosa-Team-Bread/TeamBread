@@ -1,4 +1,6 @@
-package model.dto;
+// Coupon.java
+
+package model.coupon;
 import lombok.*;
 import java.time.LocalDate;
 

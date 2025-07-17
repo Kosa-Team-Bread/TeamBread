@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="ProfileEditController" 
+            prefHeight="600.0" prefWidth="450.0" 
+            styleClass="root">
+
+    <VBox alignment="CENTER" layoutX="25.0" layoutY="25.0" prefHeight="550.0" prefWidth="400.0" 
+          spacing="20.0" styleClass="container">
+        
+        <!-- 로고 섹션 -->
+        <VBox alignment="CENTER" spacing="5.0" styleClass="logo-section">
+            <Label styleClass="brand-name" text="聖心堂" />
+            <Label styleClass="brand-subtitle" text="1956 이래 · 大韓民國 · 大田" />
+        </VBox>
+        
+        <!-- 제목 -->
+        <Label styleClass="title" text="개인정보수정" />
+        
+        <!-- 폼 섹션 -->
+        <VBox spacing="15.0" styleClass="form-section">
+            
+            <!-- 성함 -->
+            <VBox spacing="5.0">
+                <Label styleClass="form-label" text="성함" />
+                <TextField fx:id="nameField" styleClass="form-input" text="홍길동" />
+            </VBox>
+            
+            <!-- 이메일 -->
+            <VBox spacing="5.0">
+                <Label styleClass="form-label" text="Email" />
+                <TextField fx:id="emailField" disable="true" styleClass="form-input-disabled" 
+                          text="example@gmail.com" />
+            </VBox>
+            
+            <!-- 구분선 -->
+            <Region styleClass="divider" />
+            
+            <!-- 비밀번호 변경 섹션 -->
+            <VBox spacing="15.0">
+                <Label styleClass="section-title" text="비밀번호 변경" />
+                
+                <!-- 현재 비밀번호 -->
+                <VBox spacing="5.0">
+                    <Label styleClass="form-label" text="현재 비밀번호" />
+                    <PasswordField fx:id="currentPasswordField" styleClass="form-input" 
+                                  promptText="현재 비밀번호를 입력하세요" />
+                </VBox>
+                
+                <!-- 새 비밀번호 -->
+                <VBox spacing="5.0">
+                    <Label styleClass="form-label" text="새 비밀번호" />
+                    <PasswordField fx:id="newPasswordField" styleClass="form-input" 
+                                  promptText="새 비밀번호를 입력하세요" />
+                </VBox>
+                
+                <!-- 새 비밀번호 확인 -->
+                <VBox spacing="5.0">
+                    <Label styleClass="form-label" text="새 비밀번호 확인" />
+                    <PasswordField fx:id="confirmPasswordField" styleClass="form-input" 
+                                  promptText="새 비밀번호를 다시 입력하세요" />
+                </VBox>
+            </VBox>
+            
+            <!-- 버튼 섹션 -->
+            <HBox spacing="10.0" alignment="CENTER">
+                <Button fx:id="cancelButton" onAction="#handleCancel" 
+                        prefWidth="120.0" styleClass="btn-secondary" text="취소" />
+                <Button fx:id="saveButton" onAction="#handleSave" 
+                        prefWidth="120.0" styleClass="btn-primary" text="수정완료" />
+            </HBox>
+            
+            <!-- 안내 텍스트 -->
+            <Label styleClass="info-text" text="* 이메일 주소는 변경할 수 없습니다." 
+                   wrapText="true" />
+            <Label styleClass="info-text" text="* 비밀번호 변경을 원하지 않으시면 비밀번호 필드를 비워두세요." 
+                   wrapText="true" />
+        </VBox>
+    </VBox>
+</AnchorPane>

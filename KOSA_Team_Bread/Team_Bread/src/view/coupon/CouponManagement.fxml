@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<!--
+  - '쿠폰 관리' 탭의 UI 레이아웃을 정의하는 FXML 파일입니다.
+  - fx:controller 속성을 통해 이 FXML과 연결될 컨트롤러 클래스를 지정합니다.
+-->
+<BorderPane fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CouponManageController">
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+   <top>
+      <!-- 상단: 타이틀 및 검색 영역 -->
+      <HBox alignment="CENTER_LEFT" spacing="15.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label text="쿠폰 관리">
+               <font>
+                  <Font name="Malgun Gothic Bold" size="24.0" />
+               </font>
+            </Label>
+            <!-- 카테고리 선택 콤보박스 -->
+            <ComboBox fx:id="categoryComboBox" prefWidth="150.0" promptText="카테고리 선택" />
+            <!-- 상품명 검색 필드 -->
+            <TextField fx:id="searchField" HBox.hgrow="ALWAYS" promptText="상품명 검색" />
+            <!-- 검색 버튼. onAction 속성으로 컨트롤러의 searchProducts 메서드와 연결 -->
+            <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchProducts" text="검색" />
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="20.0" />
+         </BorderPane.margin>
+      </HBox>
+   </top>
+   <center>
+      <!-- 중앙: 상품 목록을 보여주는 테이블 뷰 -->
+      <TableView fx:id="productTable" BorderPane.alignment="CENTER">
+        <columns>
+          <!-- 각 컬럼은 Product 모델의 필드와 PropertyValueFactory를 통해 매핑됩니다. -->
+          <TableColumn prefWidth="150.0" text="카테고리">
+             <cellValueFactory>
+                <PropertyValueFactory property="categoryName" />
+             </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="250.0" text="상품명">
+             <cellValueFactory>
+                <PropertyValueFactory property="productName" />
+             </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="120.0" text="판매가 (원)">
+              <cellValueFactory>
+                <PropertyValueFactory property="price" />
+             </cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="120.0" text="원가 (원)">
+             <cellValueFactory>
+                <PropertyValueFactory property="cost" />
+             </cellValueFactory>
+          </TableColumn>
+        </columns>
+      </TableView>
+   </center>
+</BorderPane>
