@@ -14,7 +14,7 @@ public class DBUtil {
 
 	// JDBC driver and connection string for Oracle DB
 	private static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
-	private static final String connStr = "jdbc:oracle:thin:yb/yb@localhost:1521/xepdb1";
+	private static final String connStr = "jdbc:oracle:thin:hr/hr@localhost:1521/xepdb1";
 	
 	// Shared database connection instance
 	private static Connection conn = null;
