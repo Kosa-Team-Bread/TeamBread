@@ -1,5 +1,3 @@
-// DBUtil.java
-
 package util;
 
 import java.sql.Connection;
@@ -18,7 +16,7 @@ public class DBUtil {
 	private static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
 	private static final String connStr = "jdbc:oracle:thin:hr/hr@localhost:1521/xepdb1";
 	
-	// Shared database connection instance
+	// Shared database connection instanced
 	private static Connection conn = null;
 
 	// Method to establish a database connection

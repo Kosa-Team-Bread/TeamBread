@@ -11,7 +11,7 @@ import util.DBUtil;
 public class AdminDAO {
 	// 사용자 목록 전체 조회
 	public static ObservableList<Admin> getAllAdmins() throws SQLException, ClassNotFoundException {
-		String sql = "SELECT * FROM yb.tbl_admin";
+		String sql = "SELECT * FROM hr.tbl_admin";
 		ResultSet rs = DBUtil.dbExecuteQuery(sql);
 
 		ObservableList<Admin> adminList = FXCollections.observableArrayList();
