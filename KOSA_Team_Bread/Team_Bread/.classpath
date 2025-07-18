@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/r2com/Downloads/-_[대전]_풀스택_강의_25_5_26 (1)/-_[대전]_풀스택_강의_25_5_26/00._설치SW/jar모음/lombok-1.18.36.jar"/>
-	<classpathentry kind="lib" path="C:/Users/r2com/Downloads/-_[대전]_풀스택_강의_25_5_26 (1)/-_[대전]_풀스택_강의_25_5_26/00._설치SW/jar모음/ojdbc8.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
