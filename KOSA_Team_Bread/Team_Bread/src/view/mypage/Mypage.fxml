@@ -29,8 +29,8 @@
                         <Region HBox.hgrow="ALWAYS" />
                         <HBox alignment="CENTER_RIGHT" spacing="15.0">
                            <children>
-                              <Label fx:id="currentUserLabel" style="-fx-font-size: 14px; -fx-text-fill: #6b7280;" text="현재 사용자: 슈퍼관리자" />
-                              <Label fx:id="currentUserGradeLabel" style="-fx-font-size: 12px; -fx-background-color: #dbeafe; -fx-text-fill: #2563eb; -fx-background-radius: 15; -fx-padding: 4 8 4 8;" text="슈퍼관리자" />
+                              <Label fx:id="currentUserLabel" style="-fx-font-size: 14px; -fx-text-fill: #6b7280;" text="현재 사용자: " />
+                              <Label fx:id="currentUserGradeLabel" style="-fx-font-size: 12px; -fx-background-color: #dbeafe; -fx-text-fill: #2563eb; -fx-background-radius: 15; -fx-padding: 4 8 4 8;" />
                               <Button fx:id="modifyUserBtn" onAction="#onModifyUser" style="-fx-background-color: #2563eb; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-size: 14px; -fx-padding: 8 16 8 16;" text="개인정보 수정" />
                            </children>
                         </HBox>
@@ -131,26 +131,27 @@
                         
                         <TableColumn fx:id="gradeColumn" prefWidth="120.0" style="-fx-font-size: 12px; -fx-font-weight: 500; -fx-text-fill: #6b7280;" text="등급">
                            <cellValueFactory>
-                              <PropertyValueFactory property="gradeLabel" />
+                              <PropertyValueFactory property="grade" />
                            </cellValueFactory>
                         </TableColumn>
                         
                         <TableColumn fx:id="regDateColumn" prefWidth="120.0" style="-fx-font-size: 12px; -fx-font-weight: 500; -fx-text-fill: #6b7280;" text="등록일">
                            <cellValueFactory>
-                              <PropertyValueFactory property="regDate" />
+                              <PropertyValueFactory property="adminRegDate" />
                            </cellValueFactory>
                         </TableColumn>
                         
                         <TableColumn fx:id="modDateColumn" prefWidth="120.0" style="-fx-font-size: 12px; -fx-font-weight: 500; -fx-text-fill: #6b7280;" text="수정일">
                            <cellValueFactory>
-                              <PropertyValueFactory property="modDate" />
+                              <PropertyValueFactory property="adminModDate" />
                            </cellValueFactory>
                         </TableColumn>
                         
                         <TableColumn fx:id="actionsColumn" prefWidth="120.0" style="-fx-font-size: 12px; -fx-font-weight: 500; -fx-text-fill: #6b7280;" text="작업">
-                           <cellValueFactory>
-                              <PropertyValueFactory property="actions" />
-                           </cellValueFactory>
+                           <!-- cellFactory는 Controller에서 설정 -->
+                           <!--  <cellValue>
+                              <Button fx:id="modifyRoleBtn" onAction="#onModifyRole" style="-fx-background-color: #2563eb; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-size: 14px; -fx-padding: 8 16 8 16;" text="등급 변경" />                          
+                           </cellValue> -->
                         </TableColumn>
                         
 

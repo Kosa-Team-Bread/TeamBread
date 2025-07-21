@@ -30,4 +30,8 @@ public class Admin {
 	// 수정날짜
 	private LocalDate adminModDate;
 
+	public String getGradeDisplayName() {
+		Grade gradeValue = Grade.fromCode(grade);
+		return gradeValue != null ? gradeValue.getDisplayName() : "알 수 없음";
+	}
 }
