@@ -66,3 +66,7 @@ surefire-reports/
 .env.*
 *.properties.local
 application-local.properties
+
+
+# === 기성 참고 폴더 ===
+BreadCoupon_ProjectInfo/
