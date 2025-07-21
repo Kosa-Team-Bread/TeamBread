@@ -9,12 +9,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<!-- 1. VBox의 모든 고정 크기 속성 제거 -->
+<!-- VBox의 고정 크기 속성 제거 -->
 <VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CouponController">
    <children>
-      <!-- 2. TabPane의 고정 크기 제거, VBox.vgrow="ALWAYS" 추가하여 부모를 따라 세로로 늘어나도록 설정 -->
+      <!-- TabPane의 고정 크기 제거, VBox.vgrow="ALWAYS" 추가하여 부모를 따라 세로로 늘어나도록 설정 -->
       <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <tabs>
           <!-- 쿠폰 관리 탭 -->
@@ -22,13 +21,12 @@
             <content>
               <AnchorPane>
                      <children>
-                        <!-- 검색 필드와 레이블은 상단 고정 -->
-                        <Label layoutX="30.0" layoutY="30.0" text="쿠폰 목록">
-                           <font><Font name="System Bold" size="18.0" /></font>
-                        </Label>
+                        <!-- font 태그를 제거하고 styleClass 적용 -->
+                        <Label layoutX="30.0" layoutY="30.0" styleClass="title-label" text="쿠폰 목록" />
+                        
                         <TextField fx:id="couponSearchField" promptText="쿠폰명 검색" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0" />
                         
-                        <!-- 3. TableView의 layoutX/Y 및 고정 크기 제거, AnchorPane 앵커로 유동적인 크기 설정 -->
+                        <!-- TableView의 layoutX/Y 및 고정 크기 제거, AnchorPane 앵커로 유동적인 크기 설정 -->
                         <TableView fx:id="couponTable" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="80.0">
                           <columns>
                             <TableColumn fx:id="couponNameCol" prefWidth="250.0" text="쿠폰명" />
@@ -50,12 +48,12 @@
             <content>
               <AnchorPane>
                      <children>
-                        <Label layoutX="30.0" layoutY="30.0" text="상품 목록 (상품 더블 클릭 시 쿠폰 적용)">
-                           <font><Font name="System Bold" size="18.0" /></font>
-                        </Label>
+                        <!-- font 태그를 제거하고 styleClass 적용 -->
+                        <Label layoutX="30.0" layoutY="30.0" styleClass="title-label" text="쿠폰 적용 (상품 목록 더블 클릭)" />
+
                         <TextField fx:id="productSearchField" promptText="상품명 검색" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0" />
                         
-                        <!-- 4. [수정] 여기 TableView도 동일하게 앵커 설정 -->
+                        <!-- TableView도 동일하게 앵커 설정 -->
                         <TableView fx:id="productTable" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="80.0">
                           <columns>
                             <TableColumn fx:id="productNameCol" prefWidth="430.0" text="상품명" />

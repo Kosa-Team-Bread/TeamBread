@@ -25,6 +25,9 @@ public class Main extends Application {
 			// 프로그램 창 크기 (1440 x 900)
 			Scene scene = new Scene(root, 1440, 900);
 
+			// 지정된 경로의 CSS 파일을 Scene에 적용
+			scene.getStylesheets().add(getClass().getResource("/view/Style.css").toExternalForm());
+
 			primaryStage.setTitle("성심당 쿠폰 관리 시스템");
 			primaryStage.setScene(scene);
 			primaryStage.show();
