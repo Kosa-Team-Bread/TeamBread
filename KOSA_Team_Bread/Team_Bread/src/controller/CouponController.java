@@ -89,7 +89,7 @@ public class CouponController implements Initializable {
 
     /** 
      * 상품 테이블 초기 설정 
-     * Product 모델이 일반 POJO이므로, 람다식을 사용, 각 셀의 값 설정
+     * Product 모델이 일반 POJO(Plain Old Java Object)이므로, 람다식을 사용, 각 셀의 값 설정
      */
     private void setupProductTable() {
         productNameCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProductName()));
