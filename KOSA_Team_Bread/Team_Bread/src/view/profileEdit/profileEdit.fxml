@@ -1,84 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="ProfileEditController" 
-            prefHeight="600.0" prefWidth="450.0" 
-            styleClass="root">
+<!-- ==================== FXML 파일 (ProfileEdit.fxml) ==================== -->
 
-    <VBox alignment="CENTER" layoutX="25.0" layoutY="25.0" prefHeight="550.0" prefWidth="400.0" 
-          spacing="20.0" styleClass="container">
-        
-        <!-- 로고 섹션 -->
-        <VBox alignment="CENTER" spacing="5.0" styleClass="logo-section">
-            <Label styleClass="brand-name" text="聖心堂" />
-            <Label styleClass="brand-subtitle" text="1956 이래 · 大韓民國 · 大田" />
-        </VBox>
-        
-        <!-- 제목 -->
-        <Label styleClass="title" text="개인정보수정" />
-        
-        <!-- 폼 섹션 -->
-        <VBox spacing="15.0" styleClass="form-section">
+<BorderPane prefHeight="700.0" prefWidth="500.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ProfileEditController">
+   <top>
+        <VBox alignment="CENTER" spacing="25.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" BorderPane.alignment="CENTER">
             
-            <!-- 성함 -->
-            <VBox spacing="5.0">
-                <Label styleClass="form-label" text="성함" />
-                <TextField fx:id="nameField" styleClass="form-input" text="홍길동" />
-            </VBox>
-            
-            <!-- 이메일 -->
-            <VBox spacing="5.0">
-                <Label styleClass="form-label" text="Email" />
-                <TextField fx:id="emailField" disable="true" styleClass="form-input-disabled" 
-                          text="example@gmail.com" />
-            </VBox>
-            
-            <!-- 구분선 -->
-            <Region styleClass="divider" />
-            
-            <!-- 비밀번호 변경 섹션 -->
-            <VBox spacing="15.0">
-                <Label styleClass="section-title" text="비밀번호 변경" />
-                
-                <!-- 현재 비밀번호 -->
-                <VBox spacing="5.0">
-                    <Label styleClass="form-label" text="현재 비밀번호" />
-                    <PasswordField fx:id="currentPasswordField" styleClass="form-input" 
-                                  promptText="현재 비밀번호를 입력하세요" />
-                </VBox>
-                
-                <!-- 새 비밀번호 -->
-                <VBox spacing="5.0">
-                    <Label styleClass="form-label" text="새 비밀번호" />
-                    <PasswordField fx:id="newPasswordField" styleClass="form-input" 
-                                  promptText="새 비밀번호를 입력하세요" />
-                </VBox>
-                
-                <!-- 새 비밀번호 확인 -->
-                <VBox spacing="5.0">
-                    <Label styleClass="form-label" text="새 비밀번호 확인" />
-                    <PasswordField fx:id="confirmPasswordField" styleClass="form-input" 
-                                  promptText="새 비밀번호를 다시 입력하세요" />
-                </VBox>
-            </VBox>
-            
-            <!-- 버튼 섹션 -->
-            <HBox spacing="10.0" alignment="CENTER">
-                <Button fx:id="cancelButton" onAction="#handleCancel" 
-                        prefWidth="120.0" styleClass="btn-secondary" text="취소" />
-                <Button fx:id="saveButton" onAction="#handleSave" 
-                        prefWidth="120.0" styleClass="btn-primary" text="수정완료" />
-            </HBox>
-            
-            <!-- 안내 텍스트 -->
-            <Label styleClass="info-text" text="* 이메일 주소는 변경할 수 없습니다." 
+            <padding>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+            </padding>
+           <children>
+               
+               <!-- 로고 섹션 -->
+               <ImageView fitHeight="84.0" fitWidth="186.0" pickOnBounds="true">
+                     <image>
+                         <Image url="@../main/logo.png" />
+                     </image>
+                 </ImageView>
+               
+               <!-- 제목 -->
+               <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #333333;" text="개인정보수정" />
+               
+               <!-- 폼 섹션 -->
+               <VBox prefWidth="320.0" spacing="20.0">
+                  <children>
+                      
+                      <!-- 성함 -->
+                      <VBox spacing="8.0">
+                         <children>
+                             <Label style="-fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-size: 14px;" text="성함" />
+                             <TextField fx:id="nameField" style="-fx-padding: 12px; -fx-border-color: #dddddd; -fx-border-radius: 4px; -fx-background-color: #f8f9fa; -fx-background-radius: 4px; -fx-font-size: 14px;" />
+                         </children>
+                      </VBox>
+                      
+                      <!-- 이메일 -->
+                      <VBox spacing="8.0">
+                         <children>
+                             <Label style="-fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-size: 14px;" text="Email" />
+                             <TextField fx:id="emailField" style="-fx-padding: 12px; -fx-border-color: #dddddd; -fx-border-radius: 4px; -fx-background-color: #f8f9fa; -fx-background-radius: 4px; -fx-font-size: 14px;" />
+                         </children>
+                      </VBox>
+                      
+                      <!-- 구분선 -->
+                      <Region prefHeight="1.0" style="-fx-background-color: #e9ecef;">
+                          <VBox.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                          </VBox.margin>
+                      </Region>
+                      
+                      <!-- 비밀번호 변경 섹션 제목 -->
+                      <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #333333;" text="비밀번호 변경" />
+                      
+                      <!-- 현재 비밀번호 -->
+                      <VBox spacing="8.0" />
+                      
+                      <!-- 새 비밀번호 -->
+                      <VBox spacing="8.0">
+                         <children>
+                             <Label style="-fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-size: 14px;" text="새 비밀번호" />
+                             <PasswordField fx:id="newPasswordField" promptText="새 비밀번호를 입력하세요" style="-fx-padding: 12px; -fx-border-color: #dddddd; -fx-border-radius: 4px; -fx-background-color: #f8f9fa; -fx-background-radius: 4px; -fx-font-size: 14px;" />
+                         </children>
+                      </VBox>
+                      
+                      <!-- 새 비밀번호 확인 -->
+                      <VBox spacing="8.0" />
+                      
+                      <!-- 버튼 섹션 -->
+                      <HBox alignment="CENTER" spacing="15.0">
+                          <VBox.margin>
+                              <Insets top="15.0" />
+                          </VBox.margin>
+                         <children>
+                             
+                             <Button fx:id="cancelButton" onAction="#handleCancel" prefHeight="45.0" prefWidth="130.0" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-background-radius: 4px; -fx-font-size: 16px; -fx-font-weight: bold;" text="취소" />
+                             <Button fx:id="saveButton" onAction="#handleSave" prefHeight="45.0" prefWidth="130.0" style="-fx-background-color: #4285f4; -fx-text-fill: white; -fx-background-radius: 4px; -fx-font-size: 16px; -fx-font-weight: bold;" text="수정완료" />
+                         </children>
+                      </HBox>
+                      
+                      <!-- 안내 텍스트 -->
+                      <VBox alignment="CENTER" prefHeight="4.0" prefWidth="420.0" spacing="5.0">
+                          <VBox.margin>
+                              <Insets top="15.0" />
+                          </VBox.margin>
+                         <children>
+                                         <Label styleClass="info-text" text="* 비밀번호 변경을 원하지 않으시면 비밀번호 필드를 비워두세요." 
                    wrapText="true" />
-            <Label styleClass="info-text" text="* 비밀번호 변경을 원하지 않으시면 비밀번호 필드를 비워두세요." 
-                   wrapText="true" />
+                             <Label style="-fx-font-size: 12px; -fx-text-fill: #6c757d;" textAlignment="CENTER" wrapText="true" />
+                         </children>
+                      </VBox>
+                  </children>
+               </VBox>
+           </children>
         </VBox>
-    </VBox>
-</AnchorPane>
+   </top>
+</BorderPane>
