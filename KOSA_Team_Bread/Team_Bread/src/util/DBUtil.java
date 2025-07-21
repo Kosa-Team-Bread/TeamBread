@@ -1,5 +1,3 @@
-// DBUtil.java
-
 package util;
 
 import java.sql.Connection;
