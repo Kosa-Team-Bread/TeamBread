@@ -1,3 +1,5 @@
+// CouponController.java
+
 package controller;
 
 import javafx.beans.property.SimpleIntegerProperty;
@@ -16,22 +18,18 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import model.category.CategoryDAO; // ProductDAO가 의존하므로 임포트
+import model.category.CategoryDAO;      // ProductDAO가 의존하므로 임포트
 import model.coupon.Coupon;
 import model.coupon.CouponDAO;
-import model.product.Product; // 팀원이 만든 Product 모델 임포트
-import model.product.ProductDAO; // 팀원이 만든 ProductDAO 임포트
+import model.product.Product;           // Product 모델 클래스 (DTO) 임포트
+import model.product.ProductDAO;        // ProductDAO 임포트
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-/**
- * CouponManagement.fxml의 컨트롤러 클래스
- * 팀원이 작성한 Product/ProductDAO와 협업하도록 수정됨.
- * 작성자: 강기범, 김기성, 나규태, 정영규
- */
+// CouponManagement.fxml의 컨트롤러 클래스
 public class CouponController implements Initializable {
 
     // FXML과 연결된 UI 컴포넌트
@@ -58,14 +56,14 @@ public class CouponController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // DAO 객체 생성
         couponDAO = new CouponDAO();
-        // ProductDAO는 CategoryDAO를 필요로 하므로 함께 생성합니다.
+        // ProductDAO는 CategoryDAO를 필요로 하므로 함께 생성
         productDAO = new ProductDAO(new CategoryDAO());
 
-        // 테이블 컬럼과 데이터 모델의 속성을 연결
+        // 테이블 컬럼과 데이터 모델의 속성 연결
         setupCouponTable();
         setupProductTable(); // 수정된 메소드 호출
 
-        // 데이터베이스에서 데이터 로드
+        // DB에서 데이터 로드
         loadCouponData();
         loadProductData(); // 수정된 메소드 호출
 
@@ -82,7 +80,7 @@ public class CouponController implements Initializable {
 
     /** 쿠폰 테이블 초기 설정 */
     private void setupCouponTable() {
-        // Coupon 모델은 JavaFX Property를 사용하므로 PropertyValueFactory를 그대로 사용합니다.
+        // Coupon 모델은 JavaFX Property를 사용하므로 PropertyValueFactory를 그대로 사용
         couponNameCol.setCellValueFactory(new PropertyValueFactory<>("couponName"));
         percentCol.setCellValueFactory(new PropertyValueFactory<>("percent"));
         startTimeCol.setCellValueFactory(new PropertyValueFactory<>("startTime"));
@@ -90,8 +88,8 @@ public class CouponController implements Initializable {
     }
 
     /** 
-     * [수정됨] 상품 테이블 초기 설정 
-     * Product 모델이 일반 POJO이므로, 람다식을 사용하여 각 셀의 값을 설정합니다.
+     * 상품 테이블 초기 설정 
+     * Product 모델이 일반 POJO이므로, 람다식을 사용, 각 셀의 값 설정
      */
     private void setupProductTable() {
         productNameCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProductName()));
@@ -106,8 +104,8 @@ public class CouponController implements Initializable {
     }
 
     /**
-     * [수정됨] 상품 데이터를 로드하여 테이블에 표시
-     * 팀원의 ProductDAO를 사용합니다.
+     * 상품 데이터를 로드하여 테이블에 표시
+     * ProductDAO 사용
      */
     private void loadProductData() {
         try {
@@ -116,11 +114,11 @@ public class CouponController implements Initializable {
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println("상품 목록 로드 중 오류 발생");
             e.printStackTrace();
-            // 사용자에게 오류를 알리는 Alert 창을 띄우는 로직을 추가할 수 있습니다.
+            // 사용자에게 오류를 알리는 Alert 창을 띄우는 로직 추가 가능
         }
     }
     
-    /** 검색 필터 기능 설정 */
+    /** 검색 기능 설정 */
     private void setupSearchFunctionality() {
         // 쿠폰 검색 (클라이언트 측 필터링)
         FilteredList<Coupon> filteredCoupons = new FilteredList<>(couponList, p -> true);
@@ -144,7 +142,7 @@ public class CouponController implements Initializable {
     }
 
     /**
-     * 상품 선택 시 쿠폰 적용 팝업창을 띄웁니다.
+     * 상품 선택 시 쿠폰 적용 팝업창 띄움
      * @param selectedProduct 선택된 상품 객체
      */
     private void handleProductSelection(Product selectedProduct) {
