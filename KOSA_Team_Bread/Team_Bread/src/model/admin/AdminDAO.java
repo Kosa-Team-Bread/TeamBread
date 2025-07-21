@@ -9,6 +9,8 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.inout.inoutSelectDto;
+import model.product.Product;
 import util.DBUtil;
 
 public class AdminDAO {
@@ -30,8 +32,58 @@ public class AdminDAO {
 
 		return adminList;
 	}
+	
+	// 사용자 ID를 사용한 검색
+	public Admin getAdminFromId(int id) throws SQLException, ClassNotFoundException {
+		List<Object> addList = new ArrayList<>();
+		String query = "SELECT * FROM TBL_ADMIN WHERE Admin_ID= ?" ;
+		try {
+			addList.add(id);
+			ResultSet rs = DBUtil.dbCaseExecuteQuery(query, addList);
+			Admin admin = getAdmin(rs);
+			return admin;
+		} catch(SQLException e) {
+			System.out.println("SQL 오류!!! 사유 : " + e);
+			throw e;
+		}
+	}
+	
+	// 사용자 이름을 사용한 검색
+	public Admin getAdminFromName(String name) throws SQLException, ClassNotFoundException {
+		List<Object> addList = new ArrayList<>();
+		String query = "SELECT * FROM TBL_ADMIN WHERE Admin_NAME= ?" ;
+		try {
+			addList.add(name);
+			ResultSet rs = DBUtil.dbCaseExecuteQuery(query, addList);
+			Admin admin = getAdmin(rs);
+			return admin;
+		} catch(SQLException e) {
+			System.out.println("SQL 오류!!! 사유 : " + e);
+			throw e;
+		}
+	}
 
-	// 로그인 사용자 정보 변경
+	// 사용자 데이터셋 받기
+	public Admin getAdmin(ResultSet rs) throws SQLException, ClassNotFoundException {
+		Admin admin = null;
+		if (rs.next()) {
+			admin = Admin.builder()
+					.adminId(rs.getInt("PRODUCT_ID"))
+					.email(rs.getString("EMAIL"))
+					.pw(rs.getString("ADMIN_PW"))
+					.adminName(rs.getString("ADMIN_NAME"))
+					.grade(rs.getInt("GRADE"))
+					.adminRegDate(rs.getDate("PRODUCT_REGDATE").toLocalDate())
+					.adminModDate(rs.getDate("PRODUCT_MODDATE").toLocalDate())
+					.build();
+		}
+		return admin;
+	}
+	
+	private static LocalDate toLocalDate(java.sql.Date date) {
+    return date != null ? date.toLocalDate() : null;
+	}
+  // 로그인 사용자 정보 변경
 	public static void updateAdmin(String adminName, String adminEmail, String pw, int adminId)
 			throws SQLException, ClassNotFoundException {
 		String sql = "UPDATE hr.tbl_admin SET ADMIN_NAME = ?, EMAIL = ? , ADMIN_PW = ?, MODDATE = SYSDATE WHERE ADMIN_ID = ?";
@@ -58,7 +110,5 @@ public class AdminDAO {
 		DBUtil.dbExecuteUpdate(sql, params);
 	}
 
-	private static LocalDate toLocalDate(Date date) {
-		return date != null ? date.toLocalDate() : null;
-	}
+		
 }

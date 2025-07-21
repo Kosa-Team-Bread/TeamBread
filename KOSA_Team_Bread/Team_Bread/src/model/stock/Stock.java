@@ -18,6 +18,9 @@ public class Stock {
 	// 카테고리 ID
 	private Integer categoryId;
 	
+	// 재고이름
+	private String stockName;
+	
 	// 재고 수량
 	private Integer stockQuantity;
 	

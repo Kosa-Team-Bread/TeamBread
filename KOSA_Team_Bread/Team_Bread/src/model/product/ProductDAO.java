@@ -7,6 +7,7 @@ import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.AllArgsConstructor;
+import model.admin.AdminDAO;
 import model.category.CategoryDAO;
 import util.DBUtil;
 
@@ -14,7 +15,8 @@ import util.DBUtil;
 @AllArgsConstructor
 public class ProductDAO {
 	
-	private final CategoryDAO cateDao;
+	private static CategoryDAO cateDao;
+	private static AdminDAO adminDao;
 	
 	// 상품 전체조회
 	public ObservableList<Product> findAllProduct() throws SQLException, ClassNotFoundException {
@@ -111,9 +113,60 @@ public class ProductDAO {
 		}
 	}
 	
-	// 상품 삽입 <- 저장 프로시저 사용
+	// 상품 삽입 <- 재고도 같이 삽입
+	public static void insertProduct(ProductInsertDto product) throws SQLException, ClassNotFoundException {
+		List<Object> addList = new ArrayList<>();
+		String sql = "{CALL proc_add_product_with_stock(?, ?, ?, ?, ?, ?, ?, ?)}";
+
+		try {
+			addList.add(cateDao.getCategory(product.getCategoryName()).getCategoryId());
+			addList.add(product.getProductName());
+			addList.add(product.getPrice());
+			addList.add(product.getCost());
+			addList.add(adminDao.getAdminFromName(product.getAdminName()).getAdminId());
+			addList.add(product.getProductQuantity());
+			addList.add(product.getProductName());
+			addList.add(product.getStockLocation());
+			DBUtil.dbExecuteCall(sql, addList);
+		} catch (SQLException e) {
+			System.out.print("Error occurred while UPDATE Operation: " + e);
+			throw e;
+		}
+	}
 	
-	// 상품 수정 <- 저장 프로시저 사용
+	// 상품 수정
+	public static void updateProduct(String newName, Integer newPrice, Integer newCost) throws SQLException, ClassNotFoundException {
+		List<Object> addList = new ArrayList<>();
+		String updateStmt = "BEGIN\n" +
+		                    "   UPDATE tbl_product\n" +
+		                    "      SET name = ?,\n" +
+		                    "		   price = ?,\n" +
+		                    "		   cost = ?\n" +
+		                    "    WHERE PRODUCT_ID = ?; \n" +
+		                    "   COMMIT;\n" +
+		                    "END;";
+		try {
+			addList.add(newName);
+			addList.add(newPrice);
+			addList.add(newCost);
+			DBUtil.dbExecuteUpdate(updateStmt, addList);
+		} catch (SQLException e) {
+			System.out.print("Error occurred while UPDATE Operation: " + e);
+			throw e;
+		}
+	}
 	
 	// 상품 삭제 <- 저장 프로시저 사용
+	public void deleteProduct(String productName) throws SQLException, ClassNotFoundException {
+		List<Object> addList = new ArrayList<>();
+		String query = "{CALL proc_delete_product(?)}";
+		try {
+			addList.add(searchProduct(productName).get(0).getProductId());
+			DBUtil.dbExecuteCall(query, addList);
+		} catch (SQLException e) {
+			System.out.print("삭제 실패!!! 사유 : " + e);
+			throw e;
+		}
+	}
+	
 }
