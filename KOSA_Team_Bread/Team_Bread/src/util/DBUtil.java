@@ -2,6 +2,7 @@
 
 package util;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -175,4 +176,29 @@ public class DBUtil {
 				dbDisconnect();
 			}
 		}
+		
+		// 저장 프로시저 사용
+		public static void dbExecuteCall(String sqlCall, List<Object> paramList) throws SQLException, ClassNotFoundException {
+		    CallableStatement cstmt = null;
+
+		    try {
+		        dbConnect();
+
+		        cstmt = conn.prepareCall(sqlCall);
+
+		        for (int i = 0; i < paramList.size(); i++) {
+		            cstmt.setObject(i + 1, paramList.get(i));
+		        }
+
+		        cstmt.execute();
+
+		    } catch (SQLException e) {
+		        System.out.println("Problem occurred at executeCall operation : " + e);
+		        throw e;
+		    } finally {
+		        if (cstmt != null) cstmt.close();
+		        dbDisconnect();
+		    }
+		}
+
 }
