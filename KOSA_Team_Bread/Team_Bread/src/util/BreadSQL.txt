@@ -423,4 +423,6 @@ INSERT INTO tbl_coupon (coupon_id, product_id, category_id, coupon_name, percent
 INSERT INTO tbl_coupon (coupon_id, product_id, category_id, coupon_name, percent, starttime, deadline) VALUES (seq_coupon_id.NEXTVAL , 52, 3, '호두롤케익 쿠폰', 10, TO_DATE('2025-07-10','YYYY-MM-DD'), TO_DATE('2025-07-12','YYYY-MM-DD'));
 INSERT INTO tbl_coupon (coupon_id, product_id, category_id, coupon_name, percent, starttime, deadline) VALUES (seq_coupon_id.NEXTVAL , 53, 3, '티케이스 기프트 쿠폰', 10, TO_DATE('2025-07-10','YYYY-MM-DD'), TO_DATE('2025-07-12','YYYY-MM-DD'));
 
+commit;
+
 select * from tbl_stock;
