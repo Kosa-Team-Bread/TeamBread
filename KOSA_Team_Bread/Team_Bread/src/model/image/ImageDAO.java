@@ -1,4 +1,4 @@
-package model.product;
+package model.image;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
