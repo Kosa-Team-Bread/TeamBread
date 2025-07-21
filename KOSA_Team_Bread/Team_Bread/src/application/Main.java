@@ -22,7 +22,7 @@ public class Main extends Application {
 			Parent root = loader.load();
 
 			// Scene 생성 및 Stage에 설정
-			Scene scene = new Scene(root);
+			Scene scene = new Scene(root, 1440, 900);
 
 			primaryStage.setTitle("성심당 쿠폰 관리 시스템");
 			primaryStage.setScene(scene);
