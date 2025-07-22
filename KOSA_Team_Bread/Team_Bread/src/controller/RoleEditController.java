@@ -28,6 +28,8 @@ public class RoleEditController implements Initializable {
 	// 현재 사용자 정보 (부모 창에서 전달받을 데이터)
 	private Admin currentUser;
 
+	private final AdminDAO adminDAO = new AdminDAO();
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// 초기화 로직
@@ -69,7 +71,7 @@ public class RoleEditController implements Initializable {
 				}
 
 				// 데이터베이스에 저장하는 로직
-				AdminDAO.updateAdminGrade(newGrade, currentUser.getAdminId());
+				adminDAO.updateAdminGrade(newGrade, currentUser.getAdminId());
 
 				// 로컬 객체도 업데이트
 				currentUser.setGrade(newGrade);

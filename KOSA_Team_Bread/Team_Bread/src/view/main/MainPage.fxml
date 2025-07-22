@@ -24,8 +24,8 @@
               </ImageView>
               <HBox alignment="CENTER" spacing="24">
                  <children>
-                     <Label text="재고현황" />
-                     <Label text="입출고관리" />
+                     <Label fx:id="stockMenu" onMouseClicked="#handleStockClick" text="재고현황" />
+                     <Label fx:id="inoutMenu" onMouseClicked="#handleInoutClick" text="입출고관리" />
                      <Label fx:id="couponMenu" onMouseClicked="#handleCouponClick" text="쿠폰관리" />
                      <Label fx:id="mypageMenu" onMouseClicked="#handleMypageClick" text="마이페이지" />
                  </children>
