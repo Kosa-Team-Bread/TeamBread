@@ -1,0 +1,50 @@
+/* 전체 애플리케이션의 기본 글꼴과 크기 설정 */
+.root {
+  -fx-font-family: "Malgun Gothic"; /* 기본 폰트 : 맑은 고딕 */
+  -fx-font-size: 15px; /* 애플리케이션의 기본 글자 크기 설정 */
+}
+
+/* =================================
+ 메인 화면 (MainPage.fxml) 스타일
+ ================================= */
+
+/* 상단 메뉴바 라벨 스타일 ('재고현황', '쿠폰관리' 등) */
+.main-menu-label {
+  -fx-font-size: 20px; /* 메뉴바 글자 크기 */
+  -fx-font-weight: bold;
+  -fx-text-fill: #21272a;
+  -fx-cursor: hand; /* 마우스를 올리면 손가락 모양으로 변경 */
+}
+/* 메뉴바 라벨에 마우스를 올렸을 때 스타일 */
+.main-menu-label:hover {
+  -fx-text-fill: #0078d7; /* 파란색으로 변경 */
+}
+
+/* =================================
+ 쿠폰 관리 (CouponManagement.fxml) 스타일
+ ================================= */
+
+/* "쿠폰 목록", "상품 목록"과 같은 타이틀 라벨 */
+.title-label {
+  -fx-font-size: 23px; /* 제목 라벨 크기 */
+  -fx-font-weight: bold;
+}
+
+/* TableView의 헤더(컬럼명) 스타일 */
+.table-view .column-header .label {
+  -fx-font-size: 16px; /* 목록의 컬럼명 글자 크기 */
+  -fx-font-weight: bold;
+  -fx-alignment: CENTER;
+}
+
+/* TableView의 셀(내용) 스타일 */
+.table-cell {
+  -fx-font-size: 15px; /* 목록의 내용 글자 크기 */
+  -fx-alignment: CENTER_LEFT;
+  -fx-padding: 0 10px;
+}
+
+/* TextField(검색창) 스타일 */
+.text-field {
+  -fx-font-size: 15px; /* 검색창 글자 크기 */
+}
