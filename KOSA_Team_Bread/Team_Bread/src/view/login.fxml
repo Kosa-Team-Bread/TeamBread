@@ -15,63 +15,43 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="1024" prefWidth="1440"
-	style="-fx-background-color: white;"
-	xmlns:fx="http://javafx.com/fxml/1"
-	xmlns="http://javafx.com/javafx/8.0.171"
-	fx:controller="controller.LoginController">
+<AnchorPane prefHeight="1024" prefWidth="1440" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
 
-	<!-- 로고 (페이지 상단) -->
-	<ImageView fx:id="logoImage" fitHeight="118" fitWidth="222"
-		layoutX="609" layoutY="153">
+   	<!-- 로고 (페이지 상단) -->
+	<ImageView fx:id="logoImage" fitHeight="118" fitWidth="222" layoutX="609.0" layoutY="94.0">
 		<image>
 			<Image url="@main/logo.png" />
 		</image>
 	</ImageView>
 
 	<!-- 메인 카드(폼) -->
-	<VBox fx:id="card" alignment="TOP_LEFT" layoutX="360"
-		layoutY="212" prefWidth="720" spacing="48"
-		style="-fx-background-color: white;">
+	<VBox fx:id="card" alignment="TOP_LEFT" layoutX="360" layoutY="212" prefWidth="720" spacing="48" style="-fx-background-color: white;">
 
 		<!-- 제목 -->
-		<Label
-			style="-fx-font-size: 42px; -fx-font-weight: 700; -fx-text-fill: #21272A;"
-			text="로그인" />
+		<Label style="-fx-font-size: 42px; -fx-font-weight: 700; -fx-text-fill: #21272A;" text="로그인" />
 
 		<!-- Form 영역 -->
-		<VBox fx:id="formBox" alignment="TOP_LEFT" maxWidth="Infinity"
-			spacing="16">
+		<VBox fx:id="formBox" alignment="TOP_LEFT" maxWidth="Infinity" spacing="16">
 
 			<!-- 이메일 -->
 			<VBox alignment="TOP_LEFT" maxWidth="Infinity" spacing="4">
-				<Label style="-fx-text-fill: #21272A; -fx-font-size: 14;"
-					text="Email Address" />
-				<TextField fx:id="emailField" prefHeight="48"
-					promptText="Placeholder"
-					style="-fx-background-color: #F2F4F8; -fx-border-color: #C1C7CD; -fx-border-width: 0 0 1 0;" />
+				<Label style="-fx-text-fill: #21272A; -fx-font-size: 14;" text="Email Address" />
+				<TextField fx:id="emailField" prefHeight="48" promptText="Placeholder" style="-fx-background-color: #F2F4F8; -fx-border-color: #C1C7CD; -fx-border-width: 0 0 1 0;" />
 			</VBox>
 
 			<!-- 비밀번호 -->
 			<VBox alignment="TOP_LEFT" maxWidth="Infinity" spacing="4">
-				<Label style="-fx-text-fill: #21272A; -fx-font-size: 14;"
-					text="Password" />
-				<PasswordField fx:id="passwordField" prefHeight="48"
-					promptText="Placeholder"
-					style="-fx-background-color: #F2F4F8; -fx-border-color: #C1C7CD; -fx-border-width: 0 0 1 0;" />
+				<Label style="-fx-text-fill: #21272A; -fx-font-size: 14;" text="Password" />
+				<PasswordField fx:id="passwordField" prefHeight="48" promptText="Placeholder" style="-fx-background-color: #F2F4F8; -fx-border-color: #C1C7CD; -fx-border-width: 0 0 1 0;" />
 			</VBox>
 
 			<!-- 옵션 + 버튼 영역 -->
 			<VBox alignment="TOP_LEFT" maxWidth="Infinity" spacing="16">
 				<HBox alignment="CENTER_LEFT" spacing="16">
-					<CheckBox fx:id="rememberCheck"
-						style="-fx-font-size: 14; -fx-text-fill: #21272A;" text="아이디 기억하기" />
+					<CheckBox fx:id="rememberCheck" style="-fx-font-size: 14; -fx-text-fill: #21272A;" text="아이디 기억하기" />
 				</HBox>
 
-				<Button fx:id="loginButton" maxWidth="Infinity"
-					onAction="#onLogin" prefHeight="48"
-					style="-fx-background-color: #0F62FE; -fx-text-fill: white; -fx-font-weight: 500;"
-					text="로그인" />
+				<Button fx:id="loginButton" maxWidth="Infinity" onAction="#onLogin" prefHeight="48" style="-fx-background-color: #0F62FE; -fx-text-fill: white; -fx-font-weight: 500;" text="로그인" />
 			</VBox>
 		</VBox>
 
@@ -79,8 +59,7 @@
 		<Separator prefWidth="720" />
 
 		<!-- 회원가입 링크 -->
-		<Label onMouseClicked="#onGotoSignup"
-			style="-fx-text-fill: #001D6C; -fx-font-size: 14;" text="회원가입" />
+		<Label onMouseClicked="#onGotoSignup" style="-fx-text-fill: #001D6C; -fx-font-size: 14;" text="회원가입" />
 
 		<!-- 카드 내부 여백 -->
 		<padding>

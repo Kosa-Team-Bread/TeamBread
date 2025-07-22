@@ -40,8 +40,15 @@
 
             <!-- 비밀번호 -->
             <VBox alignment="TOP_LEFT" spacing="4" maxWidth="Infinity">
-                <Label text="Password" style="-fx-text-fill: #21272A; -fx-font-size: 14;" />
+                <Label text="비밀번호" style="-fx-text-fill: #21272A; -fx-font-size: 14;" />
                 <PasswordField fx:id="passwordField" promptText="password" prefHeight="48"
+                               style="-fx-background-color: #F2F4F8; -fx-border-color: #C1C7CD; -fx-border-width: 0 0 1 0;" />
+            </VBox>
+            
+            <!-- 비밀번호 확인 -->
+            <VBox alignment="TOP_LEFT" spacing="4" maxWidth="Infinity">
+                <Label text="비밀번호 확인" style="-fx-text-fill: #21272A; -fx-font-size: 14;" />
+                <PasswordField fx:id="passwordConfirmField" promptText="password check" prefHeight="48"
                                style="-fx-background-color: #F2F4F8; -fx-border-color: #C1C7CD; -fx-border-width: 0 0 1 0;" />
             </VBox>
 

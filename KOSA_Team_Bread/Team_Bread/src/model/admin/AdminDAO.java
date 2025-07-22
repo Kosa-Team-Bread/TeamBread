@@ -3,6 +3,8 @@ package model.admin;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,5 +31,22 @@ public class AdminDAO {
 
 	private static LocalDate toLocalDate(java.sql.Date date) {
 		return date != null ? date.toLocalDate() : null;
+	}
+	
+	// 이메일 중복 확인
+	
+	public boolean checkEmailDuplicate(String email) throws SQLException, ClassNotFoundException {
+		String sql = "SELECT COUNT(*) as count  FROM tbl_admin WHERE email = ?";
+		List<Object> params = new ArrayList<>();
+		params.add(email);
+		
+		ResultSet rs = DBUtil.dbExecuteQuery(sql, params);
+		
+		if (rs.next()) {
+			int count  = rs.getInt("count");
+			return count > 0;
+		}
+		
+		return false;
 	}
 }

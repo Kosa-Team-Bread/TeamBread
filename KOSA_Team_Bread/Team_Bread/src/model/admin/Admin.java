@@ -29,5 +29,27 @@ public class Admin {
 
 	// 수정날짜
 	private LocalDate adminModDate;
+	
+	// 기본 생성자
+	public Admin() {}
+	
+	// 회원가입용 생성자
+	public Admin(String adminName, String email, String pw) {
+		this.adminName = adminName;
+		this.email = email;
+		this.pw = pw; 
+	}
+	
 
+	public Admin(Integer adminId, String email, String pw, String adminName, Integer grade, LocalDate adminRegDate, LocalDate adminModDate) {
+		this.adminId = adminId;
+		this.email = email;
+		this.pw = pw;
+		this.adminName = adminName;
+		this.grade = grade;
+		this.adminRegDate = adminRegDate;
+		this.adminModDate = adminModDate;
+	}
+	
+	
 }

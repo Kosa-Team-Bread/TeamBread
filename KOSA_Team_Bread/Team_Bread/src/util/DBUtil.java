@@ -25,18 +25,19 @@ public class DBUtil {
 			// Load Oracle JDBC driver
 			Class.forName(JDBC_DRIVER);
 		} catch (ClassNotFoundException e) {
-			System.out.println("Where is your Oracle JDBC Driver?");
+			System.err.println("Oracle JDBC Driver를 찾을 수 없습니다: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		}
 		
-		System.out.println("Oracle JDBC Driver Registered!");
+		System.out.println("Oracle JDBC Driver 등록 완료!");
 
 		try {
 			// Create database connection
 			conn = DriverManager.getConnection(connStr);
+			System.out.println("데이터베이스 연결 성공");
 		} catch (SQLException e) {
-			System.out.println("Connection Failed! Check output console" + e);
+			System.out.println("데이터베이스 연결 실패: " + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		}
@@ -47,8 +48,10 @@ public class DBUtil {
 		try {
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
+				System.out.println("데이터베이스 연결 종료");
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
+			System.out.println("데이터베이스 연결 종료 실패: " + e.getMessage());
 			throw e;
 		}
 	}
@@ -86,7 +89,23 @@ public class DBUtil {
 		}
 		return crs;
 	}
-
+	
+	// 파라미터 2개를 받아야 할때 
+	public static ResultSet dbExecuteQuery(String sql, List<Object> params) throws SQLException, ClassNotFoundException {
+		
+		dbConnect();
+		
+		PreparedStatement pstmt = conn.prepareStatement(sql);
+		if (params != null) {
+			for (int i = 0; i < params.size(); i++) {
+				pstmt.setObject(i + 1, params.get(i));
+			}
+		}
+		
+		return pstmt.executeQuery();
+	}
+	// ^----------------------- 여기까지 -------------------------------^
+	
 	// Method to execute an INSERT, UPDATE, or DELETE statement
 	public static void dbExecuteUpdate(String sqlStmt) throws SQLException, ClassNotFoundException {
 		Statement stmt = null;
