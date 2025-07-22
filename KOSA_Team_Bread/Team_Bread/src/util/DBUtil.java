@@ -182,9 +182,8 @@ public class DBUtil {
 
 		        cstmt = conn.prepareCall(sqlCall);
 
-		        for (int i = 0; i < paramList.size(); i++) {
-		            cstmt.setObject(i + 1, paramList.get(i));
-		        }
+		        for (int i = 0; i < paramList.size(); i++) cstmt.setObject(i + 1, paramList.get(i));
+
 
 		        cstmt.execute();
 

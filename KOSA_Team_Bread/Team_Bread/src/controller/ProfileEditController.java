@@ -28,6 +28,8 @@ public class ProfileEditController implements Initializable {
 	// 현재 사용자 정보 (부모 창에서 전달받을 데이터)
 	private Admin currentUser;
 
+	private final AdminDAO adminDAO = new AdminDAO();
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// 초기화 로직
@@ -72,7 +74,7 @@ public class ProfileEditController implements Initializable {
 						adminName + " " + adminEmail + " " + pw + " " + currentUser.toString() + " " + newPassword);
 
 				// 데이터베이스에 업데이트하는 로직
-				AdminDAO.updateAdmin(adminName, adminEmail, pw, currentUser.getAdminId());
+				adminDAO.updateAdmin(adminName, adminEmail, pw, currentUser.getAdminId());
 
 				// 로컬 객체도 업데이트
 				currentUser.setAdminName(adminName);

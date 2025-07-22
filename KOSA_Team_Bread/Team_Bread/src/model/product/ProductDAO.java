@@ -9,7 +9,11 @@ import javafx.collections.ObservableList;
 import lombok.AllArgsConstructor;
 import model.admin.AdminDAO;
 import model.category.CategoryDAO;
+import model.image.Image;
+import model.image.ImageDAO;
 import util.DBUtil;
+
+
 
 // Made by 정영규
 @AllArgsConstructor
@@ -17,6 +21,20 @@ public class ProductDAO {
 	
 	private static CategoryDAO cateDao;
 	private static AdminDAO adminDao;
+	private static ImageDAO imageDao;
+	
+	// ProductDAO.java (맨 위 import 아래 아무데나)
+	public static void setCategoryDAO(CategoryDAO dao){ ProductDAO.cateDao = dao; }
+	public static void setAdminDAO(AdminDAO dao){ ProductDAO.adminDao = dao; }
+	public ProductDAO(CategoryDAO cateDao, AdminDAO adminDao) {
+        ProductDAO.cateDao  = cateDao;
+        ProductDAO.adminDao = adminDao;
+    }
+
+	public static void setImageDAO(ImageDAO dao) {
+	    ProductDAO.imageDao = dao;
+	}
+
 	
 	// 상품 전체조회
 	public ObservableList<Product> findAllProduct() throws SQLException, ClassNotFoundException {
@@ -51,19 +69,50 @@ public class ProductDAO {
 	}
 	
 	// 상품 ID으로 상세 조회
-	public Product getProductFromProductId(int id) throws SQLException, ClassNotFoundException {
-		List<Object> addList = new ArrayList<>();
-		String query = "SELECT * FROM tbl_product WHERE PRODUCT_ID= ?" ;
-		try {
-			addList.add(id);
-			ResultSet rs = DBUtil.dbCaseExecuteQuery(query, addList);
-			Product product = getProduct(rs);
-			return product;
-		} catch(SQLException e) {
-			System.out.println("SQL 오류!!! 사유 : " + e);
-			throw e;
-		}
+
+	public ProductDetailSelectDto getProductFromProductId(int id) throws SQLException, ClassNotFoundException {
+	    // 1) tbl_product 조회
+	    List<Object> params = new ArrayList<>();
+	    params.add(id);
+	    String sql = "SELECT * FROM tbl_product WHERE PRODUCT_ID = ?";
+	    ResultSet rs = DBUtil.dbCaseExecuteQuery(sql, params);
+
+	    // 2) Product 객체 빌드
+	    Product product = getProduct(rs);
+	    if (product == null) {
+	        return null; // 해당 ID의 상품이 없으면 null 반환
+	    }
+
+	    // 3) 카테고리명 조회
+	    String categoryName = cateDao
+	        .getCategoryFromCategoryId(product.getCategoryId())
+	        .getCategoryName();
+
+	    // 4) 이미지 위치 조회 (없으면 빈 문자열)
+	    String imageLocation = "";
+	    if (imageDao != null) {
+	        try {
+	            // ImageDAO#searchProduct가 ObservableList<Image> 반환한다고 가정
+	            Image image = imageDao.searchProduct(product.getProductName());
+	            if (image != null) {
+	                imageLocation = image.getImageLocation();
+	            }
+	        } catch (Exception ignore) {
+	            // 이미지가 없거나 조회 중 에러 나면 그냥 빈 문자열
+	        }
+	    }
+
+	    // 5) DTO 빌드
+	    return ProductDetailSelectDto.builder()
+	            .productName(product.getProductName())
+	            .categoryName(categoryName)
+	            .price(product.getPrice())
+	            .cost(product.getCost())
+	            .productModDate(product.getProductModDate())
+	            .imageLocation(imageLocation)
+	            .build();
 	}
+
 	
 	// 단일 상품 받기
 		public Product getProduct(ResultSet rs) throws SQLException, ClassNotFoundException {
@@ -85,7 +134,7 @@ public class ProductDAO {
 	// 상품 검색 -> 대소문자 구분 X
 	public ObservableList<Product> searchProduct(String search) throws SQLException, ClassNotFoundException {
 		List<Object> addList = new ArrayList<>();
-		String query = "SELECT * FROM tbl_product WHERE LOWER(name) LIKE LOWER('?')";
+		String query = "SELECT * FROM tbl_product WHERE LOWER(name) LIKE LOWER(?)";
 		try {
 			String result = "%" + search + "%";
 			addList.add(result);
@@ -116,7 +165,8 @@ public class ProductDAO {
 	// 상품 삽입 <- 재고도 같이 삽입
 	public static void insertProduct(ProductInsertDto product) throws SQLException, ClassNotFoundException {
 		List<Object> addList = new ArrayList<>();
-		String sql = "{CALL proc_add_product_with_stock(?, ?, ?, ?, ?, ?, ?, ?)}";
+		String query = "{CALL proc_add_product_with_stock_and_image("
+	               + "?, ?, ?, ?, ?, ?, ?, ?, ?)}";
 
 		try {
 			addList.add(cateDao.getCategory(product.getCategoryName()).getCategoryId());
@@ -127,7 +177,8 @@ public class ProductDAO {
 			addList.add(product.getProductQuantity());
 			addList.add(product.getProductName());
 			addList.add(product.getStockLocation());
-			DBUtil.dbExecuteCall(sql, addList);
+			addList.add(product.getImageLocation());
+			DBUtil.dbExecuteCall(query, addList);
 		} catch (SQLException e) {
 			System.out.print("Error occurred while UPDATE Operation: " + e);
 			throw e;
@@ -135,20 +186,19 @@ public class ProductDAO {
 	}
 	
 	// 상품 수정
-	public static void updateProduct(String newName, Integer newPrice, Integer newCost) throws SQLException, ClassNotFoundException {
+	public static void updateProduct(Integer id, Integer newPrice, Integer newCost) throws SQLException, ClassNotFoundException {
 		List<Object> addList = new ArrayList<>();
 		String updateStmt = "BEGIN\n" +
 		                    "   UPDATE tbl_product\n" +
-		                    "      SET name = ?,\n" +
-		                    "		   price = ?,\n" +
+		                    "      SET price = ?,\n" +
 		                    "		   cost = ?\n" +
 		                    "    WHERE PRODUCT_ID = ?; \n" +
 		                    "   COMMIT;\n" +
 		                    "END;";
 		try {
-			addList.add(newName);
 			addList.add(newPrice);
 			addList.add(newCost);
+			addList.add(id);
 			DBUtil.dbExecuteUpdate(updateStmt, addList);
 		} catch (SQLException e) {
 			System.out.print("Error occurred while UPDATE Operation: " + e);
@@ -157,11 +207,11 @@ public class ProductDAO {
 	}
 	
 	// 상품 삭제 <- 저장 프로시저 사용
-	public void deleteProduct(String productName) throws SQLException, ClassNotFoundException {
+	public void deleteProduct(int productId) throws SQLException, ClassNotFoundException {
 		List<Object> addList = new ArrayList<>();
 		String query = "{CALL proc_delete_product(?)}";
 		try {
-			addList.add(searchProduct(productName).get(0).getProductId());
+			addList.add(productId);
 			DBUtil.dbExecuteCall(query, addList);
 		} catch (SQLException e) {
 			System.out.print("삭제 실패!!! 사유 : " + e);

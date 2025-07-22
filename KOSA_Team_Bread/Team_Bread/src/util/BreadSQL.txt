@@ -425,4 +425,126 @@ INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 53, 3, '티케이스 차 �
 
 commit;
 
-select * from tbl_stock;
+-- 여기까지 실행 아래부터 각 프로시저마다 /을 기준으로 하나씩 실행 
+
+-- 상품 삽입 저장 프로시저
+CREATE OR REPLACE PROCEDURE proc_add_product_with_stock_and_image (
+    p_category_id    IN tbl_product.category_id%TYPE,
+    p_name           IN tbl_product.name%TYPE,
+    p_price          IN tbl_product.price%TYPE,
+    p_cost           IN tbl_product.cost%TYPE,
+    p_admin_id       IN tbl_stock.admin_id%TYPE,
+    p_quantity       IN tbl_stock.quantity%TYPE,
+    p_stock_name     IN tbl_stock.stock_name%TYPE,
+    p_location       IN tbl_stock.location%TYPE,
+    p_image_location IN tbl_image.image_location%TYPE  -- New parameter for image path
+)
+IS
+BEGIN
+    -- 1. Insert new product
+    INSERT INTO tbl_product (
+        product_id, category_id, name, price, cost, product_regdate
+    ) VALUES (
+        seq_product_id.NEXTVAL, p_category_id, p_name, p_price, p_cost, SYSDATE
+    );
+    
+    -- 2. Insert initial stock for the new product
+    INSERT INTO tbl_stock (
+        stock_id, admin_id, product_id, category_id,
+        quantity, stock_name, location, stock_regDate, stock_modDate
+    ) VALUES (
+        seq_stock_id.NEXTVAL, p_admin_id, seq_product_id.CURRVAL, p_category_id,
+        p_quantity, p_stock_name, p_location, SYSDATE, SYSDATE
+    );
+    
+    -- 3. Insert image record for the new product
+    INSERT INTO tbl_image (
+        image_id, product_id, category_id,
+        image_name, image_location, image_regDate, image_modDate
+    ) VALUES (
+        seq_image_id.NEXTVAL, seq_product_id.CURRVAL, p_category_id,
+        p_name, p_image_location, SYSDATE, SYSDATE
+    );
+    
+    -- 4. Commit the transaction to save all changes
+    COMMIT;
+END;
+/
+
+-- 입출고 삽입시 재고 수량 업데이트
+CREATE OR REPLACE PROCEDURE proc_insert_inout (
+    p_stock_id        IN tbl_storageRetrieval.stock_id%TYPE,
+    p_admin_id        IN tbl_storageRetrieval.admin_id%TYPE,
+    p_product_id      IN tbl_storageRetrieval.product_id%TYPE,
+    p_category_id     IN tbl_storageRetrieval.category_id%TYPE,
+    p_inout_type      IN tbl_storageRetrieval.inout_type%TYPE, -- 1: 입고, 2: 출고
+    p_inout_quantity  IN tbl_storageRetrieval.inout_quantity%TYPE,
+    p_inout_content   IN tbl_storageRetrieval.inout_content%TYPE
+)
+IS
+BEGIN
+    -- 1. 입출고 기록
+    INSERT INTO tbl_storageRetrieval (
+        inout_id, stock_id, admin_id, product_id, category_id,
+        inout_type, inout_quantity, inout_content, inout_regdate
+    ) VALUES (
+        seq_inout_id.NEXTVAL, p_stock_id, p_admin_id, p_product_id, p_category_id,
+        p_inout_type, p_inout_quantity, p_inout_content, SYSDATE
+    );
+
+    -- 2. 재고 수량 업데이트
+    IF p_inout_type = 1 THEN
+        UPDATE tbl_stock
+           SET quantity = quantity + p_inout_quantity,
+               stock_modDate = SYSDATE
+         WHERE stock_id = p_stock_id;
+    ELSIF p_inout_type = 2 THEN
+        UPDATE tbl_stock
+           SET quantity = quantity - p_inout_quantity,
+               stock_modDate = SYSDATE
+         WHERE stock_id = p_stock_id;
+    END IF;
+
+    COMMIT;
+END;
+/
+-- 상품 삭제시 이미지, 재고, 쿠폰, 상품삭제
+CREATE OR REPLACE PROCEDURE proc_delete_product (
+    p_product_id IN tbl_product.product_id%TYPE
+)
+IS
+BEGIN
+    -- 1. 이미지 삭제
+    DELETE FROM tbl_image
+     WHERE product_id = p_product_id;
+
+    -- 2. 재고 삭제
+    DELETE FROM tbl_stock
+     WHERE product_id = p_product_id;
+
+    -- 3. 쿠폰 삭제
+    DELETE FROM tbl_coupon
+     WHERE product_id = p_product_id;
+
+    -- 4. 상품 삭제
+    DELETE FROM tbl_product
+     WHERE product_id = p_product_id;
+
+    COMMIT;
+END;
+
+/
+
+ALTER TABLE tbl_product
+  MODIFY (PRODUCT_REGDATE DATE DEFAULT SYSDATE,
+          PRODUCT_MODDATE DATE DEFAULT SYSDATE);
+
+ALTER TABLE tbl_stock
+  MODIFY (STOCK_REGDATE   DATE DEFAULT SYSDATE,
+          STOCK_MODDATE   DATE DEFAULT SYSDATE);
+
+ALTER TABLE tbl_image
+  MODIFY (IMAGE_REGDATE   DATE DEFAULT SYSDATE,
+          IMAGE_MODDATE   DATE DEFAULT SYSDATE);
+COMMIT;
+

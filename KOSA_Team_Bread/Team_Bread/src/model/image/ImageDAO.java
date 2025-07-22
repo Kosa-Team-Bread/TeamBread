@@ -51,21 +51,36 @@ public class ImageDAO {
 			return imageList;
 		}
 		//상품 이미지 조회
-		public ObservableList<Image> searchProduct(String search) throws SQLException, ClassNotFoundException {
+		public Image searchProduct(String search) throws SQLException, ClassNotFoundException {
 			List<Object> addList = new ArrayList<>();
 			String query = "SELECT * FROM tbl_image WHERE image_name = ?";
 			try {
 				String result = search;
 				addList.add(result);
 				ResultSet rs = DBUtil.dbCaseExecuteQuery(query, addList);
-				ObservableList<Image> imageList =  getImageList(rs);
-				return imageList; 
+				Image image =  getImage(rs);
+				return image; 
 			} catch(SQLException e) {
 				System.out.println("SQL 오류!!! 사유 : " + e);
 				throw e;
 			}
 		}
 		
+		public Image getImage(ResultSet rs) throws SQLException, ClassNotFoundException {
+			Image image= null;
+			if (rs.next()) {
+				image = Image.builder()
+						.imageId(rs.getInt("IMAGE_ID"))
+						.productId(rs.getInt("PRODUCT_ID"))
+						.categoryId(rs.getInt("CATEGORY_ID"))
+						.imageName(rs.getString("IMAGE_NAME"))
+						.imageLocation(rs.getString("IMAGE_LOCATION"))
+						.stockRegDate(rs.getDate("IMAGE_REGDATE").toLocalDate())
+						.stockModDate(rs.getDate("IMAGE_MODDATE").toLocalDate())
+						.build();
+			}
+			return image;
+		}
 	
 	// 이미지 삽입
 		public void insertCategory(ImageDto image) throws SQLException, ClassNotFoundException {
