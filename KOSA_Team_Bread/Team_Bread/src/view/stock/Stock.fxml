@@ -30,20 +30,22 @@
                   
                   <!-- Title Section -->
                   <HBox style="-fx-padding: 20 10 10 20; -fx-border-width: 0 0 1 0; -fx-border-color: #000000;" spacing="15.0" alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
-                     <children>
-                        <Label style="-fx-text-fill: #333;" text="재고현황">
-                           <font>
-                              <Font name="Malgun Gothic Bold" size="24.0" />
-                           </font>
-                        </Label>
-			            <!-- 카테고리 선택 콤보박스 -->
-			            <ComboBox fx:id="categoryComboBox" prefWidth="150.0" promptText="카테고리 선택" />
-			            <!-- 상품명 검색 필드 -->
-			            <TextField fx:id="searchField" HBox.hgrow="ALWAYS" promptText="상품명 검색" />
-			            <!-- 검색 버튼. onAction 속성으로 컨트롤러의 searchProducts 메서드와 연결 -->
-			            <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchProducts" text="검색" />
-                     </children>
-                  </HBox>
+				    <children>
+				        <Label style="-fx-text-fill: #333;" text="재고현황">
+				            <font>
+				                <Font name="Malgun Gothic Bold" size="24.0" />
+				            </font>
+				        </Label>
+				        <!-- 카테고리 선택 콤보박스 -->
+				        <ComboBox fx:id="categoryComboBox" prefWidth="150.0" promptText="카테고리 선택" />
+				        <!-- 상품명 검색 필드 -->
+				        <TextField fx:id="searchField" HBox.hgrow="ALWAYS" promptText="상품명 검색" />
+				        <!-- 검색 버튼 -->
+				        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchProducts" text="검색" />
+				        <!-- 상품추가 버튼 -->
+				        <Button fx:id="addButton" mnemonicParsing="false" onAction="#addProduct" text="상품추가" />
+				    </children>
+				</HBox>
                   
                   <!-- Table Section -->
                   <TableView fx:id="stockTableView" style="-fx-background-color: transparent; -fx-table-cell-border-color: #e9ecef; -fx-padding: 10 20 20 20;" VBox.vgrow="ALWAYS" prefHeight="600.0">
@@ -60,7 +62,7 @@
                         </TableColumn>
                         <TableColumn fx:id="stockQuantityColumn" prefWidth="100.0" style="-fx-alignment: CENTER-LEFT;" text="재고수량">
                            <cellValueFactory>
-                              <PropertyValueFactory property="stockQuantity" />
+                              <PropertyValueFactory property="stockQuantity"/>
                            </cellValueFactory>
                         </TableColumn>
                         <TableColumn fx:id="locationColumn" prefWidth="100.0" style="-fx-alignment: CENTER-LEFT;" text="저장위치">

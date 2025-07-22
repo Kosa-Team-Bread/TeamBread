@@ -8,10 +8,9 @@ import lombok.Data;
 @Data
 @Builder
 public class inoutSelectDto {
-	
-		//입출고 ID
+		// 입출고 ID
 		private Integer inoutId;
-			
+	
 		// 관지자 이름
 		private String adminName;
 			
