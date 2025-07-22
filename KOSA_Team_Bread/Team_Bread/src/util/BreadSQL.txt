@@ -417,11 +417,11 @@ INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 45, 3, '마롱파운드 2�
 INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 46, 3, '순수롤 아침햇살 브런치딜', 10, TO_DATE('2025-07-25 09:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-25 11:00','YYYY-MM-DD HH24:MI'));
 INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 47, 3, '성심롤케익 1호 오후간식 깜짝세일', 15, TO_DATE('2025-07-25 15:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-25 17:00','YYYY-MM-DD HH24:MI'));
 INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 48, 3, '성심롤케익 2호 퇴근길 스위트딜', 3, TO_DATE('2025-07-25 17:30','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-25 19:30','YYYY-MM-DD HH24:MI'));
-INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 49, 3, '롤케익 아침 이슬 선물', 5, TO_DATE('2025-07-25 09:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-25 12:00','YYYY-MM-DD HH24:MI'));
-INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 50, 3, '별미세트 한여름 스페셜', 3, TO_DATE('2025-07-25 13:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-25 16:00','YYYY-MM-DD HH24:MI'));
-INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 51, 3, '성심에그롤 퇴근길 여유', 10, TO_DATE('2025-07-25 15:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-25 19:00','YYYY-MM-DD HH24:MI'));
-INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 52, 3, '호두롤케익 아침 햇살딜', 15, TO_DATE('2025-07-25 09:30','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-25 13:30','YYYY-MM-DD HH24:MI'));
-INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 53, 3, '티케이스 차 한잔의 여유', 3, TO_DATE('2025-07-25 14:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-25 17:00','YYYY-MM-DD HH24:MI'));
+INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 49, 3, '롤케익 아침 이슬 선물', 5, TO_DATE('2025-07-23 09:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-23 12:00','YYYY-MM-DD HH24:MI'));
+INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 50, 3, '별미세트 한여름 스페셜', 3, TO_DATE('2025-07-23 13:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-23 16:00','YYYY-MM-DD HH24:MI'));
+INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 51, 3, '성심에그롤 퇴근길 여유', 10, TO_DATE('2025-07-25 18:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-25 19:00','YYYY-MM-DD HH24:MI'));
+INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 52, 3, '호두롤케익 아침 햇살딜', 15, TO_DATE('2025-07-24 09:30','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-24 13:30','YYYY-MM-DD HH24:MI'));
+INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 53, 3, '티케이스 차 한잔의 여유', 3, TO_DATE('2025-07-25 13:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-25 15:00','YYYY-MM-DD HH24:MI'));
 
 commit;
 
