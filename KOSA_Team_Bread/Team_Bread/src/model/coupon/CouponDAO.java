@@ -18,10 +18,9 @@ public class CouponDAO {
     public ObservableList<Coupon> getAllCoupons() {
         ObservableList<Coupon> couponList = FXCollections.observableArrayList();
         
-        // [수정] tbl_category와 JOIN하여 category_name을 함께 조회합니다.
-        // LEFT JOIN을 사용하여 쿠폰에 연결된 카테고리가 없더라도 쿠폰 목록에서 누락되지 않도록 합니다.
-        String sql = "SELECT c.coupon_id, c.product_id, c.category_id, cat.category_name, " +
-                     "c.coupon_name, c.percent, c.starttime, c.deadline " +
+        // tbl_category와 JOIN, category_name 함께 조회
+        // LEFT JOIN 사용, 쿠폰에 연결된 카테고리가 없더라도 쿠폰 목록에서 누락되지 않도록 함
+        String sql = "SELECT c.coupon_id, c.product_id, c.category_id, cat.category_name, c.coupon_name, c.percent, c.starttime, c.deadline " +
                      "FROM tbl_coupon c " +
                      "LEFT JOIN tbl_category cat ON c.category_id = cat.category_id " +
                      "ORDER BY c.coupon_id DESC";
@@ -30,12 +29,11 @@ public class CouponDAO {
             ResultSet rs = DBUtil.dbExecuteQuery(sql);
 
             while (rs.next()) {
-                // [수정] 새로운 Coupon 모델의 빌더에 맞춰 객체 생성
+                // 새로운 Coupon 모델의 빌더에 맞춰 객체 생성
                 Coupon coupon = Coupon.builder()
                         .couponId(rs.getInt("coupon_id"))
                         .productId(rs.getInt("product_id"))
                         .categoryId(rs.getInt("category_id"))
-                        .categoryName(rs.getString("category_name")) // [추가] 조회한 category_name을 모델에 매핑
                         .couponName(rs.getString("coupon_name"))
                         .percent(rs.getInt("percent"))
                         .startTime(rs.getDate("starttime").toLocalDate())
