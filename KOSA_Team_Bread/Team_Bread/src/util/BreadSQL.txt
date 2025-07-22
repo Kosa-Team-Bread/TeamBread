@@ -426,9 +426,12 @@ INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 53, 3, '티케이스 차 �
 commit;
 
 
+
+
+
 -- 여기까지 실행 아래부터 각 프로시저마다 /을 기준으로 하나씩 실행 
 
--- 상품 삽입 저장 프로시저
+-- 상품 삽입 저장 프로시저 --
 CREATE OR REPLACE PROCEDURE proc_add_product_with_stock_and_image (
     p_category_id    IN tbl_product.category_id%TYPE,
     p_name           IN tbl_product.name%TYPE,
@@ -472,7 +475,7 @@ BEGIN
 END;
 /
 
--- 입출고 삽입시 재고 수량 업데이트
+-- 입출고 삽입시 재고 수량 업데이트 --
 CREATE OR REPLACE PROCEDURE proc_insert_inout (
     p_stock_id        IN tbl_storageRetrieval.stock_id%TYPE,
     p_admin_id        IN tbl_storageRetrieval.admin_id%TYPE,
@@ -510,7 +513,7 @@ BEGIN
 END;
 /
 
--- 상품 삭제시 이미지, 재고, 쿠폰, 상품삭제
+-- 상품 삭제시 이미지, 재고, 쿠폰, 상품삭제 --
 CREATE OR REPLACE PROCEDURE proc_delete_product (
     p_product_id IN tbl_product.product_id%TYPE
 )
@@ -535,6 +538,7 @@ BEGIN
     COMMIT;
 END;
 /
+
 
 ALTER TABLE tbl_product
   MODIFY (PRODUCT_REGDATE DATE DEFAULT SYSDATE,
