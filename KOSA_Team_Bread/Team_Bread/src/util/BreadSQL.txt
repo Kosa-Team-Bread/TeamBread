@@ -425,6 +425,7 @@ INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 53, 3, '티케이스 차 �
 
 commit;
 
+
 -- 여기까지 실행 아래부터 각 프로시저마다 /을 기준으로 하나씩 실행 
 
 -- 상품 삽입 저장 프로시저
@@ -508,6 +509,7 @@ BEGIN
     COMMIT;
 END;
 /
+
 -- 상품 삭제시 이미지, 재고, 쿠폰, 상품삭제
 CREATE OR REPLACE PROCEDURE proc_delete_product (
     p_product_id IN tbl_product.product_id%TYPE
@@ -532,7 +534,6 @@ BEGIN
 
     COMMIT;
 END;
-
 /
 
 ALTER TABLE tbl_product
@@ -546,5 +547,6 @@ ALTER TABLE tbl_stock
 ALTER TABLE tbl_image
   MODIFY (IMAGE_REGDATE   DATE DEFAULT SYSDATE,
           IMAGE_MODDATE   DATE DEFAULT SYSDATE);
-COMMIT;
 
+
+COMMIT;

@@ -15,7 +15,7 @@
    <children>
       <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
         <tabs>
-          <!-- 쿠폰 관리 탭 -->
+          <!-- 쿠폰 목록 탭 -->
           <Tab text="쿠폰 목록">
             <content>
               <AnchorPane>
