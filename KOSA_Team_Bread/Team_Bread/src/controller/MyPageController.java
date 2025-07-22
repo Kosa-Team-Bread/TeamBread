@@ -105,7 +105,8 @@ public class MyPageController implements Initializable {
 
 	public ObservableList<Admin> getAdminData() {
 		try {
-			return AdminDAO.getAllAdmins();
+			AdminDAO adminDAO = new AdminDAO();
+			return adminDAO.getAllAdmins();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 			return FXCollections.observableArrayList();
