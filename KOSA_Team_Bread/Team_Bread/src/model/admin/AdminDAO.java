@@ -63,10 +63,15 @@ public class AdminDAO {
 	public Admin getAdmin(ResultSet rs) throws SQLException, ClassNotFoundException {
 		Admin admin = null;
 		if (rs.next()) {
-			admin = Admin.builder().adminId(rs.getInt("PRODUCT_ID")).email(rs.getString("EMAIL"))
-					.pw(rs.getString("ADMIN_PW")).adminName(rs.getString("ADMIN_NAME")).grade(rs.getInt("GRADE"))
-					.adminRegDate(rs.getDate("PRODUCT_REGDATE").toLocalDate())
-					.adminModDate(rs.getDate("PRODUCT_MODDATE").toLocalDate()).build();
+			admin = Admin.builder()
+		            .adminId(rs.getInt("ADMIN_ID"))
+		            .email(rs.getString("EMAIL"))
+		            .pw(rs.getString("ADMIN_PW"))
+		            .adminName(rs.getString("ADMIN_NAME"))
+		            .grade(rs.getInt("GRADE"))
+		            .adminRegDate(rs.getDate("REGDATE").toLocalDate())
+		            .adminModDate(rs.getDate("MODDATE").toLocalDate())
+		            .build();
 		}
 		return admin;
 	}

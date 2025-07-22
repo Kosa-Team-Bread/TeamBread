@@ -123,6 +123,7 @@ public class InoutDAO {
 				addList.add(stockDao.searchStock(inout.getProductName()).get(0).getStockId());
 				addList.add(adminDao.getAdminFromName(inout.getAdminName()).getAdminId());
 				addList.add(productDao.searchProduct(inout.getProductName()).get(0).getProductId());
+				addList.add(cateDao.getCategory(inout.getCategoryName()).getCategoryId());
 				addList.add(type);
 				addList.add(inout.getInoutQuantity());
 				addList.add(inout.getContent());

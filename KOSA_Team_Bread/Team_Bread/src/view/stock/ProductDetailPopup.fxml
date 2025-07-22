@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.ProductDetailPopupController"
+      spacing="10" alignment="CENTER">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <ImageView fx:id="productImageView" fitWidth="200" fitHeight="200" preserveRatio="true"/>
+
+    <HBox spacing="5" alignment="CENTER_LEFT">
+        <Label text="상품명:" style="-fx-font-weight: bold;"/>
+        <Label fx:id="nameLabel" style="-fx-font-size: 16px;"/>
+    </HBox>
+
+    <HBox spacing="5" alignment="CENTER_LEFT">
+        <Label text="카테고리:" style="-fx-font-weight: bold;"/>
+        <Label fx:id="categoryLabel"/>
+    </HBox>
+
+    <HBox spacing="5" alignment="CENTER_LEFT">
+        <Label text="판매가:" style="-fx-font-weight: bold;"/>
+        <Label fx:id="priceLabel"/>
+    </HBox>
+
+    <HBox spacing="5" alignment="CENTER_LEFT">
+        <Label text="원가:" style="-fx-font-weight: bold;"/>
+        <Label fx:id="costLabel"/>
+    </HBox>
+
+    <HBox spacing="5" alignment="CENTER_LEFT">
+        <Label text="수정일:" style="-fx-font-weight: bold;"/>
+        <Label fx:id="modifiedDateLabel"/>
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="수정하기" onAction="#handleUpdate"/>
+        <Button text="삭제하기" onAction="#handleDelete"/>
+    </HBox>
+</VBox>

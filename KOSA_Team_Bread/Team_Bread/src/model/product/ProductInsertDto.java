@@ -15,4 +15,5 @@ public class ProductInsertDto {
 	Integer productQuantity;
 	String stockName;
 	String stockLocation;
+	String imageLocation;
 }

@@ -88,7 +88,7 @@ public class StockDAO {
 		// 재고 검색 -> 대소문자 구분 X
 		public ObservableList<Stock> searchStock (String search) throws SQLException, ClassNotFoundException {
 			List<Object> addList = new ArrayList<>();
-			String query = "SELECT * FROM tbl_stock WHERE LOWER(STOCK_NAME) LIKE LOWER('?')";
+			String query = "SELECT * FROM tbl_stock WHERE LOWER(STOCK_NAME) LIKE LOWER(?)";
 			try {
 				String result = "%" + search + "%";
 				addList.add(result);

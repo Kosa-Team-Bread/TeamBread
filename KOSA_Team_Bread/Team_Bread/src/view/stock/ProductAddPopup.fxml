@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controller.ProductAddPopupController"
+      spacing="10" alignment="CENTER">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="상품 추가" style="-fx-font-size: 18px;" />
+
+    <TextField fx:id="nameField" promptText="제품명"/>
+    <TextField fx:id="priceField" promptText="판매가"/>
+    <TextField fx:id="costField" promptText="원가"/>
+    <TextField fx:id="quantityField" promptText="수량"/>
+    <TextField fx:id="locationField" promptText="저장위치"/>
+
+    <!-- 관리자 이름 직접 입력 or 콤보박스 중 하나 선택해서 사용 -->
+    <TextField fx:id="adminNameField" promptText="등록자명(직접입력)"/>
+    <ComboBox fx:id="adminComboBox" promptText="관리자 선택"/>
+
+    <ComboBox fx:id="categoryComboBox" promptText="카테고리"/>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="이미지 추가" onAction="#handleImageAdd"/>
+        <Label fx:id="imageFileNameLabel" text="선택된 파일 없음"/>
+    </HBox>
+
+    <Button text="등록" onAction="#handleRegister"/>
+
+</VBox>
