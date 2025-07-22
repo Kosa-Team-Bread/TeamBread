@@ -1,72 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.VBox?>
 
-<!--
-  - '쿠폰 관리' 탭의 UI 레이아웃을 정의하는 FXML 파일입니다.
-  - fx:controller 속성을 통해 이 FXML과 연결될 컨트롤러 클래스를 지정합니다.
--->
-<BorderPane fx:id="rootPane" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CouponManageController">
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
-   <top>
-      <!-- 상단: 타이틀 및 검색 영역 -->
-      <HBox alignment="CENTER_LEFT" spacing="15.0" BorderPane.alignment="CENTER">
-         <children>
-            <Label text="쿠폰 관리">
-               <font>
-                  <Font name="Malgun Gothic Bold" size="24.0" />
-               </font>
-            </Label>
-            <!-- 카테고리 선택 콤보박스 -->
-            <ComboBox fx:id="categoryComboBox" prefWidth="150.0" promptText="카테고리 선택" />
-            <!-- 상품명 검색 필드 -->
-            <TextField fx:id="searchField" HBox.hgrow="ALWAYS" promptText="상품명 검색" />
-            <!-- 검색 버튼. onAction 속성으로 컨트롤러의 searchProducts 메서드와 연결 -->
-            <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchProducts" text="검색" />
-         </children>
-         <BorderPane.margin>
-            <Insets bottom="20.0" />
-         </BorderPane.margin>
-      </HBox>
-   </top>
-   <center>
-      <!-- 중앙: 상품 목록을 보여주는 테이블 뷰 -->
-      <TableView fx:id="productTable" BorderPane.alignment="CENTER">
-        <columns>
-          <!-- 각 컬럼은 Product 모델의 필드와 PropertyValueFactory를 통해 매핑됩니다. -->
-          <TableColumn prefWidth="150.0" text="카테고리">
-             <cellValueFactory>
-                <PropertyValueFactory property="categoryName" />
-             </cellValueFactory>
-          </TableColumn>
-          <TableColumn prefWidth="250.0" text="상품명">
-             <cellValueFactory>
-                <PropertyValueFactory property="productName" />
-             </cellValueFactory>
-          </TableColumn>
-          <TableColumn prefWidth="120.0" text="판매가 (원)">
-              <cellValueFactory>
-                <PropertyValueFactory property="price" />
-             </cellValueFactory>
-          </TableColumn>
-          <TableColumn prefWidth="120.0" text="원가 (원)">
-             <cellValueFactory>
-                <PropertyValueFactory property="cost" />
-             </cellValueFactory>
-          </TableColumn>
-        </columns>
-      </TableView>
-   </center>
-</BorderPane>
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CouponController">
+   <children>
+      <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+        <tabs>
+          <!-- 쿠폰 관리 탭 -->
+          <Tab text="쿠폰관리">
+            <content>
+              <AnchorPane>
+                     <children>
+                        <Label styleClass="title-label" text="쿠폰 목록" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0" />
+                        
+                        <!-- [수정] 검색창과 카테고리 필터를 HBox로 묶어 우측 상단에 배치 -->
+                        <HBox alignment="CENTER_RIGHT" spacing="10.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+                           <children>
+                              <!-- 카테고리 ComboBox (왼쪽) -->
+                              <ComboBox fx:id="couponCategoryFilter" prefWidth="150.0" promptText="카테고리 선택" />
+                              <!-- 쿠폰명 검색 TextField (오른쪽) -->
+                              <TextField fx:id="couponSearchField" prefWidth="200.0" promptText="쿠폰명 검색" />
+                           </children>
+                        </HBox>
+                        
+                        <TableView fx:id="couponTable" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="80.0">
+                          <columns>
+                            <TableColumn fx:id="couponCategoryCol" prefWidth="150.0" text="카테고리" />
+                            <TableColumn fx:id="couponNameCol" prefWidth="250.0" text="쿠폰명" />
+                            <TableColumn fx:id="percentCol" prefWidth="100.0" style="-fx-alignment: CENTER;" text="할인율(%)" />
+                            <TableColumn fx:id="startTimeCol" prefWidth="200.0" style="-fx-alignment: CENTER;" text="쿠폰 할인 시작 시간" />
+                            <TableColumn fx:id="deadlineCol" prefWidth="200.0" style="-fx-alignment: CENTER;" text="쿠폰 할인 종료 시간" />
+                          </columns>
+                           <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          
+          <!-- 쿠폰 적용 탭 -->
+          <Tab text="쿠폰적용">
+            <content>
+              <AnchorPane>
+                     <children>
+                        <Label styleClass="title-label" text="상품 목록 (상품 더블 클릭 시 쿠폰 적용)" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0" />
+                        
+                        <!-- [수정] 검색창과 카테고리 필터를 HBox로 묶어 우측 상단에 배치 -->
+                        <HBox alignment="CENTER_RIGHT" spacing="10.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+                           <children>
+                              <!-- 카테고리 ComboBox (왼쪽) -->
+                              <ComboBox fx:id="productCategoryFilter" prefWidth="150.0" promptText="카테고리 선택" />
+                              <!-- 상품명 검색 TextField (오른쪽) -->
+                              <TextField fx:id="productSearchField" prefWidth="200.0" promptText="상품명 검색" />
+                           </children>
+                        </HBox>
+                        
+                        <TableView fx:id="productTable" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="80.0">
+                          <columns>
+                            <TableColumn fx:id="productCategoryCol" prefWidth="150.0" text="카테고리" />
+                            <TableColumn fx:id="productNameCol" prefWidth="380.0" text="상품명" />
+                            <TableColumn fx:id="priceCol" prefWidth="150.0" style="-fx-alignment: CENTER_RIGHT;" text="판매가격" />
+                            <TableColumn fx:id="costCol" prefWidth="150.0" style="-fx-alignment: CENTER_RIGHT;" text="원가" />
+                          </columns>
+                           <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</VBox>
