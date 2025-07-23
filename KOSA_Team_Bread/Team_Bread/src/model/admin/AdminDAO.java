@@ -18,10 +18,15 @@ public class AdminDAO {
 		ObservableList<Admin> adminList = FXCollections.observableArrayList();
 
 		while (rs.next()) {
-			Admin admin = Admin.builder().adminId(rs.getInt("ADMIN_ID")).pw(rs.getString("ADMIN_PW"))
-					.adminName(rs.getString("ADMIN_NAME")).grade(rs.getInt("GRADE"))
-					.adminRegDate(rs.getDate("REGDATE").toLocalDate()).adminModDate(rs.getDate("MODDATE").toLocalDate())
-					.email((rs.getString("EMAIL"))).build();
+			Admin admin = Admin.builder()
+					.adminId(rs.getInt("ADMIN_ID"))
+					.pw(rs.getString("ADMIN_PW"))
+					.adminName(rs.getString("ADMIN_NAME"))
+					.grade(rs.getInt("GRADE"))
+					.adminRegDate(rs.getDate("REGDATE").toLocalDate())
+					.adminModDate(rs.getDate("MODDATE").toLocalDate())
+					.email((rs.getString("EMAIL")))
+					.build();
 
 			adminList.add(admin);
 		}
@@ -95,6 +100,31 @@ public class AdminDAO {
 			System.err.println("회원가입 실패: " + e.getMessage());
 			throw e;
 		}
+	}
+	
+	// 로그인 인증
+	public Admin loginAdmin(String email, String password) throws SQLException, ClassNotFoundException {
+		String sql = "SELECT * FROM tbl_admin WHERE email = ? AND admin_pw = ?";
+		List<Object> params = new ArrayList<>();
+		params.add(email);
+		params.add(params);
+		
+		ResultSet rs = DBUtil.dbExecuteQuery(sql, params);
+		
+		if (rs.next()) {
+			Admin admin = Admin.builder()
+					.adminId(rs.getInt("admin_id"))
+					.adminName(rs.getString("admin_name"))
+					.email(rs.getString("emial"))
+					.grade(rs.getInt("grade"))
+					.adminRegDate(rs.getDate("regDate").toLocalDate())
+					.adminModDate(rs.getDate("modDate").toLocalDate())
+					.build();
+			
+			return admin;
+		}
+		
+		return null;
 	}
 
 	// 사용자 이름을 사용한 검색
