@@ -29,6 +29,12 @@ public class ProfileEditController implements Initializable {
 	private Admin currentUser;
 
 	private final AdminDAO adminDAO = new AdminDAO();
+	
+	private boolean isSuccessful = false;
+
+	public boolean isSuccessful() {
+		return isSuccessful;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -82,10 +88,11 @@ public class ProfileEditController implements Initializable {
 				currentUser.setPw(pw);
 
 				System.out.println("회원 정보가 성공적으로 변경되었습니다.");
-
+				this.isSuccessful = true;
 			} catch (SQLException | ClassNotFoundException e) {
 				e.printStackTrace();
 				System.out.println("회원 정보 변경에 실패했습니다: " + e.getMessage());
+				this.isSuccessful = false;
 			}
 		}
 

@@ -16,7 +16,7 @@ public class Coupon {
 		
 	// 카테고리 Id
 	private Integer categoryId;
-	
+
 	// 쿠폰명
 	private String couponName;
 	

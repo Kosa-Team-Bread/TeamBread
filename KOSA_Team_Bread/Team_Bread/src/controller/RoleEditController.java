@@ -29,6 +29,12 @@ public class RoleEditController implements Initializable {
 	private Admin currentUser;
 
 	private final AdminDAO adminDAO = new AdminDAO();
+	
+	private boolean isSuccessful = false;
+
+	public boolean isSuccessful() {
+		return isSuccessful;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -75,11 +81,12 @@ public class RoleEditController implements Initializable {
 
 				// 로컬 객체도 업데이트
 				currentUser.setGrade(newGrade);
-
+				this.isSuccessful = true;
 				System.out.println("등급이 성공적으로 변경되었습니다.");
 			} catch (SQLException | ClassNotFoundException e) {
 				e.printStackTrace();
 				System.out.println("등급 변경에 실패했습니다: " + e.getMessage());
+				this.isSuccessful = false;
 			}
 		}
 
