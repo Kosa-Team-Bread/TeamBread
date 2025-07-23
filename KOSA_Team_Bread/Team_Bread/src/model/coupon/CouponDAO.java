@@ -2,15 +2,24 @@
 
 package model.coupon;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import util.DBUtil;
-
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import lombok.AllArgsConstructor;
+import model.category.CategoryDAO;
+import model.product.ProductDAO;
+import util.DBUtil;
+
+@AllArgsConstructor
 public class CouponDAO {
-
+	private ProductDAO productDao;
+	private CategoryDAO categoryDao;
     /**
      * 모든 쿠폰 정보를 DB에서 조회 후 반환
      * @return 쿠폰 리스트 (ObservableList)
@@ -47,4 +56,25 @@ public class CouponDAO {
         }
         return couponList;
     }
+   
+    // 쿠폰 삽입
+    public void insertCategory(Integer productId, Integer percent, LocalDate startTime, LocalDate DeadLine) throws SQLException, ClassNotFoundException {
+		List<Object> addList = new ArrayList<>();
+		String couponName = productDao.getProductFromProductId(productId).getProductName() + " " + percent + "% 할인쿠폰";
+		
+		String query = "INSERT INTO tbl_coupon (coupon_id, product_id, category_id, coupon_name, percent, starttime, deadline) "
+                + "VALUES (seq_coupon_id.NEXTVAL, ?, ?, ?, ?, ?, ?)";
+		try {
+			addList.add(productId);
+			addList.add(categoryDao.getCategory(productDao.getProductFromProductId(productId).getCategoryName()).getCategoryId());
+			addList.add(couponName);
+			addList.add(percent);
+			addList.add(Date.valueOf(startTime));
+			addList.add(Date.valueOf(DeadLine));
+			DBUtil.dbExecuteUpdate(query, addList);
+		} catch (SQLException e) {
+			System.out.print("Error occurred while UPDATE Operation: " + e);
+			throw e;
+		}
+	}
 }

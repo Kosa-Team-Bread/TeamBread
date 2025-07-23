@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>손익분기점 차트</title>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', {'packages':['corechart', 'line']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var data = new google.visualization.DataTable();
+      data.addColumn('number', '판매 수');
+      data.addColumn('number', '매출');
+      data.addColumn('number', '총 비용');
+
+      // 판매 수, 매출, 총 비용 데이터 입력
+      data.addRows([
+        [0, 0, 100],
+        [10, 500, 150],
+        [20, 1000, 200],
+        [30, 1500, 250],
+        [40, 2000, 300]
+      ]);
+
+      var options = {
+        title: '손익분기점 분석',
+        curveType: 'function',
+        legend: { position: 'top' },
+        hAxis: {
+          title: '판매 수'
+        },
+        vAxis: {
+          title: '금액'
+        }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    }
+  </script>
+</head>
+<body>
+  <h1>손익분기점 분석 차트</h1>
+  <div id="chart_div" style="width: 900px; height: 500px;"></div>
+</body>
+</html>
