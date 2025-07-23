@@ -154,68 +154,6 @@ public class CouponController implements Initializable {
         priceCol.setCellFactory(currencyCellFactory);
         costCol.setCellFactory(currencyCellFactory);
     }
-    
-    /** 
-     * 테이블 선택 상태에 따라 쿠폰 수정/삭제 버튼의 활성화/비활성화 상태를 관리
-     */
-    private void setupButtonControls() {
-        // 초기에는 수정/삭제 버튼을 비활성화
-        editCouponBtn.setDisable(true);
-        deleteCouponBtn.setDisable(true);
-
-        // 테이블의 선택된 항목이 변경될 때마다 리스너가 호출됨
-        couponTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            // 새로 선택된 항목이 있으면(null이 아니면) 버튼 활성화, 없으면 비활성화
-            boolean isItemSelected = (newSelection != null);
-            editCouponBtn.setDisable(!isItemSelected);
-            deleteCouponBtn.setDisable(!isItemSelected);
-        });
-    }
-
-    
-    /**
-     * '쿠폰 수정' 버튼 클릭 시 실행될 로직
-     * @param event 액션 이벤트 객체
-     */
-    @FXML
-    private void handleEditAction(ActionEvent event) {
-        Coupon selectedCoupon = couponTable.getSelectionModel().getSelectedItem();
-        if (selectedCoupon == null) {
-            showAlert(Alert.AlertType.WARNING, "선택 오류", "수정할 쿠폰을 먼저 선택해주세요.");
-            return;
-        }
-        System.out.println("수정 버튼 클릭: " + selectedCoupon.getCouponName());
-        // TODO: 쿠폰 수정 팝업창을 띄우고 selectedCoupon 객체를 전달하는 로직 구현
-    }
-    
-    /**
-     * '쿠폰 삭제' 버튼 클릭 시 실행될 로직
-     * @param event 액션 이벤트 객체
-     */
-    @FXML
-    private void handleDeleteAction(ActionEvent event) {
-        Coupon selectedCoupon = couponTable.getSelectionModel().getSelectedItem();
-        if (selectedCoupon == null) {
-            showAlert(Alert.AlertType.WARNING, "선택 오류", "삭제할 쿠폰을 먼저 선택해주세요.");
-            return;
-        }
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("쿠폰 삭제 확인");
-        alert.setHeaderText("'" + selectedCoupon.getCouponName() + "' 쿠폰을 삭제하시겠습니까?");
-        alert.setContentText("이 작업은 되돌릴 수 없습니다.");
-        
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            try {
-                couponDAO.deleteCoupon(selectedCoupon.getCouponId());
-                couponMasterList.remove(selectedCoupon);
-            } catch (Exception e) {
-                showAlert(Alert.AlertType.ERROR, "삭제 실패", "데이터베이스 오류로 인해 삭제에 실패했습니다.");
-                e.printStackTrace();
-            }
-        }
-    }
 
     /** DB에서 카테고리, 쿠폰, 상품 데이터를 로드 */
     private void loadDataFromDB() {
@@ -286,9 +224,89 @@ public class CouponController implements Initializable {
     }
 
     
+
+    // 테이블 선택 상태에 따라 쿠폰 수정/삭제 버튼의 활성화/비활성화 상태를 관리
+    private void setupButtonControls() {
+        // 초기에는 수정/삭제 버튼을 비활성화
+        editCouponBtn.setDisable(true);
+        deleteCouponBtn.setDisable(true);
+
+        // 테이블의 선택된 항목이 변경될 때마다 리스너가 호출됨
+        couponTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            // 새로 선택된 항목이 있으면(null이 아니면) 버튼 활성화, 없으면 비활성화
+            boolean isItemSelected = (newSelection != null);
+            editCouponBtn.setDisable(!isItemSelected);
+            deleteCouponBtn.setDisable(!isItemSelected);
+        });
+    }
+    
     /**
-     * Alert 창을 띄우는 공통 메소드
+     * '쿠폰 수정' 버튼 클릭 시 실행될 로직
+     * @param event 액션 이벤트 객체
      */
+    @FXML
+    private void handleEditAction(ActionEvent event) {
+        Coupon selectedCoupon = couponTable.getSelectionModel().getSelectedItem();
+        if (selectedCoupon == null) {
+            showAlert(Alert.AlertType.WARNING, "선택 오류", "수정할 쿠폰을 먼저 선택해주세요.");
+            return;
+        }
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/coupon/CouponEditPopup.fxml"));
+            Parent root = loader.load();
+
+            CouponEditPopupController popupController = loader.getController();
+            // 팝업 컨트롤러에 필요한 데이터 전달
+            popupController.initData(selectedCoupon, couponDAO, categoryMap);
+
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle("쿠폰 정보 수정");
+            popupStage.setScene(new Scene(root));
+            popupStage.showAndWait();
+
+            // 팝업창이 닫힌 후, 수정이 완료되었는지 확인하고 목록을 새로고침
+            if (popupController.isUpdated()) {
+                refreshCouponTable();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "오류", "수정 화면을 여는 데 실패했습니다.");
+        }
+    }
+
+    /**
+     * '쿠폰 삭제' 버튼 클릭 시 실행될 로직
+     * @param event 액션 이벤트 객체
+     */
+    @FXML
+    private void handleDeleteAction(ActionEvent event) {
+        Coupon selectedCoupon = couponTable.getSelectionModel().getSelectedItem();
+        if (selectedCoupon == null) {
+            showAlert(Alert.AlertType.WARNING, "선택 오류", "삭제할 쿠폰을 먼저 선택해주세요.");
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("쿠폰 삭제 확인");
+        alert.setHeaderText("'" + selectedCoupon.getCouponName() + "' 쿠폰을 삭제하시겠습니까?");
+        alert.setContentText("이 작업은 되돌릴 수 없습니다.");
+        
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                couponDAO.deleteCoupon(selectedCoupon.getCouponId());
+                couponMasterList.remove(selectedCoupon);
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "삭제 실패", "데이터베이스 오류로 인해 삭제에 실패했습니다.");
+                e.printStackTrace();
+            }
+        }
+    }
+    
+    // Alert 창을 띄우는 공통 메소드
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -296,7 +314,16 @@ public class CouponController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
+    
+    // 쿠폰 목록 테이블을 새로고침하는 메소드
+    private void refreshCouponTable() {
+        this.couponMasterList = couponDAO.getAllCoupons();
+        this.couponFilteredList = new FilteredList<>(couponMasterList, p -> true);
+        couponTable.setItems(this.couponFilteredList);
+        applyCouponFilter();
+    }
 
+    
 
 
     /** 상품 더블 클릭 시 쿠폰 적용 팝업창 호출 */
@@ -312,7 +339,16 @@ public class CouponController implements Initializable {
             popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setTitle(selectedProduct.getProductName() + " - 쿠폰 적용");
             popupStage.setScene(new Scene(root));
-            popupStage.showAndWait();
+            popupStage.showAndWait(); // 팝업창이 닫힐 때까지 대기
+            
+            // 팝업창이 닫힌 후, 쿠폰 목록 데이터를 DB에서 다시 불러와 화면 갱신
+            this.couponMasterList = couponDAO.getAllCoupons();
+            // FilteredList는 원본 리스트의 변경을 자동으로 감지하지 않으므로, 아래와 같이 다시 설정
+            this.couponFilteredList = new FilteredList<>(couponMasterList, p -> true);
+            couponTable.setItems(this.couponFilteredList);
+            // 현재 설정된 필터 값을 그대로 유지하며 목록 다시 필터링
+            applyCouponFilter();
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
