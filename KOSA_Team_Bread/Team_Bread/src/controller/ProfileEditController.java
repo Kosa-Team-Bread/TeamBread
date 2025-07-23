@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.admin.Admin;
 import model.admin.AdminDAO;
+import util.AlertUtil;
 
 public class ProfileEditController implements Initializable {
 	@FXML
@@ -29,7 +30,7 @@ public class ProfileEditController implements Initializable {
 	private Admin currentUser;
 
 	private final AdminDAO adminDAO = new AdminDAO();
-	
+
 	private boolean isSuccessful = false;
 
 	public boolean isSuccessful() {
@@ -87,15 +88,16 @@ public class ProfileEditController implements Initializable {
 				currentUser.setEmail(adminEmail);
 				currentUser.setPw(pw);
 
-				System.out.println("회원 정보가 성공적으로 변경되었습니다.");
 				this.isSuccessful = true;
+				AlertUtil.showInfo("등록 성공", "회원 정보가 성공적으로 변경되었습니다.");
+
+				((Stage) saveButton.getScene().getWindow()).close();
 			} catch (SQLException | ClassNotFoundException e) {
 				e.printStackTrace();
-				System.out.println("회원 정보 변경에 실패했습니다: " + e.getMessage());
+				AlertUtil.showError("등록 실패", "회원 정보 변경에 실패했습니다: " + e.getMessage());
 				this.isSuccessful = false;
 			}
 		}
 
-		((Stage) saveButton.getScene().getWindow()).close();
 	}
 }

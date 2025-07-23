@@ -12,6 +12,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import model.admin.Admin;
 import model.admin.AdminDAO;
+import util.AlertUtil;
 
 public class RoleEditController implements Initializable {
 	@FXML
@@ -82,14 +83,16 @@ public class RoleEditController implements Initializable {
 				// 로컬 객체도 업데이트
 				currentUser.setGrade(newGrade);
 				this.isSuccessful = true;
-				System.out.println("등급이 성공적으로 변경되었습니다.");
+				
+				AlertUtil.showInfo("등록 성공","등급이 성공적으로 변경되었습니다.");
+				
+				((Stage) saveButton.getScene().getWindow()).close();
 			} catch (SQLException | ClassNotFoundException e) {
 				e.printStackTrace();
-				System.out.println("등급 변경에 실패했습니다: " + e.getMessage());
+				AlertUtil.showError("등록 실패","등급 변경에 실패했습니다: " + e.getMessage());
 				this.isSuccessful = false;
 			}
 		}
-
-		((Stage) saveButton.getScene().getWindow()).close();
+		
 	}
 }

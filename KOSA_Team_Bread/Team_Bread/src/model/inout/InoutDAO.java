@@ -32,7 +32,7 @@ public class InoutDAO {
 	
 		// 입출고 전체조회
 		public ObservableList<inoutSelectDto> findAllInout() throws SQLException, ClassNotFoundException {
-			String query = "SELECT * FROM TBL_STORAGERETRIEVAL";
+			String query = "SELECT * FROM TBL_STORAGERETRIEVAL ORDER BY inout_id DESC";
 			try {
 				ResultSet rs = DBUtil.dbExecuteQuery(query);
 				ObservableList<inoutSelectDto> inoutList =  getInoutList(rs);

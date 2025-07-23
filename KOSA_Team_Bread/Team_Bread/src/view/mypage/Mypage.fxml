@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.geometry.Insets?>
@@ -10,34 +11,11 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MyPageController">
    <top>
-      <VBox spacing="20.0" style="-fx-background-color: #f8fafc;">
+      <VBox alignment="TOP_CENTER" spacing="20.0" style="-fx-background-color: #f8fafc;">
          <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
          <children>
-            
-            <!-- Header -->
-            <VBox spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 3, 0, 0, 1); -fx-border-color: #e5e7eb; -fx-border-radius: 8;">
-               <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </padding>
-               <children>
-                  <HBox alignment="CENTER_LEFT" spacing="10.0">
-                     <children>
-                        <Label style="-fx-font-size: 20px;" />
-                        <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" text="관리자 멤버 관리" />
-                        <Region HBox.hgrow="ALWAYS" />
-                        <HBox alignment="CENTER_RIGHT" spacing="15.0">
-                           <children>
-                              <Label fx:id="currentUserLabel" style="-fx-font-size: 14px; -fx-text-fill: #6b7280;" text="현재 사용자: " />
-                              <Label fx:id="currentUserGradeLabel" style="-fx-font-size: 12px; -fx-background-color: #dbeafe; -fx-text-fill: #2563eb; -fx-background-radius: 15; -fx-padding: 4 8 4 8;" />
-                              <Button fx:id="modifyUserBtn" onAction="#onModifyUser" style="-fx-background-color: #2563eb; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-size: 14px; -fx-padding: 8 16 8 16;" text="개인정보 수정" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
             
             <!-- Add Member Form (Initially hidden) -->
             <VBox fx:id="addMemberForm" managed="false" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 3, 0, 0, 1); -fx-border-color: #e5e7eb; -fx-border-radius: 8;" visible="false">
@@ -81,6 +59,34 @@
                      </children>
                   </GridPane>
                   
+               </children>
+            </VBox>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../main/logo.png" />
+               </image>
+            </ImageView>
+            
+            <!-- Header -->
+            <VBox spacing="10.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 3, 0, 0, 1); -fx-border-color: #e5e7eb; -fx-border-radius: 8;">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="10.0">
+                     <children>
+                        <Label style="-fx-font-size: 20px;" />
+                        <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1f2937;" text="관리자 멤버 관리" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER_RIGHT" spacing="15.0">
+                           <children>
+                              <Label fx:id="currentUserLabel" style="-fx-font-size: 14px; -fx-text-fill: #6b7280;" text="현재 사용자: " />
+                              <Label fx:id="currentUserGradeLabel" style="-fx-font-size: 12px; -fx-background-color: #dbeafe; -fx-text-fill: #2563eb; -fx-background-radius: 15; -fx-padding: 4 8 4 8;" />
+                              <Button fx:id="modifyUserBtn" onAction="#onModifyUser" style="-fx-background-color: #2563eb; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-size: 14px; -fx-padding: 8 16 8 16;" text="개인정보 수정" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
                </children>
             </VBox>
          </children>
