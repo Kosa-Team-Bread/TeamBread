@@ -4,6 +4,7 @@ package model.coupon;
 import lombok.*;
 import java.time.LocalDate;
 
+// lombok 어노테이션 사용
 @Data
 @Builder
 public class Coupon {

@@ -425,11 +425,13 @@ INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 53, 3, '티케이스 차 �
 
 commit;
 
+-- 여기까지 실행 아래부터 각 프로시저마다 /을 기준으로 하나씩 실행
 
 
 
+ 
 
--- 여기까지 실행 아래부터 각 프로시저마다 /을 기준으로 하나씩 실행 
+
 
 -- 상품 삽입 저장 프로시저 --
 CREATE OR REPLACE PROCEDURE proc_add_product_with_stock_and_image (
@@ -554,3 +556,82 @@ ALTER TABLE tbl_image
 
 
 COMMIT;
+
+
+
+
+
+
+
+
+
+CREATE SEQUENCE seq_coupon_id START WITH 1 INCREMENT BY 1;
+
+-- Coupon_Add Procedure
+CREATE OR REPLACE PROCEDURE proc_add_coupon (
+    p_product_id    IN tbl_coupon.product_id%TYPE,
+    p_category_id   IN tbl_coupon.category_id%TYPE,
+    p_coupon_name   IN tbl_coupon.coupon_name%TYPE,
+    p_percent       IN tbl_coupon.percent%TYPE,
+    p_start_time    IN tbl_coupon.starttime%TYPE,
+    p_deadline      IN tbl_coupon.deadline%TYPE
+)
+IS
+BEGIN
+    INSERT INTO tbl_coupon (coupon_id, product_id, category_id, coupon_name, percent, starttime, deadline)
+    VALUES (seq_coupon_id.NEXTVAL, p_product_id, p_category_id, p_coupon_name, p_percent, p_start_time, p_deadline);
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE;
+END;
+/
+
+
+-- Coupon_Update Procedure
+CREATE OR REPLACE PROCEDURE proc_update_coupon (
+    p_coupon_id     IN tbl_coupon.coupon_id%TYPE,
+    p_product_id    IN tbl_coupon.product_id%TYPE,
+    p_category_id   IN tbl_coupon.category_id%TYPE,
+    p_coupon_name   IN tbl_coupon.coupon_name%TYPE,
+    p_percent       IN tbl_coupon.percent%TYPE,
+    p_start_time    IN tbl_coupon.starttime%TYPE,
+    p_deadline      IN tbl_coupon.deadline%TYPE
+)
+IS
+BEGIN
+    UPDATE tbl_coupon
+    SET
+        product_id  = p_product_id,
+        category_id = p_category_id,
+        coupon_name = p_coupon_name,
+        percent     = p_percent,
+        starttime   = p_start_time,
+        deadline    = p_deadline
+    WHERE
+        coupon_id   = p_coupon_id;
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE;
+END;
+/
+
+
+-- Coupon_Delete Procedure
+CREATE OR REPLACE PROCEDURE proc_delete_coupon (
+    p_coupon_id IN tbl_coupon.coupon_id%TYPE
+)
+IS
+BEGIN
+    DELETE FROM tbl_coupon
+    WHERE coupon_id = p_coupon_id;
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE;
+END;
+/

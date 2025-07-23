@@ -173,7 +173,7 @@ public class DBUtil {
 			dbDisconnect();
 		}
 	}
-	// 저장 프로시저 사용
+	// Stored Procedure 사용
     public static void dbExecuteCall(String sqlCall, List<Object> paramList) throws SQLException, ClassNotFoundException {
 		    CallableStatement cstmt = null;
 
