@@ -18,7 +18,7 @@ public class Main extends Application {
 		try {
 			// FXML 파일 로드. getResource()의 경로는 FXML 파일의 위치에 따라 달라짐
 			// 보통 'resources' 폴더는 클래스패스에 포함되므로 상대 경로로 접근 가능
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/main/MainPage.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/login.fxml"));
 			Parent root = loader.load();
 
 			// Scene 생성 및 Stage에 설정
