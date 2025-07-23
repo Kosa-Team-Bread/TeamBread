@@ -1,4 +1,5 @@
 package model.category;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -72,6 +73,21 @@ public class CategoryDAO {
 				throw e;
 			}
 		}
+		
+		// 카테고리 ID으로 상세 조회(오버로딩)
+		public Category getCategoryFromCategoryId(int id, Connection conn) throws SQLException, ClassNotFoundException {
+			List<Object> addList = new ArrayList<>();
+			String query = "SELECT * FROM tbl_category WHERE CATEGORY_ID= ?" ;
+			try {
+				addList.add(id);
+				ResultSet rs = DBUtil.dbCaseExecuteQuery(conn, query, addList);
+				Category category = getCategory(rs);
+				return category;
+			} catch(SQLException e) {
+				System.out.println("SQL 오류!!! 사유 : " + e);
+				throw e;
+			}
+		}
 	
 	// 단일 카테고리 받기
 	public Category getCategory(ResultSet rs) throws SQLException, ClassNotFoundException {
@@ -125,17 +141,17 @@ public class CategoryDAO {
 	}
 	
 	// 카테고리 이름 수정
-	public static void updateCategoryName(String cateName, String newCateName) throws SQLException, ClassNotFoundException {
+	public static void updateCategoryName(String newCateName, String cateName) throws SQLException, ClassNotFoundException {
 		List<Object> addList = new ArrayList<>();
 		String updateStmt = "BEGIN\n" +
 		                    "   UPDATE tbl_category\n" +
 		                    "      SET CATEGORY_NAME = ? \n" +
-		                    "    WHERE CATEGORY_ID = ?; \n" +
+		                    "    WHERE CATEGORY_NAME = ?; \n" +
 		                    "   COMMIT;\n" +
 		                    "END;";
 		try {
-			addList.add(cateName);
 			addList.add(newCateName);
+			addList.add(cateName);
 			DBUtil.dbExecuteUpdate(updateStmt, addList);
 		} catch (SQLException e) {
 			System.out.print("Error occurred while UPDATE Operation: " + e);
