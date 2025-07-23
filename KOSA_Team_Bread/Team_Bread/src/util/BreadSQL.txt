@@ -1,5 +1,9 @@
 -- BreadSQL.txt
+-- 프로젝트 사전 작업 : BreadSQL 전체 복사 후 SQL Developer 에서 실행
 
+-- =====================
+-- 1. 객체 삭제 (초기화)
+-- =====================
 DROP TABLE tbl_coupon CASCADE CONSTRAINTS;
 DROP TABLE tbl_storageRetrieval CASCADE CONSTRAINTS;
 DROP TABLE tbl_stock CASCADE CONSTRAINTS;
@@ -16,6 +20,10 @@ DROP SEQUENCE seq_inout_id;
 DROP SEQUENCE seq_coupon_id;
 DROP SEQUENCE seq_image_id;
 
+
+-- ==============
+-- 2. 테이블 생성
+-- ==============
 -- 1. tbl_admin: INT
 CREATE TABLE tbl_admin (
     admin_id   INT PRIMARY KEY,
@@ -105,7 +113,11 @@ CREATE TABLE tbl_coupon (
     FOREIGN KEY (product_id)  REFERENCES tbl_product(product_id),
     FOREIGN KEY (category_id) REFERENCES tbl_category(category_id)
 );
--- 시퀀스 생성
+
+
+-- ==============
+-- 3. 시퀀스 생성
+-- ==============
 -- 1. tbl_admin
 CREATE SEQUENCE seq_admin_id
     START WITH 1
@@ -156,7 +168,23 @@ CREATE SEQUENCE seq_coupon_id
     NOCYCLE;
 
 
--- 카테고리 등록 (카테고리 ID: 1=빵, 2=떡, 3=케이크)
+-- ==============================
+-- 4-1. 관리자(Admin) 데이터 삽입
+-- ==============================
+INSERT INTO tbl_admin
+  (admin_id, admin_pw, admin_name, grade, regDate, modDate, email)
+VALUES
+  (seq_admin_id.NEXTVAL, '1234', 'kosa', 1, SYSDATE, SYSDATE, 'a1@a.com');
+
+INSERT INTO tbl_admin
+    (admin_id, admin_pw, admin_name, grade, regDate, modDate, email)
+VALUES
+  (seq_admin_id.NEXTVAL, '1234', 'kosa2', 2, SYSDATE, SYSDATE, 'a2@a.com');
+
+
+-- ===========================================================
+-- 4-2. 카테고리 데이터 삽입 (카테고리 ID: 1=빵, 2=떡, 3=케이크)
+-- ===========================================================
 INSERT INTO tbl_category (category_id, category_parentid, category_name, category_level)
 VALUES (seq_category_id.NEXTVAL , NULL, '빵', 1);
 
@@ -166,7 +194,10 @@ VALUES (seq_category_id.NEXTVAL , NULL, '떡', 1);
 INSERT INTO tbl_category (category_id, category_parentid, category_name, category_level)
 VALUES (seq_category_id.NEXTVAL , NULL, '케이크', 1);
 
--- 상품 등록
+
+-- ==========================
+-- 4-3. 상품 샘플 데이터 삽입
+-- ==========================
 INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
 VALUES (seq_product_id.NEXTVAL, 1, '브런치레이어', 6000, 4200, TO_DATE('2025-07-16', 'YYYY-MM-DD'), TO_DATE('2025-07-16', 'YYYY-MM-DD'));
 INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
@@ -215,160 +246,292 @@ INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_reg
 VALUES (seq_product_id.NEXTVAL, 1, '마라미고로케', 3000, 2100, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
 INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate)
 VALUES (seq_product_id.NEXTVAL, 1, '튀김소보로', 1700, 1190, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 1, '튀소구마', 1700, 1190, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 1, '판타롱부추빵', 2000, 1400, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 1, '초코튀소', 2000, 1400, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '부르스떡 기획B형(2ea)', 5000, 3500, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '부르스떡 기획A소(4ea)', 7000, 4900, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '0시 50분 떡(8ea)', 18000, 12600, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '대전부르스떡 1호', 21000, 14700, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '대전부르스떡 2호', 27000, 18900, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '성심부르스 2호', 38000, 26600, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '성심부르스 3호', 33000, 23100, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '성심부르스 1호', 38000, 26600, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '대전떡(16ea)', 33000, 23100, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '대전부르스떡(10ea)', 17000, 11900, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '성심 조청유과', 12000, 8400, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '대전부르스 9팩(5ea)', 6000, 4200, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '곶감설편당 1호', 33000, 23100, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '곶감설편당 2호', 38000, 26600, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '손뜨락도 3호', 39000, 27300, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '가또설편당 3호', 54000, 37800, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 2, '손수 99.9 떡 세트', 18000, 12600, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 3, '마롱파운드 2호', 30000, 21000, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 3, '순수롤', 14000, 9800, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 3, '성심롤케익 1호', 18000, 12600, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 3, '성심롤케익 2호', 25000, 17500, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 3, '롤케익 기프트', 25000, 17500, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 3, '별미세트', 7000, 4900, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 3, '성심에그롤', 18000, 12600, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 3, '호두롤케익', 16000, 11200, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) 
+VALUES (seq_product_id.NEXTVAL, 3, '티케이스 기프트', 25000, 17500, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
 
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 1, '튀소구마', 1700, 1190, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 1, '판타롱부추빵', 2000, 1400, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 1, '초코튀소', 2000, 1400, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '부르스떡 기획B형(2ea)', 5000, 3500, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '부르스떡 기획A소(4ea)', 7000, 4900, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '0시 50분 떡(8ea)', 18000, 12600, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '대전부르스떡 1호', 21000, 14700, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '대전부르스떡 2호', 27000, 18900, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '성심부르스 2호', 38000, 26600, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '성심부르스 3호', 33000, 23100, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '성심부르스 1호', 38000, 26600, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '대전떡(16ea)', 33000, 23100, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '대전부르스떡(10ea)', 17000, 11900, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '성심 조청유과', 12000, 8400, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '대전부르스 9팩(5ea)', 6000, 4200, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '곶감설편당 1호', 33000, 23100, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '곶감설편당 2호', 38000, 26600, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '손뜨락도 3호', 39000, 27300, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '가또설편당 3호', 54000, 37800, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 2, '손수 99.9 떡 세트', 18000, 12600, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 3, '마롱파운드 2호', 30000, 21000, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 3, '순수롤', 14000, 9800, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 3, '성심롤케익 1호', 18000, 12600, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 3, '성심롤케익 2호', 25000, 17500, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 3, '롤케익 기프트', 25000, 17500, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 3, '별미세트', 7000, 4900, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 3, '성심에그롤', 18000, 12600, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 3, '호두롤케익', 16000, 11200, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_product (product_id, category_id, name, price, cost, product_regdate, product_modDate) VALUES (seq_product_id.NEXTVAL, 3, '티케이스 기프트', 25000, 17500, TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
 
---admin  삽입
-INSERT INTO tbl_admin
-  (admin_id, admin_pw, admin_name, grade, regDate, modDate, email)
-VALUES
-  (seq_admin_id.NEXTVAL, '1234', 'kosa', 1, SYSDATE, SYSDATE, 'a1@a.com');
+-- ===========================================================================================================
+-- 4-4. tbl_stock 초기 재고 샘플 데이터 삽입 (admin_id='1', quantity=100, location='창고', 오늘 날짜 2025‑07‑16)
+-- ===========================================================================================================
+-- 1) tbl_stock 초기 재고 입력
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 1, 1, 100, '브런치레이어', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 2, 1, 100, '파이자루세트', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 3, 1, 100, '모짜프레시볼', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 4, 1, 100, '모닝빵', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 5, 1, 100, '단팥빵', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 6, 1, 100, '작은레이어', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 7, 1, 100, '소보로', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 8, 1, 100, '꽈배기', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 9, 1, 100, '토망쥬', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 10, 1, 100, '아몬드크로와상', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 11, 1, 100, '흑임자크림소보', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 12, 1, 100, '맹모소금크림', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 13, 1, 100, '후렌치파이', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 14, 1, 100, '해바라기', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 15, 1, 100, '스페이롤', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 16, 1, 100, '키다리아저씨토스트', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 17, 1, 100, '오징어(빨콩빵)', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 18, 1, 100, '빅레이즈', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 19, 1, 100, '황도덩', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 20, 1, 100, '크림치즈화이트번', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 21, 1, 100, '월넛브레드', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 22, 1, 100, '야채크로켓', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 23, 1, 100, '마라미고로케', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 24, 1, 100, '튀김소보로', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 25, 1, 100, '튀소구마', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 26, 1, 100, '판타롱부추빵', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 27, 1, 100, '초코튀소', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 28, 2, 100, '부르스떡 기획B형(2ea)', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 29, 2, 100, '부르스떡 기획A소(4ea)', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 30, 2, 100, '0시 50분 떡(8ea)', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 31, 2, 100, '대전부르스떡 1호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 32, 2, 100, '대전부르스떡 2호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 33, 2, 100, '성심부르스 2호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 34, 2, 100, '성심부르스 3호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 35, 2, 100, '성심부르스 1호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 36, 2, 100, '대전떡(16ea)', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 37, 2, 100, '대전부르스떡(10ea)', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 38, 2, 100, '성심 조청유과', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 39, 2, 100, '대전부르스 9팩(5ea)', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 40, 2, 100, '곶감설편당 1호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 41, 2, 100, '곶감설편당 2호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 42, 2, 100, '손뜨락도 3호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 43, 2, 100, '가또설편당 3호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 44, 2, 100, '손수 99.9 떡 세트', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 45, 3, 100, '마롱파운드 2호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 46, 3, 100, '순수롤', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 47, 3, 100, '성심롤케익 1호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 48, 3, 100, '성심롤케익 2호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 49, 3, 100, '롤케익 기프트', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 50, 3, 100, '별미세트', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 51, 3, 100, '성심에그롤', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 52, 3, 100, '호두롤케익', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) 
+VALUES (seq_stock_id.NEXTVAL , '1', 53, 3, 100, '티케이스 기프트', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
 
-INSERT INTO tbl_admin
-    (admin_id, admin_pw, admin_name, grade, regDate, modDate, email)
-VALUES
-  (seq_admin_id.NEXTVAL, '1234', 'kosa2', 2, SYSDATE, SYSDATE, 'a2@a.com');
-
+-- ================================================================================================================
+-- 4-5. tbl_storageRetrieval 초기 입고 샘플 데이터 삽입 (inout_type=1, inout_quantity=100, inout_content='초기 입고')
+-- ================================================================================================================
+-- 2) tbl_storageRetrieval 초기 입고 기록
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 1, '1', 1, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 2, '1', 2, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 3, '1', 3, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 4, '1', 4, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 5, '1', 5, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 6, '1', 6, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 7, '1', 7, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 8, '1', 8, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 9, '1', 9, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 10, '1', 10, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 11, '1', 11, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 12, '1', 12, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 13, '1', 13, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id,	category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 14, '1', 14, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id,	category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 15, '1', 15, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id,	category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 16, '1', 16, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id,	category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 17, '1', 17, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 18, '1', 18, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 19, '1', 19, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 20, '1', 20, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 21, '1', 21, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 22, '1', 22, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 23, '1', 23, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 24, '1', 24, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 25, '1', 25, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 26, '1', 26, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 27, '1', 27, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 28, '1', 28, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 29, '1', 29, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 30, '1', 30, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 31, '1', 31, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 32, '1', 32, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 33, '1', 33, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 34, '1', 34, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 35, '1', 35, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 36, '1', 36, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 37, '1', 37, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 38, '1', 38, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 39, '1', 39, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 40, '1', 40, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 41, '1', 41, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 42, '1', 42, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 43, '1', 43, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 44, '1', 44, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 45, '1', 45, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 46, '1', 46, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 47, '1', 47, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 48, '1', 48, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 49, '1', 49, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 50, '1', 50, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 51, '1', 51, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 52, '1', 52, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
+INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) 
+VALUES (seq_inout_id.NEXTVAL , 53, '1', 53, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
   
--- 1) tbl_stock 초기 재고 입력 (admin_id='1', quantity=100, location='창고', 오늘 날짜 2025‑07‑16)
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 1, 1, 100, '브런치레이어', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 2, 1, 100, '파이자루세트', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 3, 1, 100, '모짜프레시볼', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 4, 1, 100, '모닝빵', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 5, 1, 100, '단팥빵', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 6, 1, 100, '작은레이어', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 7, 1, 100, '소보로', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 8, 1, 100, '꽈배기', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 9, 1, 100, '토망쥬', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 10, 1, 100, '아몬드크로와상', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 11, 1, 100, '흑임자크림소보', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 12, 1, 100, '맹모소금크림', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 13, 1, 100, '후렌치파이', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 14, 1, 100, '해바라기', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 15, 1, 100, '스페이롤', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 16, 1, 100, '키다리아저씨토스트', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 17, 1, 100, '오징어(빨콩빵)', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 18, 1, 100, '빅레이즈', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 19, 1, 100, '황도덩', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 20, 1, 100, '크림치즈화이트번', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 21, 1, 100, '월넛브레드', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 22, 1, 100, '야채크로켓', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 23, 1, 100, '마라미고로케', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 24, 1, 100, '튀김소보로', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 25, 1, 100, '튀소구마', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 26, 1, 100, '판타롱부추빵', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 27, 1, 100, '초코튀소', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 28, 2, 100, '부르스떡 기획B형(2ea)', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 29, 2, 100, '부르스떡 기획A소(4ea)', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 30, 2, 100, '0시 50분 떡(8ea)', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 31, 2, 100, '대전부르스떡 1호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 32, 2, 100, '대전부르스떡 2호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 33, 2, 100, '성심부르스 2호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 34, 2, 100, '성심부르스 3호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 35, 2, 100, '성심부르스 1호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 36, 2, 100, '대전떡(16ea)', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 37, 2, 100, '대전부르스떡(10ea)', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 38, 2, 100, '성심 조청유과', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 39, 2, 100, '대전부르스 9팩(5ea)', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 40, 2, 100, '곶감설편당 1호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 41, 2, 100, '곶감설편당 2호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 42, 2, 100, '손뜨락도 3호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 43, 2, 100, '가또설편당 3호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 44, 2, 100, '손수 99.9 떡 세트', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 45, 3, 100, '마롱파운드 2호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 46, 3, 100, '순수롤', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 47, 3, 100, '성심롤케익 1호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 48, 3, 100, '성심롤케익 2호', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 49, 3, 100, '롤케익 기프트', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 50, 3, 100, '별미세트', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 51, 3, 100, '성심에그롤', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 52, 3, 100, '호두롤케익', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_stock (stock_id, admin_id, product_id, category_id, quantity, stock_name, location, stock_regDate, stock_modDate) VALUES (seq_stock_id.NEXTVAL , '1', 53, 3, 100, '티케이스 기프트', '창고', TO_DATE('2025-07-16','YYYY-MM-DD'), TO_DATE('2025-07-16','YYYY-MM-DD'));
 
--- 2) tbl_storageRetrieval 초기 입고 기록 (inout_type=1, inout_quantity=100, inout_content='초기 입고')
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 1, '1', 1, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 2, '1', 2, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 3, '1', 3, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 4, '1', 4, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 5, '1', 5, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 6, '1', 6, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 7, '1', 7, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 8, '1', 8, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 9, '1', 9, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 10, '1', 10, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 11, '1', 11, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 12, '1', 12, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 13, '1', 13, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id,	category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 14, '1', 14, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id,	category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 15, '1', 15, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id,	category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 16, '1', 16, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id, product_id,	category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 17, '1', 17, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 18, '1', 18, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 19, '1', 19, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 20, '1', 20, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 21, '1', 21, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 22, '1', 22, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 23, '1', 23, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 24, '1', 24, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 25, '1', 25, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 26, '1', 26, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 27, '1', 27, 1, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 28, '1', 28, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 29, '1', 29, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 30, '1', 30, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 31, '1', 31, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 32, '1', 32, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 33, '1', 33, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 34, '1', 34, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 35, '1', 35, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 36, '1', 36, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 37, '1', 37, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 38, '1', 38, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 39, '1', 39, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 40, '1', 40, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 41, '1', 41, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 42, '1', 42, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 43, '1', 43, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 44, '1', 44, 2, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 45, '1', 45, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 46, '1', 46, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 47, '1', 47, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 48, '1', 48, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 49, '1', 49, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 50, '1', 50, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 51, '1', 51, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 52, '1', 52, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-INSERT INTO tbl_storageRetrieval (inout_id, stock_id, admin_id,	product_id, category_id, inout_type, inout_quantity, inout_content, inout_regdate) VALUES (seq_inout_id.NEXTVAL , 53, '1', 53, 3, 1, 100, '초기 입고', TO_DATE('2025-07-16','YYYY-MM-DD'));
-  
---  쿠폰
+-- ========================
+-- 4-6. 쿠폰 샘플 데이터 삽입
+-- ========================
 INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 1, 1, '단팥빵 아침햇살 브런치딜', 5, TO_DATE('2025-07-22 09:00','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-22 11:00','YYYY-MM-DD HH24:MI'));
 INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 2, 1, '모닝빵 해돋이 스페셜세일', 3, TO_DATE('2025-07-22 08:30','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-22 10:30','YYYY-MM-DD HH24:MI'));
 INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 3, 1, '꽈배기 점심 직전 달콤세일', 10, TO_DATE('2025-07-22 10:30','YYYY-MM-DD HH24:MI'), TO_DATE('2025-07-22 13:30','YYYY-MM-DD HH24:MI'));
@@ -425,12 +588,18 @@ INSERT INTO tbl_coupon VALUES (seq_coupon_id.NEXTVAL, 53, 3, '티케이스 차 �
 
 commit;
 
+-- 여기까지 실행 아래부터 각 프로시저마다 /을 기준으로 하나씩 실행
+
+
+
+ 
 
 
 
 
--- 여기까지 실행 아래부터 각 프로시저마다 /을 기준으로 하나씩 실행 
-
+-- ========================================
+-- 5. Stored Procedure (저장 프로시저) 생성
+-- ========================================
 -- 상품 삽입 저장 프로시저 --
 CREATE OR REPLACE PROCEDURE proc_add_product_with_stock_and_image (
     p_category_id    IN tbl_product.category_id%TYPE,
@@ -554,3 +723,84 @@ ALTER TABLE tbl_image
 
 
 COMMIT;
+
+
+
+
+
+
+
+-- 쿠폰 추가 Stored Procedure
+CREATE OR REPLACE PROCEDURE proc_add_coupon (
+    p_product_id    IN tbl_coupon.product_id%TYPE,
+    p_category_id   IN tbl_coupon.category_id%TYPE,
+    p_coupon_name   IN tbl_coupon.coupon_name%TYPE,
+    p_percent       IN tbl_coupon.percent%TYPE,
+    p_start_time    IN tbl_coupon.starttime%TYPE,
+    p_deadline      IN tbl_coupon.deadline%TYPE
+)
+IS
+BEGIN
+    INSERT INTO tbl_coupon (coupon_id, product_id, category_id, coupon_name, percent, starttime, deadline)
+    VALUES (seq_coupon_id.NEXTVAL, p_product_id, p_category_id, p_coupon_name, p_percent, p_start_time, p_deadline);
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE;
+END;
+/
+
+
+-- 쿠폰 수정 Stored Procedure
+CREATE OR REPLACE PROCEDURE proc_update_coupon (
+    p_coupon_id     IN tbl_coupon.coupon_id%TYPE,
+    p_product_id    IN tbl_coupon.product_id%TYPE,
+    p_category_id   IN tbl_coupon.category_id%TYPE,
+    p_coupon_name   IN tbl_coupon.coupon_name%TYPE,
+    p_percent       IN tbl_coupon.percent%TYPE,
+    p_start_time    IN tbl_coupon.starttime%TYPE,
+    p_deadline      IN tbl_coupon.deadline%TYPE
+)
+IS
+BEGIN
+    UPDATE tbl_coupon
+    SET
+        product_id  = p_product_id,
+        category_id = p_category_id,
+        coupon_name = p_coupon_name,
+        percent     = p_percent,
+        starttime   = p_start_time,
+        deadline    = p_deadline
+    WHERE
+        coupon_id   = p_coupon_id;
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE;
+END;
+/
+
+
+-- 쿠폰 삭제 Stored Procedure
+CREATE OR REPLACE PROCEDURE proc_delete_coupon (
+    p_coupon_id IN tbl_coupon.coupon_id%TYPE
+)
+IS
+BEGIN
+    DELETE FROM tbl_coupon
+    WHERE coupon_id = p_coupon_id;
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE;
+END;
+/
+
+
+-- ========================================
+-- 6. 최종 커밋
+-- ========================================
+commit;

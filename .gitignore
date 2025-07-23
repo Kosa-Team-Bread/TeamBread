@@ -62,6 +62,7 @@ test-output/
 surefire-reports/
 
 # === 환경 파일 (보안 상 제외) ===
+lib/
 *.env
 .env.*
 *.properties.local

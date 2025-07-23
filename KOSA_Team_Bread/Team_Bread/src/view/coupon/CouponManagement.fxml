@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
@@ -22,17 +23,24 @@
                      <children>
                         <Label styleClass="title-label" text="쿠폰 목록" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0" />
                         
-                        <!-- 검색창과 카테고리 필터를 HBox로 묶어 우측 상단에 배치 -->
                         <HBox alignment="CENTER_RIGHT" spacing="10.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
                            <children>
-                              <!-- 카테고리 ComboBox (왼쪽) -->
                               <ComboBox fx:id="couponCategoryFilter" prefWidth="150.0" promptText="카테고리 선택" />
-                              <!-- 쿠폰명 검색 TextField (오른쪽) -->
                               <TextField fx:id="couponSearchField" prefWidth="200.0" promptText="쿠폰명 검색" />
                            </children>
                         </HBox>
                         
-                        <TableView fx:id="couponTable" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="80.0">
+                        <!-- 쿠폰 추가/수정/삭제 버튼을 담을 HBox를 테이블 위에 추가 -->
+                        <HBox spacing="10.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="80.0">
+                           <children>
+                              <Button fx:id="addCouponBtn" onAction="#handleAddAction" text="쿠폰 추가" />
+                              <Button fx:id="editCouponBtn" onAction="#handleEditAction" text="쿠폰 수정" />
+                              <Button fx:id="deleteCouponBtn" onAction="#handleDeleteAction" text="쿠폰 삭제" />
+                           </children>
+                        </HBox>
+                        
+                        <!-- 테이블의 topAnchor를 버튼 HBox 아래로 조정 -->
+                        <TableView fx:id="couponTable" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="120.0">
                           <columns>
                             <TableColumn fx:id="couponNameCol" prefWidth="250.0" text="쿠폰명" />
                             <TableColumn fx:id="percentCol" prefWidth="100.0" style="-fx-alignment: CENTER;" text="할인율(%)" />
@@ -47,7 +55,6 @@
             </content>
           </Tab>
           
-
           <!-- 쿠폰 적용 탭 -->
           <Tab text="쿠폰 적용">
             <content>
@@ -55,12 +62,9 @@
                      <children>
                         <Label styleClass="title-label" text="상품 목록 (상품 더블 클릭 시 쿠폰 적용)" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0" />
                         
-                        <!-- [수정] 검색창과 카테고리 필터를 HBox로 묶어 우측 상단에 배치 -->
                         <HBox alignment="CENTER_RIGHT" spacing="10.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
                            <children>
-                              <!-- 카테고리 ComboBox (왼쪽) -->
                               <ComboBox fx:id="productCategoryFilter" prefWidth="150.0" promptText="카테고리 선택" />
-                              <!-- 상품명 검색 TextField (오른쪽) -->
                               <TextField fx:id="productSearchField" prefWidth="200.0" promptText="상품명 검색" />
                            </children>
                         </HBox>
