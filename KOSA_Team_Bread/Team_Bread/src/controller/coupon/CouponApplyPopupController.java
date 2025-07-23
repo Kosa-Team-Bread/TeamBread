@@ -1,113 +1,127 @@
-// CouponApplyPopupController.java
-
+// src/main/java/controller/coupon/CouponApplyPopupController.java
 package controller.coupon;
 
-import java.net.URL;
-import java.text.DecimalFormat;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import model.coupon.CouponDAO;
 import model.product.Product;
 
-public class CouponApplyPopupController implements Initializable {
+import java.time.LocalDate;
 
-    @FXML private Label titleLabel;
+public class CouponApplyPopupController {
+
+    @FXML private WebView chartWebView;
     @FXML private Label priceLabel;
     @FXML private Label costLabel;
-    @FXML private BarChart<String, Number> bepChart;    // 차트
-    @FXML private CategoryAxis xAxis;
-    @FXML private NumberAxis yAxis;
-    @FXML private Button closeButton;
+    @FXML private TextField discountField;
+    @FXML private DatePicker startDatePicker;
+    @FXML private DatePicker endDatePicker;
+    @FXML private Button applyButton;
 
+    private WebEngine webEngine;
     private Product selectedProduct;
-    private final DecimalFormat formatter = new DecimalFormat("#,##0");
+    private CouponDAO couponDAO;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        // BarChart가 StackedBarChart처럼 보이도록 설정
-        bepChart.setCategoryGap(50);    // 막대 간 간격 조정
+    @FXML
+    public void initialize() {
+       
+        webEngine = chartWebView.getEngine();
+        applyButton.setOnAction(e -> applyCoupon());
+        discountField.textProperty().addListener((obs, o, n) -> updateChart());
     }
 
     /**
-     * CouponController로부터 상품 데이터를 받아와 필드에 저장, 모든 UI 업데이트
-     * @param product CouponController에서 더블클릭된 상품 객체
+     * 팝업 호출 시 상품과 DAO를 초기화하는 메서드
      */
-    public void initData(Product product) {
+    public void initData(Product product, CouponDAO couponDAO) {
         this.selectedProduct = product;
-        
-        // 1. 상품 기본 정보 표시
-        updateProductInfo();
-        
-        // 2. BEP 차트 생성 및 데이터 설정
-        createAndSetChartData();
-    }
-    
-    /** 받아온 상품 정보로 상단의 라벨들 업데이트 */
-    private void updateProductInfo() {
-        titleLabel.setText("상품명 : " + selectedProduct.getProductName());
-        priceLabel.setText(formatter.format(selectedProduct.getPrice()) + " 원");
-        costLabel.setText(formatter.format(selectedProduct.getCost()) + " 원");
+        this.couponDAO = couponDAO;
+
+        priceLabel.setText(String.valueOf(product.getPrice()));
+        costLabel.setText(String.valueOf(product.getCost()));
+
+        startDatePicker.setValue(LocalDate.now());
+        endDatePicker.setValue(LocalDate.now().plusDays(30));
+        discountField.setText("0");
+
+        updateChart();
     }
 
-    /**
-     * 할인율에 따른 손익분기점(BEP) 계산, 차트 데이터 생성
-     */
-    private void createAndSetChartData() {
-        // 기존 차트 데이터 초기화
-        bepChart.getData().clear();
-
-        // 계산할 할인율 목록
-        List<Integer> discountRates = Arrays.asList(3, 5, 10, 15, 30);
-        
-        // 차트에 표시할 두 개의 데이터 시리즈 생성 (원가, 이익)
-        XYChart.Series<String, Number> costSeries = new XYChart.Series<>();
-        costSeries.setName("원가");
-
-        XYChart.Series<String, Number> profitSeries = new XYChart.Series<>();
-        profitSeries.setName("이익");
-
-        // 각 할인율에 대해 반복하며 데이터 계산
-        for (int rate : discountRates) {
-            // 1. 최종 판매가격 계산
-            double finalPrice = selectedProduct.getPrice() * (1 - (rate / 100.0));
-            
-            // 2. 이익 계산 (최종 판매가 - 원가)
-            double profit = finalPrice - selectedProduct.getCost();
-
-            // 3. 계산된 데이터를 각 시리즈에 추가
-            String category = rate + "%";
-            costSeries.getData().add(new XYChart.Data<>(category, selectedProduct.getCost()));
-            profitSeries.getData().add(new XYChart.Data<>(category, profit));
+    /** 할인율, 가격, 원가 데이터를 반영해 차트를 갱신 */
+    private void updateChart() {
+        int P = selectedProduct.getPrice();
+        int C = selectedProduct.getCost();
+        double D;
+        try {
+            int pct = Integer.parseInt(discountField.getText());
+            D = Math.max(0, Math.min(pct, 100)) / 100.0;
+        } catch (NumberFormatException e) {
+            D = 0;
         }
 
-        // 완성된 데이터 시리즈들을 차트에 추가
-        addChartData(costSeries, profitSeries);
+        StringBuilder sb = new StringBuilder();
+        sb.append("<!DOCTYPE html><html><head><meta charset='UTF-8'>")
+          .append("<script src='https://www.gstatic.com/charts/loader.js'></script>")
+          .append("<script>")
+          .append("google.charts.load('current',{packages:['corechart']});")
+          .append("google.charts.setOnLoadCallback(drawChart);")
+          .append("function drawChart(){")
+          .append("var data=new google.visualization.DataTable();")
+          .append("data.addColumn('number','할인율');")
+          .append("data.addColumn('number','이득');")
+          .append("data.addColumn('number','손해');")
+          .append("var rows=[];")
+          .append("for(var i=0;i<=100;i++){")
+          .append("  var d=i/100.0;")
+          .append("  var disc=").append(P).append("*(1-d);")
+          .append("  var profit=Math.max(disc-").append(C).append(",0);")
+          .append("  var loss=Math.max(").append(C).append("-disc,0);")
+          .append("  rows.push([i,profit,loss]);")
+          .append("}")
+          .append("data.addRows(rows);")
+          .append("var options={")
+          .append("  title:'할인율에 따른 이득 및 손해',")
+          .append("  legend:{position:'top'},")
+          .append("  hAxis:{title:'할인율 (%)'},")
+          .append("  vAxis:{title:'금액 (원)'},")
+          .append("  pointSize:6")
+          .append("};")
+          .append("new google.visualization.ScatterChart(")
+          .append("    document.getElementById('chart_div')")
+          .append(").draw(data,options);")
+          .append("}")
+          .append("</script></head><body>")
+          .append("<div id='chart_div' style='width:450px;height:360px;'></div>")
+          .append("</body></html>");
+
+        webEngine.loadContent(sb.toString());
     }
 
-    /**
-     * 차트에 데이터 시리즈를 안전하게 추가
-     * @SafeVarargs 어노테이션으로 타입 안정성 경고 제거
-     */
-    @SafeVarargs
-    private final void addChartData(XYChart.Series<String, Number>... series) {
-        bepChart.getData().addAll(series);
-    }
-    
-    /** '닫기' 버튼을 클릭했을 때 호출되는 메소드 */
-    @FXML
-    void handleCloseButtonAction(ActionEvent event) {
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
+    /** 쿠폰을 DB에 삽입 후 팝업 닫기 */
+    private void applyCoupon() {
+        try {
+            int percent = Integer.parseInt(discountField.getText());
+            LocalDate start = startDatePicker.getValue();
+            LocalDate end = endDatePicker.getValue();
+
+            couponDAO.insertCoupon(
+                selectedProduct.getProductId(),
+                percent,
+                start,
+                end
+            );
+
+            ((Stage) applyButton.getScene().getWindow()).close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            new Alert(
+                Alert.AlertType.ERROR,
+                "쿠폰 등록 중 오류:\n" + ex.getClass().getSimpleName()
+                + " - " + ex.getMessage()
+            ).showAndWait();
+        }
     }
 }

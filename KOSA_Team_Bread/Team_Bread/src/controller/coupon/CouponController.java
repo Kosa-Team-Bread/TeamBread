@@ -18,6 +18,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import model.admin.AdminDAO;
 import model.category.Category;
 import model.category.CategoryDAO;
 import model.coupon.Coupon;
@@ -27,7 +28,6 @@ import model.product.ProductDAO;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -79,26 +79,34 @@ public class CouponController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // DAO 객체 생성
-        couponDAO = new CouponDAO();
-        productDAO = new ProductDAO();
+        // 1) 필드 DAO 객체 생성 및 초기화
         categoryDAO = new CategoryDAO();
-        
-        // 카테고리 Map을 먼저 로드해야 테이블 컬럼 설정 시 사용 가능
-        loadDataFromDB();
-        
-        // 테이블 컬럼 설정
+        AdminDAO adminDAO = new AdminDAO();
+
+        // ProductDAO의 static DAO도 함께 설정
+        ProductDAO.setCategoryDAO(categoryDAO);
+        ProductDAO.setAdminDAO(adminDAO);
+
+        // 생성자 주입
+        productDAO = new ProductDAO(categoryDAO, adminDAO);
+        couponDAO  = new CouponDAO(productDAO, categoryDAO);
+
+        // 2) 테이블 컬럼 설정
         setupTableColumns();
-        
-        // 필터링 기능 설정
+
+        // 3) DB에서 데이터 로드
+        loadDataFromDB();
+
+        // 4) 필터링 기능 설정
         setupFilterListeners();
-        
+
         // 버튼 상태 관리 기능 설정
         setupButtonControls();
-        
-        // 이벤트 핸들러 설정
+
+        // 5) 더블 클릭 팝업 호출
         productTable.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2 && productTable.getSelectionModel().getSelectedItem() != null) {
+            if (event.getClickCount() == 2 &&
+                productTable.getSelectionModel().getSelectedItem() != null) {
                 handleProductSelection(productTable.getSelectionModel().getSelectedItem());
             }
         });
@@ -163,17 +171,7 @@ public class CouponController implements Initializable {
             deleteCouponBtn.setDisable(!isItemSelected);
         });
     }
-    
-    
-    /**
-     * '쿠폰 추가' 버튼 클릭 시 실행될 로직
-     * @param event 액션 이벤트 객체
-     */
-    @FXML
-    private void handleAddAction(ActionEvent event) {
-        System.out.println("추가 버튼 클릭");
-        // TODO: 쿠폰 추가 팝업창을 띄우는 로직 구현
-    }
+
     
     /**
      * '쿠폰 수정' 버튼 클릭 시 실행될 로직
@@ -287,32 +285,9 @@ public class CouponController implements Initializable {
         });
     }
 
-    /**
-     * 상품 더블클릭 시 쿠폰 적용 팝업창 띄움
-     * 팝업 컨트롤러에 선택된 상품 객체를 전달하는 로직 추가
-     * @param selectedProduct 선택된 상품 객체
-     */
-    private void handleProductSelection(Product selectedProduct) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/coupon/CouponApplyPopup.fxml"));
-            Parent root = loader.load();
-
-            CouponApplyPopupController popupController = loader.getController();
-            popupController.initData(selectedProduct);
-
-            Stage popupStage = new Stage();
-            popupStage.initModality(Modality.APPLICATION_MODAL);
-            popupStage.setTitle(selectedProduct.getProductName() + " - 쿠폰 적용");
-            popupStage.setScene(new Scene(root));
-            popupStage.showAndWait();
-        } catch (IOException e) {
-            System.out.println("팝업창 로드 중 오류 발생");
-            e.printStackTrace();
-        }
-    }
     
     /**
-     * [신규] Alert 창을 띄우는 공통 메소드
+     * Alert 창을 띄우는 공통 메소드
      */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
@@ -320,5 +295,26 @@ public class CouponController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+
+
+    /** 상품 더블 클릭 시 쿠폰 적용 팝업창 호출 */
+    private void handleProductSelection(Product selectedProduct) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/coupon/CouponApplyPopup.fxml"));
+            Parent root = loader.load();
+
+            CouponApplyPopupController popupCtrl = loader.getController();
+            popupCtrl.initData(selectedProduct, couponDAO);
+
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle(selectedProduct.getProductName() + " - 쿠폰 적용");
+            popupStage.setScene(new Scene(root));
+            popupStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
