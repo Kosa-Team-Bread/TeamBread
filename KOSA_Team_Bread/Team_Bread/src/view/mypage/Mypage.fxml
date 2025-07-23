@@ -81,12 +81,6 @@
                      </children>
                   </GridPane>
                   
-                  <HBox alignment="CENTER_RIGHT" spacing="10.0">
-                     <children>
-                        <Button onAction="#onCancelAdd" style="-fx-background-color: #f3f4f6; -fx-text-fill: #374151; -fx-background-radius: 6; -fx-padding: 8 16 8 16;" text="취소" />
-                        <Button onAction="#onConfirmAdd" style="-fx-background-color: #2563eb; -fx-text-fill: white; -fx-background-radius: 6; -fx-padding: 8 16 8 16;" text="수정" />
-                     </children>
-                  </HBox>
                </children>
             </VBox>
          </children>

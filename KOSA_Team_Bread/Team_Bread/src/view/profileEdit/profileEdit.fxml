@@ -91,8 +91,7 @@
                               <Insets top="15.0" />
                           </VBox.margin>
                          <children>
-                                         <Label styleClass="info-text" text="* 비밀번호 변경을 원하지 않으시면 비밀번호 필드를 비워두세요." 
-                   wrapText="true" />
+                                         <Label styleClass="info-text" text="* 비밀번호 변경을 원하지 않으시면 비밀번호 필드를 비워두세요." wrapText="true" />
                              <Label style="-fx-font-size: 12px; -fx-text-fill: #6c757d;" textAlignment="CENTER" wrapText="true" />
                          </children>
                       </VBox>

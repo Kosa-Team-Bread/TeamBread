@@ -42,8 +42,8 @@ public class ImageDAO {
 						.categoryId(rs.getInt("CATEGORY_ID"))
 						.imageName(rs.getString("IMAGE_NAME"))
 						.imageLocation(rs.getString("IMAGE_LOCATION"))
-						.stockRegDate(rs.getDate("IMAGE_REGDATE").toLocalDate())
-						.stockModDate(rs.getDate("IMAGE_MODDATE").toLocalDate())
+						.imageRegDate(rs.getDate("IMAGE_REGDATE").toLocalDate())
+						.imageModDate(rs.getDate("IMAGE_MODDATE").toLocalDate())
 						.build();
 
 				imageList.add(image);
@@ -75,8 +75,8 @@ public class ImageDAO {
 						.categoryId(rs.getInt("CATEGORY_ID"))
 						.imageName(rs.getString("IMAGE_NAME"))
 						.imageLocation(rs.getString("IMAGE_LOCATION"))
-						.stockRegDate(rs.getDate("IMAGE_REGDATE").toLocalDate())
-						.stockModDate(rs.getDate("IMAGE_MODDATE").toLocalDate())
+						.imageRegDate(rs.getDate("IMAGE_REGDATE").toLocalDate())
+						.imageModDate(rs.getDate("IMAGE_MODDATE").toLocalDate())
 						.build();
 			}
 			return image;
