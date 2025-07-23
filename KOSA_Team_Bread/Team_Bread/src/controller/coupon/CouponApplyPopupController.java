@@ -1,6 +1,6 @@
 // CouponApplyPopupController.java
 
-package controller.couponCtrl;
+package controller.coupon;
 
 import java.net.URL;
 import java.text.DecimalFormat;

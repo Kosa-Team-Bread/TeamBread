@@ -1,8 +1,7 @@
 // CouponController.java
 
-package controller.couponCtrl;
+package controller.coupon;
 
-import controller.couponCtrl.CouponApplyPopupController;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -36,6 +35,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import controller.coupon.CouponApplyPopupController;
 
 public class CouponController implements Initializable {
 
