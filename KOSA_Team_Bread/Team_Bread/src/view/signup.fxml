@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Sign‑up view generated from provided HTML mock‑up -->
+<!-- 성심당 할인 관리 시스템 - 회원가입 화면 -->
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SignupController"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SignUpController"
              prefWidth="1440" prefHeight="1024" style="-fx-background-color: white;">
-    <!-- Center container equivalent to the 680 × … card with 80 px padding -->
+    <!-- Center container equivalent to the 680 × … card with 80 px padding -->
     <VBox fx:id="card" layoutX="380" layoutY="87" prefWidth="680" alignment="TOP_CENTER"
           spacing="24" style="-fx-background-color: white; -fx-border-color: #DDE1E6; -fx-border-width: 1;">
         <!-- Logo / placeholder image -->
@@ -53,7 +53,7 @@
             </VBox>
 
             <!-- 회원가입 버튼-->
-            <Button fx:id="signupButton" text="회원가입" onAction="#onSignup"
+            <Button fx:id="signupButton" text="회원가입" onAction="#handleSignUp"
                     maxWidth="Infinity" prefHeight="48"
                     style="-fx-background-color: #0F62FE; -fx-text-fill: white; -fx-font-weight: 500;" />
         </VBox>
