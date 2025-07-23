@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import model.admin.Admin;
 import model.inout.InoutDAO;
 import model.inout.InoutInsertDto;
+import util.AlertUtil;
 
 public class InoutCreateController implements Initializable {
 	@FXML
@@ -46,7 +47,7 @@ public class InoutCreateController implements Initializable {
 
 	private final InoutDAO inoutDAO = new InoutDAO();
 	
-	private boolean isSuccessful = true;
+	private boolean isSuccessful = false;
 
 	public boolean isSuccessful() {
 		return isSuccessful;
@@ -132,13 +133,23 @@ public class InoutCreateController implements Initializable {
 
 				inoutDAO.insertCategory(inoutInsert);
 				this.isSuccessful = true;
-			} catch (SQLException | ClassNotFoundException e) {
+				
+				AlertUtil.showInfo("등록 성공", "입출고 내역이 성공적으로 등록되었습니다.");
+				
+				((Stage) saveButton.getScene().getWindow()).close();
+			} catch (NumberFormatException e) {
+		        // 수량에 숫자가 아닌 문자를 입력했을 경우의 오류 처리
+		        AlertUtil.showError("입력 형식 오류", "수량에는 숫자만 입력해주세요.");
+		        this.isSuccessful = false;
+		        // 실패했으므로 창을 닫지 않음		        
+		    } catch (SQLException | ClassNotFoundException e) {
+		    	// DB 관련 오류 처리
 				e.printStackTrace();
-				System.out.println("입출고 신규 등록에 실패했습니다: " + e.getMessage());
+				AlertUtil.showError("등록 실패", "데이터베이스 저장 중 오류가 발생했습니다.\n" + e.getMessage());
 				this.isSuccessful = false;
+				// 실패했으므로 창을 닫지 않음	
 			}
 		}
 
-		((Stage) saveButton.getScene().getWindow()).close();
 	}
 }
