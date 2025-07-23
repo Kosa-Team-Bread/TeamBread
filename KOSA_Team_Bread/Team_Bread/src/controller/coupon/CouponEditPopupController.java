@@ -40,9 +40,7 @@ public class CouponEditPopupController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {}
 
-    /**
-     * CouponController로부터 수정할 쿠폰 객체와 DAO, 카테고리 정보를 받아 초기화합니다.
-     */
+    // CouponController로부터 수정할 쿠폰 객체와 DAO, 카테고리 정보를 받아 초기화
     public void initData(Coupon coupon, CouponDAO couponDAO, Map<Integer, String> categoryIdToNameMap) {
         this.editingCoupon = coupon;
         this.couponDAO = couponDAO;
