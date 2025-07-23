@@ -32,8 +32,13 @@ CREATE TABLE tbl_admin (
     grade      NUMBER(1)     NOT NULL,
     regDate    DATE          NOT NULL,
     modDate    DATE          NOT NULL,
-    email      VARCHAR2(100) NOT NULL
+    email      VARCHAR2(100) NOT NULL UNIQUE
 );
+
+-- email 유니크 만들기
+ALTER TABLE tbl_admin
+ADD CONSTRAINT uq_tbl_admin_email
+UNIQUE (email);
 
 -- 2. tbl_category
 CREATE TABLE tbl_category (
@@ -720,8 +725,6 @@ ALTER TABLE tbl_stock
 ALTER TABLE tbl_image
   MODIFY (IMAGE_REGDATE   DATE DEFAULT SYSDATE,
           IMAGE_MODDATE   DATE DEFAULT SYSDATE);
-
-
 COMMIT;
 
 

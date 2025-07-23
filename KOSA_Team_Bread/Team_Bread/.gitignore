@@ -1,0 +1,72 @@
+# === Java 일반 ===
+*.class
+*.jar
+*.war
+*.ear
+*.log
+*.iml
+*.hprof
+
+# === Lombok ===
+*.lombok.config
+
+# === Eclipse 관련 ===
+*.launch
+*.classpath
+*.project
+.settings/
+
+# === VS Code 혹시 같이 쓴다면 ===
+.vscode/
+
+# === JavaFX 관련 ===
+# (일반적으로 따로 ignore할 건 없지만 빌드된 .class 파일 제외)
+
+# === ojdbc 관련 ===
+# ojdbc8.jar을 직접 프로젝트에 포함했다면, lib/ 같은 폴더 안에서 관리하고 아래처럼 지정
+lib/ojdbc*.jar
+
+# === OS/IDE 공통 ===
+.DS_Store
+Thumbs.db
+*.swp
+*.bak
+*.tmp
+
+# === 빌드 폴더 ===
+bin/
+build/
+target/
+out/
+
+# === Gradle or Maven 사용 시 (선택) ===
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+**/build/
+**/out/
+*.lock
+
+# === 로그 및 캐시 ===
+*.log
+logs/
+*.log.*
+
+# === IntelliJ IDEA 혹시 같이 쓴다면 ===
+.idea/
+*.iws
+*.ipr
+
+# === 테스트 결과 ===
+test-output/
+surefire-reports/
+
+# === 환경 파일 (보안 상 제외) ===
+*.env
+.env.*
+*.properties.local
+application-local.properties
+
+
+# === 기성 참고 폴더 ===
+BreadCoupon-ProjectInfo/
