@@ -306,6 +306,14 @@ public class CouponController implements Initializable {
         }
     }
     
+    // 쿠폰 목록 테이블을 새로고침하는 메소드
+    private void refreshCouponTable() {
+        this.couponMasterList = couponDAO.getAllCoupons();
+        this.couponFilteredList = new FilteredList<>(couponMasterList, p -> true);
+        couponTable.setItems(this.couponFilteredList);
+        applyCouponFilter();
+    }
+    
     // Alert 창을 띄우는 공통 메소드
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
@@ -314,16 +322,8 @@ public class CouponController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
-    // 쿠폰 목록 테이블을 새로고침하는 메소드
-    private void refreshCouponTable() {
-        this.couponMasterList = couponDAO.getAllCoupons();
-        this.couponFilteredList = new FilteredList<>(couponMasterList, p -> true);
-        couponTable.setItems(this.couponFilteredList);
-        applyCouponFilter();
-    }
 
-    
+
 
 
     /** 상품 더블 클릭 시 쿠폰 적용 팝업창 호출 */
