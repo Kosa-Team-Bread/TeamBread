@@ -10,7 +10,7 @@ public class Inout {
 
 	
 	//입출고 ID
-	private Integer inputId;
+	private Integer inoutId;
 	
 	// 재고 ID
 	private Integer stockId;
@@ -26,6 +26,9 @@ public class Inout {
 	
 	// 입출고 유형 1-> 입고, 2-> 출고
 	private Integer inoutType;
+	
+	// 입출고 수량
+	private Integer inoutQuantity;
 	
 	// 입출고 사유
 	private String inoutContent;

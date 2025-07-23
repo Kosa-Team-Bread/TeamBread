@@ -1,54 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 
-<AnchorPane prefHeight="1024.0" prefWidth="1440.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<AnchorPane prefWidth="1440.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
    <children>
        
-       <!-- 상단 헤더 -->
-       <HBox alignment="CENTER_LEFT" layoutX="0" layoutY="0" prefHeight="56.0" prefWidth="1440.0" spacing="24" style="-fx-background-color: #F2F4F8; -fx-border-color: #DDE1E6; -fx-border-width: 0 0 1 0;">
-           <HBox.margin>
+       <!-- 상단 헤더 (수정 없음) -->
+       <HBox alignment="CENTER_LEFT" prefHeight="56.0" style="-fx-background-color: #F2F4F8; -fx-border-color: #DDE1E6; -fx-border-width: 0 0 1 0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+           <padding>
                <Insets bottom="8" left="80" right="80" top="8" />
-           </HBox.margin>
+           </padding>
           <children>
-      
-              <!-- 로고 -->
               <ImageView fitHeight="40.0" fitWidth="100.0" pickOnBounds="true">
                   <image>
                       <Image url="@logo.png" />
                   </image>
               </ImageView>
-      
-              <!-- 중앙 메뉴들 -->
               <HBox alignment="CENTER" spacing="24">
-         <children>
-                     <Label style="-fx-font-family: 'Roboto'; -fx-font-size: 16px; -fx-font-weight: 500; -fx-text-fill: #21272A;" text="재고현황" />
-                     <Label style="-fx-font-family: 'Roboto'; -fx-font-size: 16px; -fx-font-weight: 500; -fx-text-fill: #21272A;" text="입출고관리" />
-                     <Label fx:id="couponMenu" onMouseClicked="#handleCouponClick" style="-fx-font-family: 'Roboto'; -fx-font-size: 16px; -fx-font-weight: 500; -fx-text-fill: #21272A;" text="쿠폰관리" />
-                    <Label fx:id="mypageMenu" onMouseClicked="#handleMypageClick" style="-fx-font-family: 'Roboto'; -fx-font-size: 16px; -fx-font-weight: 500; -fx-text-fill: #21272A;" text="마이페이지" />
-         </children>
+                 <children>
+                     <Label fx:id="stockMenu" onMouseClicked="#handleStockClick" text="재고현황" />
+                     <Label fx:id="inoutMenu" onMouseClicked="#handleInoutClick" text="입출고관리" />
+                     <Label fx:id="couponMenu" onMouseClicked="#handleCouponClick" text="쿠폰관리" />
+                     <Label fx:id="mypageMenu" onMouseClicked="#handleMypageClick" text="마이페이지" />
+                 </children>
               </HBox>
-      
-              <!-- 우측 마이페이지 -->
-              <Pane fx:id="rightSpacer" HBox.hgrow="ALWAYS" />
+              <Pane HBox.hgrow="ALWAYS" />
           </children>
-   
        </HBox>
    
-       <!-- 중앙 이미지 -->
-       <ImageView fitHeight="337.0" fitWidth="636.0" layoutX="402.0" layoutY="343.0" preserveRatio="true">
-           <image>
-               <Image url="@logo.png" />
-           </image>
-       </ImageView>
-      <AnchorPane fx:id="mainContent" layoutY="56.0" prefHeight="968.0" prefWidth="1440.0" />
+       <!-- 콘텐츠가 표시될 메인 영역 -->
+       <AnchorPane fx:id="mainContent" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
+          <children>
+             <!-- [수정] 중앙 로고 ImageView를 mainContent 안으로 이동 -->
+             <!-- AnchorPane 앵커를 이용해 부모(mainContent)의 정중앙에 위치하도록 설정 -->
+             <ImageView fitHeight="337.0" fitWidth="636.0" layoutX="402.0" layoutY="343.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="402.0" AnchorPane.rightAnchor="402.0" AnchorPane.topAnchor="287.0">
+                <image>
+                   <Image url="@logo.png" />
+                </image>
+             </ImageView>
+          </children>
+       </AnchorPane>
    </children>
-
 </AnchorPane>

@@ -1,5 +1,6 @@
 package util;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,8 +16,8 @@ public class DBUtil {
 	// JDBC driver and connection string for Oracle DB
 	private static final String JDBC_DRIVER = "oracle.jdbc.driver.OracleDriver";
 	private static final String connStr = "jdbc:oracle:thin:hr/hr@localhost:1521/xepdb1";
-	
-	// Shared database connection instanced
+
+	// Shared database connection instance
 	private static Connection conn = null;
 
 	// Method to establish a database connection
@@ -29,8 +30,8 @@ public class DBUtil {
 			e.printStackTrace();
 			throw e;
 		}
-		
-		System.out.println("Oracle JDBC Driver 등록 완료!");
+
+		System.out.println("Oracle JDBC Driver Registered!");
 
 		try {
 			// Create database connection
@@ -128,68 +129,92 @@ public class DBUtil {
 			dbDisconnect();
 		}
 	}
-	
+
 	// 조건 검색
-		public static ResultSet dbCaseExecuteQuery(String queryPstmt, List<Object> addList) throws SQLException, ClassNotFoundException {
-			PreparedStatement pstmt = null;
-			ResultSet resultSet = null;
-			CachedRowSetImpl crs = null;
+	public static ResultSet dbCaseExecuteQuery(String queryPstmt, List<Object> addList)	throws SQLException, ClassNotFoundException {
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		CachedRowSetImpl crs = null;
 
-			try {
-				// Connect to the database
-				dbConnect();
-				System.out.println("Select statement: " + queryPstmt+ "\n");
+		try {
+			// Connect to the database
+			dbConnect();
+			System.out.println("Select statement: " + queryPstmt + "\n");
 
-				// Execute the SELECT query
-				pstmt = conn.prepareStatement(queryPstmt);
-				// ?의 객체 삽입
-				for (int i = 0; i < addList.size(); i++) pstmt.setObject(i + 1, addList.get(i));
-				
-				resultSet = pstmt.executeQuery();
+			// Execute the SELECT query
+			pstmt = conn.prepareStatement(queryPstmt);
+			// ?의 객체 삽입
+			for (int i = 0; i < addList.size(); i++) pstmt.setObject(i + 1, addList.get(i));
 
-				// Populate and return a CachedRowSet with the results
-				crs = new CachedRowSetImpl();
-				crs.populate(resultSet);
-			} catch (SQLException e) {
-				System.out.println("Problem occurred at executeQuery operation : " + e);
-				throw e;
-			} finally {
-				// Close resources and disconnect
-				if (resultSet != null) {
-					resultSet.close();
-				}
-				if (pstmt  != null) {
-					pstmt.close();
-				}
-				dbDisconnect();
+			resultSet = pstmt.executeQuery();
+
+			// Populate and return a CachedRowSet with the results
+			crs = new CachedRowSetImpl();
+			crs.populate(resultSet);
+		} catch (SQLException e) {
+			System.out.println("Problem occurred at executeQuery operation : " + e);
+			throw e;
+		} finally {
+			// Close resources and disconnect
+			if (resultSet != null) {
+				resultSet.close();
 			}
-			return crs;
-		}
-
-
-		// 삽입, 삭제, 수정
-		public static void dbExecuteUpdate(String sqlPstmt, List<Object> addList) throws SQLException, ClassNotFoundException {
-			PreparedStatement pstmt = null;
-
-			try {
-				// Connect to the database
-				dbConnect();
-
-				// Execute the update query
-				pstmt = conn.prepareStatement(sqlPstmt);
-				// ?의 객체 삽입
-				for (int i = 0; i < addList.size(); i++) pstmt.setObject(i + 1, addList.get(i));
-				
-				pstmt.executeUpdate(sqlPstmt);
-			} catch (SQLException e) {
-				System.out.println("Problem occurred at executeUpdate operation : " + e);
-				throw e;
-			} finally {
-				// Close the statement and disconnect
-				if (pstmt != null) {
-					pstmt.close();
-				}
-				dbDisconnect();
+			if (pstmt != null) {
+				pstmt.close();
 			}
+			dbDisconnect();
 		}
+		return crs;
+	}
+
+	// 삽입, 삭제, 수정
+	public static void dbExecuteUpdate(String sqlPstmt, List<Object> addList) throws SQLException, ClassNotFoundException {
+		PreparedStatement pstmt = null;
+
+		try {
+			// Connect to the database
+			dbConnect();
+
+			// Execute the update query
+			pstmt = conn.prepareStatement(sqlPstmt);
+			// ?의 객체 삽입
+			for (int i = 0; i < addList.size(); i++) pstmt.setObject(i + 1, addList.get(i));
+
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("Problem occurred at executeUpdate operation : " + e);
+			throw e;
+		} finally {
+			// Close the statement and disconnect
+			if (pstmt != null) {
+				pstmt.close();
+			}
+			dbDisconnect();
+		}
+	}
+	// 저장 프로시저 사용
+    public static void dbExecuteCall(String sqlCall, List<Object> paramList) throws SQLException, ClassNotFoundException {
+		    CallableStatement cstmt = null;
+
+		    try {
+		        dbConnect();
+
+		        cstmt = conn.prepareCall(sqlCall);
+
+		        for (int i = 0; i < paramList.size(); i++) cstmt.setObject(i + 1, paramList.get(i));
+
+
+		        cstmt.execute();
+
+		    } catch (SQLException e) {
+		        System.out.println("Problem occurred at executeCall operation : " + e);
+		        throw e;
+		    } finally {
+		        if (cstmt != null) cstmt.close();
+		        dbDisconnect();
+		    }
+	}
+
+
 }
+

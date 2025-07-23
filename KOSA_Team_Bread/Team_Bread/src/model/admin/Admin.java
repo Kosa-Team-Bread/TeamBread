@@ -51,5 +51,8 @@ public class Admin {
 		this.adminModDate = adminModDate;
 	}
 	
-	
+	public String getGradeDisplayName() {
+		Grade gradeValue = Grade.fromCode(grade);
+		return gradeValue != null ? gradeValue.getDisplayName() : "알 수 없음";
+	}
 }

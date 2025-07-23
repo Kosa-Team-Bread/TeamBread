@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.cell.*?>
+
+<VBox fillWidth="true" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StockController">
+   <children>
+      <!-- Main Container -->
+      <VBox style="-fx-background-color: #f8fafc; -fx-padding: 20;" VBox.vgrow="ALWAYS">
+         <children>
+            <!-- Content Container -->
+            <VBox style="-fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, #cccccc, 10, 0, 0, 2); -fx-alignment: center;" VBox.vgrow="ALWAYS">
+               <children>
+                  <!-- Header Section -->
+                  <VBox style="-fx-background-color: #f8f9fa; -fx-alignment: center; -fx-border-color: #e9ecef; -fx-border-width: 0 0 2 0;">
+                     <children>
+                        <!-- 로고 섹션 -->
+                        <ImageView fitHeight="84.0" fitWidth="186.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@../main/logo.png" />
+                           </image>
+                        </ImageView>                      
+                     </children>
+                  </VBox>
+                  
+                  <!-- Title Section -->
+                  <HBox style="-fx-padding: 20 10 10 20; -fx-border-width: 0 0 1 0; -fx-border-color: #000000;" spacing="15.0" alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
+				    <children>
+				        <Label style="-fx-text-fill: #333;" text="재고현황">
+				            <font>
+				                <Font name="Malgun Gothic Bold" size="24.0" />
+				            </font>
+				        </Label>
+				        <!-- 카테고리 선택 콤보박스 -->
+				        <ComboBox fx:id="categoryComboBox" prefWidth="150.0" promptText="카테고리 선택" />
+				        <!-- 상품명 검색 필드 -->
+				        <TextField fx:id="searchField" HBox.hgrow="ALWAYS" promptText="상품명 검색" />
+				        <!-- 검색 버튼 -->
+				        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchProducts" text="검색" />
+				        <!-- 상품추가 버튼 -->
+				        <Button fx:id="addButton" mnemonicParsing="false" onAction="#addProduct" text="상품추가" />
+				    </children>
+				</HBox>
+                  
+                  <!-- Table Section -->
+                  <TableView fx:id="stockTableView" style="-fx-background-color: transparent; -fx-table-cell-border-color: #e9ecef; -fx-padding: 10 20 20 20;" VBox.vgrow="ALWAYS" prefHeight="600.0">
+                     <columns>
+                        <TableColumn fx:id="stockNameColumn" prefWidth="120.0" style="-fx-alignment: CENTER-LEFT;" text="제품명">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="stockName" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="categoryNameColumn" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="카테고리명">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="categoryName" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="stockQuantityColumn" prefWidth="100.0" style="-fx-alignment: CENTER-LEFT;" text="재고수량">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="stockQuantity"/>
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="locationColumn" prefWidth="100.0" style="-fx-alignment: CENTER-LEFT;" text="저장위치">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="location" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="stockRegDateColumn" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="등록일">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="stockRegDate" />
+                           </cellValueFactory>
+                        </TableColumn>
+                        <TableColumn fx:id="stockModDateColumn" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="최근수정일">
+                           <cellValueFactory>
+                              <PropertyValueFactory property="stockModDate" />
+                           </cellValueFactory>
+                        </TableColumn>
+                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>

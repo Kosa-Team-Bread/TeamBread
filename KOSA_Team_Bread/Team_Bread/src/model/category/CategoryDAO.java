@@ -6,9 +6,11 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import lombok.AllArgsConstructor;
 import util.DBUtil;
 
 // Made by 정영규
+@AllArgsConstructor
 public class CategoryDAO {
 
 	
@@ -43,9 +45,11 @@ public class CategoryDAO {
 	
 	// 카테고리 이름으로 상세 조회
 	public Category getCategory(String cateName) throws SQLException, ClassNotFoundException {
-		String query = "SELECT * FROM tbl_category WHERE CATEGORY_NAME=" + cateName;
+		List<Object> addList = new ArrayList<>();
+		String query = "SELECT * FROM tbl_category WHERE CATEGORY_NAME= ?";
 		try {
-			ResultSet rs = DBUtil.dbExecuteQuery(query);
+			addList.add(cateName);
+			ResultSet rs = DBUtil.dbCaseExecuteQuery(query, addList);
 			Category category = getCategory(rs);
 			return category;
 		} catch(SQLException e) {
