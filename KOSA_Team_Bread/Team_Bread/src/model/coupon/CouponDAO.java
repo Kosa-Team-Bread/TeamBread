@@ -11,10 +11,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+// DTO 클래스 임포트
 import model.coupon.CouponDTO_Add;
 import model.coupon.CouponDTO_Update;
 
 public class CouponDAO {
+    
     /**
      * 모든 쿠폰 정보를 DB에서 조회 후 반환
      * @return 쿠폰 리스트 (ObservableList)
@@ -22,18 +24,16 @@ public class CouponDAO {
     public ObservableList<Coupon> getAllCoupons() {
         ObservableList<Coupon> couponList = FXCollections.observableArrayList();
         
-        // tbl_category와 JOIN, category_name 함께 조회
-        // LEFT JOIN 사용, 쿠폰에 연결된 카테고리가 없더라도 쿠폰 목록에서 누락되지 않도록 함
-        String sql = "SELECT c.coupon_id, c.product_id, c.category_id, c.coupon_name, c.percent, c.starttime, c.deadline " +
-                     "FROM tbl_coupon c " +
-                     "LEFT JOIN tbl_category cat ON c.category_id = cat.category_id " +
-                     "ORDER BY c.coupon_id ASC";
+        // tbl_coupon 테이블의 데이터만 조회
+        String sql = "SELECT coupon_id, product_id, category_id, coupon_name, percent, starttime, deadline " +
+                     "FROM tbl_coupon " +
+                     "ORDER BY coupon_id ASC";
 
         try {
             ResultSet rs = DBUtil.dbExecuteQuery(sql);
 
             while (rs.next()) {
-                // 새로운 Coupon 모델의 빌더에 맞춰 객체 생성
+                // 새로운 Coupon 모델의 빌더에 맞춰 객체 생성 (categoryName 빌드 부분 없음)
                 Coupon coupon = Coupon.builder()
                         .couponId(rs.getInt("coupon_id"))
                         .productId(rs.getInt("product_id"))

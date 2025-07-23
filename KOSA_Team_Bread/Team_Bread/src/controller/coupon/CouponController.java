@@ -7,16 +7,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -30,10 +27,12 @@ import model.product.ProductDAO;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import controller.coupon.CouponApplyPopupController;
@@ -49,6 +48,11 @@ public class CouponController implements Initializable {
     @FXML private TableColumn<Coupon, String> deadlineCol;
     @FXML private ComboBox<String> couponCategoryFilter;    // 카테고리 필터
     @FXML private TextField couponSearchField;              // 쿠폰명 검색
+    
+    // 외부 버튼(쿠폰 수정/삭제 버튼)을 위한 FXML 필드 추가
+    @FXML private Button addCouponBtn;
+    @FXML private Button editCouponBtn;
+    @FXML private Button deleteCouponBtn;
 
     @FXML private TableView<Product> productTable;
     @FXML private TableColumn<Product, String> productCategoryCol;
@@ -79,15 +83,18 @@ public class CouponController implements Initializable {
         couponDAO = new CouponDAO();
         productDAO = new ProductDAO();
         categoryDAO = new CategoryDAO();
-
+        
+        // 카테고리 Map을 먼저 로드해야 테이블 컬럼 설정 시 사용 가능
+        loadDataFromDB();
+        
         // 테이블 컬럼 설정
         setupTableColumns();
-
-        // DB에서 데이터 로드
-        loadDataFromDB();
-
+        
         // 필터링 기능 설정
         setupFilterListeners();
+        
+        // 버튼 상태 관리 기능 설정
+        setupButtonControls();
         
         // 이벤트 핸들러 설정
         productTable.setOnMouseClicked(event -> {
@@ -138,6 +145,78 @@ public class CouponController implements Initializable {
 
         priceCol.setCellFactory(currencyCellFactory);
         costCol.setCellFactory(currencyCellFactory);
+    }
+    
+    /** 
+     * 테이블 선택 상태에 따라 쿠폰 수정/삭제 버튼의 활성화/비활성화 상태를 관리
+     */
+    private void setupButtonControls() {
+        // 초기에는 수정/삭제 버튼을 비활성화
+        editCouponBtn.setDisable(true);
+        deleteCouponBtn.setDisable(true);
+
+        // 테이블의 선택된 항목이 변경될 때마다 리스너가 호출됨
+        couponTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            // 새로 선택된 항목이 있으면(null이 아니면) 버튼 활성화, 없으면 비활성화
+            boolean isItemSelected = (newSelection != null);
+            editCouponBtn.setDisable(!isItemSelected);
+            deleteCouponBtn.setDisable(!isItemSelected);
+        });
+    }
+    
+    
+    /**
+     * '쿠폰 추가' 버튼 클릭 시 실행될 로직
+     * @param event 액션 이벤트 객체
+     */
+    @FXML
+    private void handleAddAction(ActionEvent event) {
+        System.out.println("추가 버튼 클릭");
+        // TODO: 쿠폰 추가 팝업창을 띄우는 로직 구현
+    }
+    
+    /**
+     * '쿠폰 수정' 버튼 클릭 시 실행될 로직
+     * @param event 액션 이벤트 객체
+     */
+    @FXML
+    private void handleEditAction(ActionEvent event) {
+        Coupon selectedCoupon = couponTable.getSelectionModel().getSelectedItem();
+        if (selectedCoupon == null) {
+            showAlert(Alert.AlertType.WARNING, "선택 오류", "수정할 쿠폰을 먼저 선택해주세요.");
+            return;
+        }
+        System.out.println("수정 버튼 클릭: " + selectedCoupon.getCouponName());
+        // TODO: 쿠폰 수정 팝업창을 띄우고 selectedCoupon 객체를 전달하는 로직 구현
+    }
+    
+    /**
+     * '쿠폰 삭제' 버튼 클릭 시 실행될 로직
+     * @param event 액션 이벤트 객체
+     */
+    @FXML
+    private void handleDeleteAction(ActionEvent event) {
+        Coupon selectedCoupon = couponTable.getSelectionModel().getSelectedItem();
+        if (selectedCoupon == null) {
+            showAlert(Alert.AlertType.WARNING, "선택 오류", "삭제할 쿠폰을 먼저 선택해주세요.");
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("쿠폰 삭제 확인");
+        alert.setHeaderText("'" + selectedCoupon.getCouponName() + "' 쿠폰을 삭제하시겠습니까?");
+        alert.setContentText("이 작업은 되돌릴 수 없습니다.");
+        
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                couponDAO.deleteCoupon(selectedCoupon.getCouponId());
+                couponMasterList.remove(selectedCoupon);
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "삭제 실패", "데이터베이스 오류로 인해 삭제에 실패했습니다.");
+                e.printStackTrace();
+            }
+        }
     }
 
     /** DB에서 카테고리, 쿠폰, 상품 데이터를 로드 */
@@ -214,27 +293,32 @@ public class CouponController implements Initializable {
      * @param selectedProduct 선택된 상품 객체
      */
     private void handleProductSelection(Product selectedProduct) {
-        // (메소드 내용은 변경 없음)
         try {
-            // 1. FXML 파일을 로드할 FXMLLoader 인스턴스 생성
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/coupon/CouponApplyPopup.fxml"));
             Parent root = loader.load();
 
-            // 2. 팝업창의 컨트롤러 인스턴스를 가져옴
             CouponApplyPopupController popupController = loader.getController();
-            
-            // 3. 컨트롤러의 initData 메소드를 호출하여 선택된 상품 정보를 전달
             popupController.initData(selectedProduct);
 
-            // 4. 팝업창(Stage)을 생성하고 화면에 표시
             Stage popupStage = new Stage();
-            popupStage.initModality(Modality.APPLICATION_MODAL);        // 부모창을 누를 수 없도록 설정
+            popupStage.initModality(Modality.APPLICATION_MODAL);
             popupStage.setTitle(selectedProduct.getProductName() + " - 쿠폰 적용");
             popupStage.setScene(new Scene(root));
-            popupStage.showAndWait();       // 팝업창이 닫힐 때까지 대기
+            popupStage.showAndWait();
         } catch (IOException e) {
             System.out.println("팝업창 로드 중 오류 발생");
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * [신규] Alert 창을 띄우는 공통 메소드
+     */
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

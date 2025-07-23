@@ -175,25 +175,25 @@ public class DBUtil {
 	}
 	// Stored Procedure 사용
     public static void dbExecuteCall(String sqlCall, List<Object> paramList) throws SQLException, ClassNotFoundException {
-		    CallableStatement cstmt = null;
+		CallableStatement cstmt = null;
 
-		    try {
-		        dbConnect();
+		try {
+			dbConnect();
 
-		        cstmt = conn.prepareCall(sqlCall);
+			cstmt = conn.prepareCall(sqlCall);
 
-		        for (int i = 0; i < paramList.size(); i++) cstmt.setObject(i + 1, paramList.get(i));
+			for (int i = 0; i < paramList.size(); i++) cstmt.setObject(i + 1, paramList.get(i));
 
 
-		        cstmt.execute();
+			cstmt.execute();
 
-		    } catch (SQLException e) {
-		        System.out.println("Problem occurred at executeCall operation : " + e);
-		        throw e;
-		    } finally {
-		        if (cstmt != null) cstmt.close();
-		        dbDisconnect();
-		    }
+		} catch (SQLException e) {
+			System.out.println("Problem occurred at executeCall operation : " + e);
+			throw e;
+		} finally {
+			if (cstmt != null) cstmt.close();
+			dbDisconnect();
+		}
 	}
 
 
