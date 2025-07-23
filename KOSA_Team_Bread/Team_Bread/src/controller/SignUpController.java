@@ -204,7 +204,7 @@ public class SignUpController implements Initializable {
 	}
 
 	// 알림 메세지
-	public void showAlert(Alert.AlertType type, String title, String message) {
+	private void showAlert(Alert.AlertType type, String title, String message) {
 		Alert alert = new Alert(type);
 		alert.setTitle(title);
 		alert.setHeaderText(null);
