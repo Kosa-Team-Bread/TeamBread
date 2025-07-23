@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.text.*?>
+
+<!-- ==================== FXML 파일 (InoutCreate.fxml) ==================== -->
+
+<BorderPane prefHeight="700.0" prefWidth="500.0" style="-fx-background-color: #f5f5f5;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InoutCreateController">
+   <top>
+        <VBox alignment="CENTER" spacing="25.0" style="-fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);" BorderPane.alignment="CENTER">
+            
+            <padding>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+            </padding>
+           <children>
+               
+               <!-- 로고 섹션 -->
+               <ImageView fitHeight="84.0" fitWidth="186.0" pickOnBounds="true">
+                     <image>
+                         <Image url="@../main/logo.png" />
+                     </image>
+                 </ImageView>
+               
+               <!-- 제목 -->
+               <Label style="-fx-text-fill: #333333;" text="입/출고 신규등록">
+               <font>
+                  <Font name="Malgun Gothic Bold" size="24.0" />
+               </font></Label>
+               
+               <!-- 폼 섹션 -->
+               <VBox prefWidth="320.0" spacing="20.0">
+                  <children>
+                      
+                      <!-- 제품명 -->
+                      <VBox spacing="8.0">
+                         <children>
+                             <Label style="-fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-size: 14px;" text="제품명" />
+                             <TextField fx:id="productNameField" style="-fx-padding: 12px; -fx-border-color: #dddddd; -fx-border-radius: 4px; -fx-background-color: #f8f9fa; -fx-background-radius: 4px; -fx-font-size: 14px;" />
+                         </children>
+                      </VBox>
+                  <HBox prefHeight="62.0" prefWidth="420.0">
+                     <children>
+                            
+                            <!-- 입출고 콤보박스 -->
+                            <VBox prefHeight="62.0" prefWidth="159.0" spacing="8.0">
+                               <children>
+                                   <Label style="-fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-size: 14px;" text="입/출고" />
+                                   <ComboBox fx:id="inoutTypeComboBox" prefHeight="23.0" prefWidth="159.0" value="입고">
+                                   <items>
+                                       <FXCollections fx:factory="observableArrayList">
+                                           <String fx:value="입고" />
+			                               <String fx:value="출고" />
+                                       </FXCollections>
+                                   </items>
+                               	   </ComboBox>
+                               </children>
+                            </VBox>
+                        <Region prefHeight="62.0" prefWidth="77.0" HBox.hgrow="ALWAYS" />
+                        <!-- 카테고리 콤보박스 -->
+                        <VBox prefHeight="62.0" prefWidth="175.0" spacing="8.0">
+                           <children>
+                              <Label style="-fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-size: 14px;" text="카테고리" />
+                              <ComboBox fx:id="categoryComboBox" prefHeight="23.0" prefWidth="189.0" value="빵">
+                                   <items>
+                                       <FXCollections fx:factory="observableArrayList">
+			                               <String fx:value="빵" />
+			                               <String fx:value="케이크" />
+			                               <String fx:value="떡" />
+                                       </FXCollections>
+                                   </items>
+                               </ComboBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <VBox spacing="8.0">
+                     <children>
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-size: 14px;" text="관리자명" />
+                        <TextField fx:id="adminNameField" disable="true" promptText="관리자명을 입력하세요" style="-fx-padding: 12px; -fx-border-color: #dddddd; -fx-border-radius: 4px; -fx-background-color: #f8f9fa; -fx-background-radius: 4px; -fx-font-size: 14px;" />
+                     </children>
+                  </VBox>
+                      
+                      <!-- 수량 -->
+                      <VBox spacing="8.0">
+                         <children>
+                             <Label style="-fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-size: 14px;" text="수량" />
+                             <TextField fx:id="inoutQuantityField" promptText="수량을 입력하세요" style="-fx-padding: 12px; -fx-border-color: #dddddd; -fx-border-radius: 4px; -fx-background-color: #f8f9fa; -fx-background-radius: 4px; -fx-font-size: 14px;" />
+                         </children>
+                      </VBox>
+                       <!-- 입/출고 사유 -->
+                  <VBox spacing="8.0">
+                     <children>
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #333333; -fx-font-size: 14px;" text="입/출고 사유" />
+                        <TextField fx:id="contentField" promptText="사유를 입력하세요" style="-fx-padding: 12px; -fx-border-color: #dddddd; -fx-border-radius: 4px; -fx-background-color: #f8f9fa; -fx-background-radius: 4px; -fx-font-size: 14px;" />
+                     </children>
+                  </VBox>
+                      
+                      <!-- 버튼 섹션 -->
+                      <HBox alignment="CENTER" spacing="15.0">
+                          <VBox.margin>
+                              <Insets top="15.0" />
+                          </VBox.margin>
+                         <children>
+                             
+                             <Button fx:id="cancelButton" onAction="#handleCancel" prefHeight="45.0" prefWidth="130.0" style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-background-radius: 4px; -fx-font-size: 16px; -fx-font-weight: bold;" text="취소" />
+                             <Button fx:id="saveButton" onAction="#handleSave" prefHeight="45.0" prefWidth="130.0" style="-fx-background-color: #4285f4; -fx-text-fill: white; -fx-background-radius: 4px; -fx-font-size: 16px; -fx-font-weight: bold;" text="등록완료" />
+                         </children>
+                      </HBox>
+                  </children>
+               </VBox>
+           </children>
+        </VBox>
+   </top>
+</BorderPane>
