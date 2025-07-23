@@ -22,7 +22,7 @@
        <!-- 상단 헤더 (수정 없음) -->
        <HBox alignment="CENTER_LEFT" prefHeight="56.0" style="-fx-background-color: #F2F4F8; -fx-border-color: #DDE1E6; -fx-border-width: 0 0 1 0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
            <padding>
-               <Insets bottom="8" right="80" top="8" />
+               <Insets bottom="8" left="80" right="80" top="8" />
            </padding>
           <children>
               <ImageView fitHeight="40.0" fitWidth="100.0" pickOnBounds="true">
