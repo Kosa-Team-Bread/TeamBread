@@ -19,6 +19,11 @@ public class DBUtil {
 
 	// Shared database connection instance
 	private static Connection conn = null;
+	
+	// InoutDAO에서 열어놓은 공유 Connection을 반환하는 메소드
+	public static Connection getSharedConnection() {
+		return conn;
+	}
 
 	// Method to establish a database connection
 	public static void dbConnect() throws SQLException, ClassNotFoundException {
@@ -166,6 +171,40 @@ public class DBUtil {
 		}
 		return crs;
 	}
+	
+	// (조건 검색 오버로딩) 이미 열려있는 Connection을 받아서 쿼리만 실행하고 결과를 반환
+	public static ResultSet dbCaseExecuteQuery(Connection conn, String queryPstmt, List<Object> addList)	throws SQLException, ClassNotFoundException {
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		CachedRowSetImpl crs = null;
+
+		try {
+			System.out.println("Select statement: " + queryPstmt + "\n");
+			// 전달받은 conn을 사용하므로 dbConnect()를 호출하지 않음
+			// Execute the SELECT query
+			pstmt = conn.prepareStatement(queryPstmt);
+			// ?의 객체 삽입
+			for (int i = 0; i < addList.size(); i++) pstmt.setObject(i + 1, addList.get(i));
+
+			resultSet = pstmt.executeQuery();
+
+			// Populate and return a CachedRowSet with the results
+			crs = new CachedRowSetImpl();
+			crs.populate(resultSet);
+		} catch (SQLException e) {
+			System.out.println("Problem occurred at executeQuery operation : " + e);
+			throw e;
+		} finally {
+			// ResultSet과 PreparedStatement는 닫아주지만 Connection은 닫지 않음 (dbDisconnect() 호출 안함)
+			if (resultSet != null) {
+				resultSet.close();
+			}
+			if (pstmt != null) {
+				pstmt.close();
+			}
+		}
+		return crs;
+	}
 
 	// 삽입, 삭제, 수정
 	public static void dbExecuteUpdate(String sqlPstmt, List<Object> addList) throws SQLException, ClassNotFoundException {
@@ -192,29 +231,29 @@ public class DBUtil {
 			dbDisconnect();
 		}
 	}
-	// 저장 프로시저 사용
+	// Stored Procedure 사용
     public static void dbExecuteCall(String sqlCall, List<Object> paramList) throws SQLException, ClassNotFoundException {
-		    CallableStatement cstmt = null;
+		CallableStatement cstmt = null;
 
-		    try {
-		        dbConnect();
+		try {
+			dbConnect();
 
-		        cstmt = conn.prepareCall(sqlCall);
+			cstmt = conn.prepareCall(sqlCall);
 
-		        for (int i = 0; i < paramList.size(); i++) cstmt.setObject(i + 1, paramList.get(i));
+			for (int i = 0; i < paramList.size(); i++) cstmt.setObject(i + 1, paramList.get(i));
 
 
-		        cstmt.execute();
+			cstmt.execute();
 
-		    } catch (SQLException e) {
-		        System.out.println("Problem occurred at executeCall operation : " + e);
-		        throw e;
-		    } finally {
-		        if (cstmt != null) cstmt.close();
-		        dbDisconnect();
-		    }
+		} catch (SQLException e) {
+			System.out.println("Problem occurred at executeCall operation : " + e);
+			throw e;
+		} finally {
+			if (cstmt != null) cstmt.close();
+			dbDisconnect();
+		}
 	}
 
-
+    
 }
 

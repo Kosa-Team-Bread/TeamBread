@@ -4,6 +4,7 @@ package model.coupon;
 import lombok.*;
 import java.time.LocalDate;
 
+// lombok 어노테이션 사용
 @Data
 @Builder
 public class Coupon {
@@ -16,7 +17,7 @@ public class Coupon {
 		
 	// 카테고리 Id
 	private Integer categoryId;
-	
+
 	// 쿠폰명
 	private String couponName;
 	

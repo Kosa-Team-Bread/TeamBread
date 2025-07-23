@@ -1,0 +1,38 @@
+<!-- src/main/resources/view/coupon/CouponApplyPopup.fxml -->
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.web.WebView?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.coupon.CouponApplyPopupController"
+            prefWidth="800" prefHeight="400">
+    <center>
+        <HBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <WebView fx:id="chartWebView" prefWidth="450" prefHeight="380"/>
+
+            <VBox spacing="8" prefWidth="330">
+                <Label text="판매 가격:"/>
+                <Label fx:id="priceLabel" style="-fx-font-weight: bold;"/>
+
+                <Label text="원가:"/>
+                <Label fx:id="costLabel" style="-fx-font-weight: bold;"/>
+
+                <Label text="할인율 (%):"/>
+                <TextField fx:id="discountField" promptText="0~100"/>
+
+                <Label text="시작 날짜:"/>
+                <DatePicker fx:id="startDatePicker"/>
+
+                <Label text="종료 날짜:"/>
+                <DatePicker fx:id="endDatePicker"/>
+
+                <Button text="쿠폰 적용" fx:id="applyButton" maxWidth="Infinity"/>
+            </VBox>
+        </HBox>
+    </center>
+</BorderPane>

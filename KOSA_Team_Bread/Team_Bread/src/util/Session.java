@@ -12,6 +12,7 @@ public class Session {
 //			.adminRegDate(LocalDate.now().minusDays(30)).adminModDate(LocalDate.now()).email("a3@naver.com").build();
 	 private static Admin currentUser;
 
+
 	public static void setCurrentUser(Admin user) {
 		currentUser = user;
 	}

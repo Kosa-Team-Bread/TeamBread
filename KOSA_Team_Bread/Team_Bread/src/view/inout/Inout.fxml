@@ -8,18 +8,10 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.*?>
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
 
@@ -58,20 +50,20 @@
                        <HBox alignment="CENTER_LEFT" spacing="8.0">
                            <children>
                                <Label styleClass="filter-label" text="기간:" />
-                               <DatePicker prefWidth="130.0" />
+                               <DatePicker fx:id="startDatePicker" prefWidth="130.0" />
                                <Label text="~" />
-                               <DatePicker prefWidth="130.0" />
+                               <DatePicker fx:id="endDatePicker" prefWidth="130.0" />
                            </children>
                        </HBox>
                        <HBox alignment="CENTER_LEFT" spacing="8.0">
                            <children>
                                <Label styleClass="filter-label" text="입/출고:" />
-                               <ComboBox prefWidth="100.0" value="전체">
+                               <ComboBox fx:id="inoutTypeComboBox" prefWidth="100.0" value="전체">
                                    <items>
                                        <FXCollections fx:factory="observableArrayList">
                                            <String fx:value="전체" />
-                                 <String fx:value="입고" />
-                                 <String fx:value="출고" />
+		                                   <String fx:value="입고" />
+		                                   <String fx:value="출고" />
                                        </FXCollections>
                                    </items>
                                </ComboBox>
@@ -80,13 +72,13 @@
                        <HBox alignment="CENTER_LEFT" spacing="8.0">
                            <children>
                                <Label styleClass="filter-label" text="카테고리:" />
-                               <ComboBox prefWidth="120.0" value="전체">
+                               <ComboBox fx:id="categoryComboBox" prefWidth="120.0" value="전체">
                                    <items>
                                        <FXCollections fx:factory="observableArrayList">
                                            <String fx:value="전체" />
-                                 <String fx:value="빵" />
-                                 <String fx:value="케이크" />
-                                 <String fx:value="떡" />
+			                               <String fx:value="빵" />
+			                               <String fx:value="케이크" />
+			                               <String fx:value="떡" />
                                        </FXCollections>
                                    </items>
                                </ComboBox>
@@ -95,66 +87,49 @@
                        <HBox alignment="CENTER_LEFT" spacing="8.0">
                            <children>
                                <Label styleClass="filter-label" text="품목명:" />
-                               <TextField prefHeight="23.0" prefWidth="313.0" promptText="품목명 검색" HBox.hgrow="ALWAYS" />
+                               <TextField fx:id="productNameField" prefHeight="23.0" prefWidth="319.0" promptText="품목명 검색" HBox.hgrow="ALWAYS" />
                            </children>
                        </HBox>
-                       <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <children>
-                               <Button mnemonicParsing="false" styleClass="btn-search" onAction="#searchProducts" text="검색" />
-                               <Button mnemonicParsing="false" styleClass="btn-reset" text="초기화" />
-                           </children>
-                       </HBox>
+                        <Button fx:id="newInoutButton" mnemonicParsing="false" onAction="#handleNewInoutAction" styleClass="btn-new" text="➕ 신규 등록" />
                    </children>
                </FlowPane>
                
-               <!-- 기능 버튼 영역은 변경되지 않습니다. -->
-               <HBox alignment="CENTER_RIGHT" spacing="10.0">
-                   <children>
-                       <Button mnemonicParsing="false" onAction="#handleNewEntryAction" styleClass="btn-new" text="➕ 신규 등록" />
-                   </children>
-               </HBox>
-               
                <!-- VBox.vgrow="ALWAYS" 속성 덕분에 이 테이블이 남은 공간을 모두 차지하고, 내용이 많아지면 자동으로 스크롤바가 생깁니다. -->
-               <TableView fx:id="inoutTableView" VBox.vgrow="ALWAYS" prefHeight="500.0">
+               <TableView fx:id="inoutTableView" prefHeight="500.0" VBox.vgrow="ALWAYS">
                <columns>
                         <TableColumn fx:id="inoutRegDateColumn" prefWidth="120.0" style="-fx-alignment: CENTER-LEFT;" text="처리일">
                            <cellValueFactory>
-                              <PropertyValueFactory property="inoutRegDateColumn" />
+                              <PropertyValueFactory property="inoutRegDate" />
                            </cellValueFactory>
                         </TableColumn>
                         <TableColumn fx:id="categoryNameColumn" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="카테고리명">
                            <cellValueFactory>
-                              <PropertyValueFactory property="categoryNameColumn" />
+                              <PropertyValueFactory property="categoryName" />
                            </cellValueFactory>
                         </TableColumn>
                         <TableColumn fx:id="productNameColumn" prefWidth="100.0" style="-fx-alignment: CENTER-LEFT;" text="품목명">
                            <cellValueFactory>
-                              <PropertyValueFactory property="productNameColumn" />
+                              <PropertyValueFactory property="productName" />
                            </cellValueFactory>
                         </TableColumn>
                         <TableColumn fx:id="inoutTypeColumn" prefWidth="100.0" style="-fx-alignment: CENTER-LEFT;" text="입/출고">
                            <cellValueFactory>
-                              <PropertyValueFactory property="inoutTypeColumn" />
+                              <PropertyValueFactory property="typeName" />
                            </cellValueFactory>
                         </TableColumn>
                         <TableColumn fx:id="inoutQuantityColumn" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="수량">
                            <cellValueFactory>
-                              <PropertyValueFactory property="inoutQuantityColumn" />
+                              <PropertyValueFactory property="inoutQuantity" />
                            </cellValueFactory>
                         </TableColumn>
                         <TableColumn fx:id="inoutContentColumn" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="내용">
                            <cellValueFactory>
-                              <PropertyValueFactory property="inoutContentColumn" />
+                              <PropertyValueFactory property="inoutContent" />
                            </cellValueFactory>
                         </TableColumn>
                         <TableColumn fx:id="adminNameColumn" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="담당자">
                            <cellValueFactory>
-                              <PropertyValueFactory property="adminNameColumn" />
-                           </cellValueFactory>
-                        </TableColumn>
-                        <TableColumn fx:id="inoutActionColumn" prefWidth="140.0" style="-fx-alignment: CENTER-LEFT;" text="관리">
-                           <cellValueFactory>
-                              <PropertyValueFactory property="inoutActionColumn" />
+                              <PropertyValueFactory property="adminName" />
                            </cellValueFactory>
                         </TableColumn>
                      </columns>

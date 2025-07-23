@@ -1,4 +1,5 @@
 package model.inout;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,6 +22,13 @@ public class InoutDAO {
 		private final AdminDAO adminDao;
 		private final CategoryDAO cateDao;
 		private final StockDAO stockDao;
+		
+		public InoutDAO() {
+			this.adminDao = new AdminDAO();
+			this.cateDao = new CategoryDAO();
+			this.productDao = new ProductDAO(cateDao,adminDao);
+			this.stockDao = new StockDAO(cateDao);			
+		}
 	
 		// 입출고 전체조회
 		public ObservableList<inoutSelectDto> findAllInout() throws SQLException, ClassNotFoundException {
@@ -38,23 +46,36 @@ public class InoutDAO {
 		// 상품 리스트 받기
 		public ObservableList<inoutSelectDto> getInoutList(ResultSet rs) throws SQLException, ClassNotFoundException {
 			ObservableList<inoutSelectDto> inoutList = FXCollections.observableArrayList();
-			while (rs.next()) {
-				String type = null;
-				if(rs.getInt("INOUT_TYPE") == 1) type = "입고";
-				else type = "출고";
-				inoutSelectDto inout = inoutSelectDto.builder()
-						.inoutId(rs.getInt("INOUT_ID"))
-						.adminName(adminDao.getAdminFromId(rs.getInt("ADMIN_ID")).getAdminName())
-						.categoryName(cateDao.getCategoryFromCategoryId(rs.getInt("CATEGORY_ID")).getCategoryName())
-						.productName(productDao.getProductFromProductId(rs.getInt("PRODUCT_ID")).getProductName())
-						.typeName(type)
-						.inoutQuantity(rs.getInt("INOUT_Quantity"))
-						.inoutContent(rs.getString("INOUT_CONTENT"))
-						.inoutRegDate(rs.getDate("PRODUCT_REGDATE").toLocalDate())
-						.build();
+			
+			try {
+				// DB 연결을 한 번만 생성합니다.
+				DBUtil.dbConnect();
+				Connection sharedConn = DBUtil.getSharedConnection();	// 열린 커넥션을 가져옵니다.
+				
+				while (rs.next()) {
+					String type = null;
+					if(rs.getInt("INOUT_TYPE") == 1) type = "입고";
+					else type = "출고";
+					inoutSelectDto inout = inoutSelectDto.builder()
+							.inoutId(rs.getInt("INOUT_ID"))
+							.adminName(adminDao.getAdminFromId(rs.getInt("ADMIN_ID"),sharedConn).getAdminName())
+							.categoryName(cateDao.getCategoryFromCategoryId(rs.getInt("CATEGORY_ID"),sharedConn).getCategoryName())
+							.productName(productDao.getProductNameFromProductId(rs.getInt("PRODUCT_ID"),sharedConn))
+							.typeName(type)
+							.inoutQuantity(rs.getInt("INOUT_QUANTITY"))
+							.inoutContent(rs.getString("INOUT_CONTENT"))
+							.inoutRegDate(rs.getDate("INOUT_REGDATE").toLocalDate())
+							.build();
 
-				inoutList.add(inout);
-			}
+					inoutList.add(inout);
+				}
+			}catch (SQLException e) {
+		        System.out.println("입출고 리스트 데이터 처리 중 SQL 오류 발생: " + e);
+		        throw e;
+		    }finally {
+		        // 모든 작업이 끝나면(성공하든 실패하든) DB 연결을 단 한 번만 해제합니다.
+		        DBUtil.dbDisconnect(); 
+		    }
 
 			return inoutList;
 		}
@@ -89,7 +110,7 @@ public class InoutDAO {
 						.typeName(type)
 						.inoutQuantity(rs.getInt("INOUT_Quantity"))
 						.inoutContent(rs.getString("INOUT_CONTENT"))
-						.inoutRegDate(rs.getDate("PRODUCT_REGDATE").toLocalDate())
+						.inoutRegDate(rs.getDate("INOUT_REGDATE").toLocalDate())
 						.build();
 			}
 			return inout;

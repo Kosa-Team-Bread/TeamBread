@@ -1,5 +1,6 @@
 package model.admin;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -12,20 +13,33 @@ import util.DBUtil;
 public class AdminDAO {
 	// 사용자 목록 전체 조회
 	public ObservableList<Admin> getAllAdmins() throws SQLException, ClassNotFoundException {
-		String sql = "SELECT * FROM hr.tbl_admin";
-		ResultSet rs = DBUtil.dbExecuteQuery(sql);
+		String sql = "SELECT * FROM tbl_admin";
+		try {
+			ResultSet rs = DBUtil.dbExecuteQuery(sql);
+			ObservableList<Admin> adminList = getAdminList(rs);
+			return adminList;
+		} catch (SQLException e) {
+			System.out.println("SQL 오류!!! 사유 : " + e);
+			throw e;
+		}
+	}
 
+	// 사용자 목록 리스트 받기
+	public ObservableList<Admin> getAdminList(ResultSet rs) throws SQLException, ClassNotFoundException {
 		ObservableList<Admin> adminList = FXCollections.observableArrayList();
-
 		while (rs.next()) {
-			Admin admin = Admin.builder().adminId(rs.getInt("ADMIN_ID")).pw(rs.getString("ADMIN_PW"))
-					.adminName(rs.getString("ADMIN_NAME")).grade(rs.getInt("GRADE"))
-					.adminRegDate(rs.getDate("REGDATE").toLocalDate()).adminModDate(rs.getDate("MODDATE").toLocalDate())
-					.email((rs.getString("EMAIL"))).build();
+			Admin admin = Admin.builder()
+						.adminId(rs.getInt("ADMIN_ID"))
+						.pw(rs.getString("ADMIN_PW"))
+						.adminName(rs.getString("ADMIN_NAME"))
+						.grade(rs.getInt("GRADE"))
+						.adminRegDate(rs.getDate("REGDATE").toLocalDate())
+						.adminModDate(rs.getDate("MODDATE").toLocalDate())
+						.email((rs.getString("EMAIL")))
+						.build();
 
 			adminList.add(admin);
 		}
-
 		return adminList;
 	}
 
@@ -36,6 +50,21 @@ public class AdminDAO {
 		try {
 			addList.add(id);
 			ResultSet rs = DBUtil.dbCaseExecuteQuery(query, addList);
+			Admin admin = getAdmin(rs);
+			return admin;
+		} catch (SQLException e) {
+			System.out.println("SQL 오류!!! 사유 : " + e);
+			throw e;
+		}
+	}
+	
+	// 사용자 ID를 사용한 검색 (오버로딩)
+	public Admin getAdminFromId(int id, Connection conn) throws SQLException, ClassNotFoundException {
+		List<Object> addList = new ArrayList<>();
+		String query = "SELECT * FROM TBL_ADMIN WHERE Admin_ID= ?";
+		try {
+			addList.add(id);
+			ResultSet rs = DBUtil.dbCaseExecuteQuery(conn, query, addList);
 			Admin admin = getAdmin(rs);
 			return admin;
 		} catch (SQLException e) {
@@ -172,6 +201,7 @@ public class AdminDAO {
 				+ "		SET ADMIN_NAME = ?, EMAIL = ? , ADMIN_PW = ?, MODDATE = SYSDATE\n"
 				+ "			WHERE ADMIN_ID = ?;\n" + "	COMMIT;\n" + "END;";
 
+
 		System.out.println(adminName + " " + adminEmail + " " + pw + " " + adminId);
 
 		List<Object> params = new ArrayList<>();
@@ -185,6 +215,7 @@ public class AdminDAO {
 
 	// 사용자 등급 변경
 	public void updateAdminGrade(int newGrade, int adminId) throws SQLException, ClassNotFoundException {
+
 		String sql = "BEGIN\n" + "	UPDATE tbl_admin\n" + "		SET GRADE = ?, MODDATE = SYSDATE\n"
 				+ "			WHERE ADMIN_ID = ?;\n" + "	COMMIT;\n" + "END;";
 

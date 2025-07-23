@@ -1,4 +1,5 @@
 package model.product;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -111,6 +112,25 @@ public class ProductDAO {
 	            .productModDate(product.getProductModDate())
 	            .imageLocation(imageLocation)
 	            .build();
+	}
+	
+	// 상품 ID으로 상품 이름 조회
+
+	public String getProductNameFromProductId(int id, Connection conn) throws SQLException, ClassNotFoundException {
+	    // 1) tbl_product 조회
+	    List<Object> params = new ArrayList<>();
+	    params.add(id);
+	    String sql = "SELECT * FROM tbl_product WHERE PRODUCT_ID = ?";
+	    ResultSet rs = DBUtil.dbCaseExecuteQuery(conn, sql, params);
+
+	    // 2) Product 객체 빌드
+	    Product product = getProduct(rs);
+	    if (product == null) {
+	        return null; // 해당 ID의 상품이 없으면 null 반환
+	    }
+
+	    // 5) DTO 빌드
+	    return product.getProductName();
 	}
 
 	
