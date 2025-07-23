@@ -1,4 +1,4 @@
-// src/main/java/controller/coupon/CouponApplyPopupController.java
+// CouponApplyPopupController.java
 package controller.coupon;
 
 import javafx.fxml.FXML;

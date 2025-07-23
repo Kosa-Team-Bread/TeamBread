@@ -25,22 +25,14 @@
                         
                         <HBox alignment="CENTER_RIGHT" spacing="10.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
                            <children>
+                              <Button fx:id="editCouponBtn" onAction="#handleEditAction" text="쿠폰 수정" />
+                              <Button fx:id="deleteCouponBtn" onAction="#handleDeleteAction" text="쿠폰 삭제" />
                               <ComboBox fx:id="couponCategoryFilter" prefWidth="150.0" promptText="카테고리 선택" />
                               <TextField fx:id="couponSearchField" prefWidth="200.0" promptText="쿠폰명 검색" />
                            </children>
                         </HBox>
                         
-                        <!-- 쿠폰 추가/수정/삭제 버튼을 담을 HBox를 테이블 위에 추가 -->
-                        <HBox spacing="10.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="80.0">
-                           <children>
-                              <Button fx:id="addCouponBtn" onAction="#handleAddAction" text="쿠폰 추가" />
-                              <Button fx:id="editCouponBtn" onAction="#handleEditAction" text="쿠폰 수정" />
-                              <Button fx:id="deleteCouponBtn" onAction="#handleDeleteAction" text="쿠폰 삭제" />
-                           </children>
-                        </HBox>
-                        
-                        <!-- 테이블의 topAnchor를 버튼 HBox 아래로 조정 -->
-                        <TableView fx:id="couponTable" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="120.0">
+                        <TableView fx:id="couponTable" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="80.0">
                           <columns>
                             <TableColumn fx:id="couponNameCol" prefWidth="250.0" text="쿠폰명" />
                             <TableColumn fx:id="percentCol" prefWidth="100.0" style="-fx-alignment: CENTER;" text="할인율(%)" />
