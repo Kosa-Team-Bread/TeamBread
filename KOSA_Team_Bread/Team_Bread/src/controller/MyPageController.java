@@ -58,13 +58,23 @@ public class MyPageController implements Initializable {
 	@FXML
 	private TableColumn<Admin, Void> actionsColumn;
 
+	private ObservableList<Admin> allAdminData;
+
+	private final AdminDAO adminDAO = new AdminDAO();
+
 	/**
 	 * 컨트롤러가 초기화될 때 호출되는 메소드입니다. 이곳에서 테이블 데이터 로딩 등 초기화 작업을 수행합니다.
 	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// 멤버 리스트
-		adminTableView.setItems(getAdminData());
+		try {
+			allAdminData = getAdminData();
+			adminTableView.setItems(allAdminData);
+		} catch (Exception e) {
+			e.printStackTrace();
+			allAdminData = FXCollections.observableArrayList();
+		}
 
 		// 현재 로그인한 사용자 이름
 		currentUserLabel.setText("현재 사용자: " + Session.getCurrentUser().getAdminName());
@@ -93,10 +103,24 @@ public class MyPageController implements Initializable {
 				@Override
 				protected void updateItem(Void item, boolean empty) {
 					super.updateItem(item, empty);
+
+					// 셀이 비어있으면 아무것도 표시하지 않음
 					if (empty) {
 						setGraphic(null);
 					} else {
-						setGraphic(modifyRoleBtn);
+						// 현재 행의 사용자(Admin) 정보를 가져옴
+						Admin rowAdmin = getTableView().getItems().get(getIndex());
+						// 버튼을 표시할지 여부 결정
+						// 조건. 로그인한 유저가 '최고 관리자'이고, 현재 행의 유저가 '사장'인 경우
+						boolean showButton = (Session.getCurrentUser().getGrade() == 1 && rowAdmin.getGrade() == 2);
+
+						if (showButton) {
+							// 조건을 만족하면 버튼 표시
+							setGraphic(modifyRoleBtn);
+						} else {
+							// 로그인한 유저가 사장이거나, 같은 관리자 등급일 때에는 버튼 숨김
+							setGraphic(null);
+						}
 					}
 				}
 			};
@@ -105,7 +129,6 @@ public class MyPageController implements Initializable {
 
 	public ObservableList<Admin> getAdminData() {
 		try {
-			AdminDAO adminDAO = new AdminDAO();
 			return adminDAO.getAllAdmins();
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
@@ -139,6 +162,18 @@ public class MyPageController implements Initializable {
 
 			// 창 표시 및 대기
 			dialogStage.showAndWait();
+
+			if (profileEditController.isSuccessful()) {
+				allAdminData = getAdminData();
+				adminTableView.setItems(allAdminData);
+				// 테이블 전체 새로고침
+				adminTableView.refresh();
+				// 현재 로그인한 사용자 이름
+				currentUserLabel.setText("현재 사용자: " + Session.getCurrentUser().getAdminName());
+
+				// 현재 로그인한 사용자 등급
+				currentUserGradeLabel.setText(Session.getCurrentUser().getGradeDisplayName());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -169,18 +204,19 @@ public class MyPageController implements Initializable {
 
 			// 창 표시 및 대기
 			dialogStage.showAndWait();
+
+			if (roleEditController.isSuccessful()) {
+				// DB에서 최신 데이터를 가져옵니다.
+				allAdminData = getAdminData();
+
+				// TableView에 새로운 리스트를 설정합니다.
+				adminTableView.setItems(allAdminData);
+
+				// 테이블 전체 새로고침
+				adminTableView.refresh();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	@FXML
-	private void onCancelAdd() {
-
-	}
-
-	@FXML
-	private void onConfirmAdd() {
-
 	}
 }
