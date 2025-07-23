@@ -1,0 +1,15 @@
+/* 첫 번째 데이터 시리즈 (원가)의 막대 색상 */
+.default-color0.chart-bar {
+  -fx-bar-fill: #6c757d; /* 진한 회색 */
+}
+
+/* 두 번째 데이터 시리즈 (이익)의 막대 색상 */
+.default-color1.chart-bar {
+  -fx-bar-fill: #ced4da; /* 연한 회색 */
+}
+
+/* 팝업창의 타이틀 라벨 스타일 */
+.title-label {
+  -fx-font-size: 24px;
+  -fx-font-weight: bold;
+}

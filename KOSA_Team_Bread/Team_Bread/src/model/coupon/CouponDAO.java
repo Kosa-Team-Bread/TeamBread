@@ -18,9 +18,12 @@ public class CouponDAO {
     public ObservableList<Coupon> getAllCoupons() {
         ObservableList<Coupon> couponList = FXCollections.observableArrayList();
         
-        String sql = "SELECT coupon_id, product_id, category_id, coupon_name, percent, startTime, deadLine\n" + 
-                        "FROM tbl_coupon\n" +
-                        "ORDER BY coupon_id DESC\n";
+        // tbl_category와 JOIN, category_name 함께 조회
+        // LEFT JOIN 사용, 쿠폰에 연결된 카테고리가 없더라도 쿠폰 목록에서 누락되지 않도록 함
+        String sql = "SELECT c.coupon_id, c.product_id, c.category_id, cat.category_name, c.coupon_name, c.percent, c.starttime, c.deadline " +
+                     "FROM tbl_coupon c " +
+                     "LEFT JOIN tbl_category cat ON c.category_id = cat.category_id " +
+                     "ORDER BY c.coupon_id DESC";
 
         try {
             ResultSet rs = DBUtil.dbExecuteQuery(sql);
@@ -33,14 +36,13 @@ public class CouponDAO {
                         .categoryId(rs.getInt("category_id"))
                         .couponName(rs.getString("coupon_name"))
                         .percent(rs.getInt("percent"))
-                        .startTime(rs.getDate("startTime").toLocalDate())
-                        .deadLine(rs.getDate("deadLine").toLocalDate())
+                        .startTime(rs.getDate("starttime").toLocalDate())
+                        .deadLine(rs.getDate("deadline").toLocalDate())
                         .build();
-
                 couponList.add(coupon);
             }
         } catch (SQLException | ClassNotFoundException e) {
-            System.out.println("쿠폰 데이터베이스 조회 중 오류 발생");
+            System.out.println("쿠폰 DB 조회 중 오류 발생");
             e.printStackTrace();
         }
         return couponList;
