@@ -1,23 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!-- src/main/resources/view/coupon/CouponApplyPopup.fxml -->
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.web.WebView?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.CouponApplyPopupController"
+            fx:controller="controller.coupon.CouponApplyPopupController"
             prefWidth="800" prefHeight="400">
     <center>
         <HBox spacing="10">
-            <!-- Insets 프로퍼티는 nested element로 지정 -->
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
 
-            <!-- Google 차트를 표시할 WebView -->
             <WebView fx:id="chartWebView" prefWidth="450" prefHeight="380"/>
 
-            <!-- 쿠폰 정보 입력 폼 -->
             <VBox spacing="8" prefWidth="330">
                 <Label text="판매 가격:"/>
                 <Label fx:id="priceLabel" style="-fx-font-weight: bold;"/>

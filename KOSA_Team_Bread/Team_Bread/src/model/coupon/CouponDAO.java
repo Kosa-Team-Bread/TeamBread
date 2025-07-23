@@ -61,7 +61,7 @@ public class CouponDAO {
     }
 
     // 쿠폰 삽입
-    public void insertCategory(Integer productId, Integer percent, LocalDate startTime, LocalDate DeadLine) throws SQLException, ClassNotFoundException {
+    public void insertCoupon(Integer productId, Integer percent, LocalDate startTime, LocalDate DeadLine) throws SQLException, ClassNotFoundException {
 		List<Object> addList = new ArrayList<>();
 		String couponName = productDao.getProductFromProductId(productId).getProductName() + " " + percent + "% 할인쿠폰";
 		
