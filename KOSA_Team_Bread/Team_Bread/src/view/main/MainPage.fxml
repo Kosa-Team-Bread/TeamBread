@@ -16,7 +16,7 @@
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 
-<AnchorPane prefWidth="1440.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+<AnchorPane prefWidth="1440.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.main.MainController">
    <children>
        
        <!-- 상단 헤더 (수정 없음) -->

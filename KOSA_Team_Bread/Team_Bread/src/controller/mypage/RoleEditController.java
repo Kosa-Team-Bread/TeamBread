@@ -1,4 +1,4 @@
-package controller;
+package controller.mypage;
 
 import java.net.URL;
 import java.sql.SQLException;
