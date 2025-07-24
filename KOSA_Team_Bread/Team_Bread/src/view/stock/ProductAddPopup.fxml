@@ -20,10 +20,6 @@
     <TextField fx:id="quantityField" promptText="수량"/>
     <TextField fx:id="locationField" promptText="저장위치"/>
 
-    <!-- 관리자 이름 직접 입력 or 콤보박스 중 하나 선택해서 사용 -->
-    <TextField fx:id="adminNameField" promptText="등록자명(직접입력)"/>
-    <ComboBox fx:id="adminComboBox" promptText="관리자 선택"/>
-
     <ComboBox fx:id="categoryComboBox" promptText="카테고리"/>
 
     <HBox spacing="10" alignment="CENTER">

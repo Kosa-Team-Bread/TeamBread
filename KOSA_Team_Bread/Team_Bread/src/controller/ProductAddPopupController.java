@@ -96,9 +96,6 @@ public class ProductAddPopupController implements Initializable {
         try {
             String productName   = trim(nameField.getText());
             String categoryName  = categoryComboBox.getValue();
-            String adminName     = adminComboBox.getValue() != null
-                                 ? adminComboBox.getValue()
-                                 : trim(adminNameField.getText());
             String stockLocation = trim(locationField.getText());
             String imageLocation = selectedImageFile != null
                                  ? selectedImageFile.getAbsolutePath()
@@ -109,8 +106,7 @@ public class ProductAddPopupController implements Initializable {
             int quantity = parseInt(quantityField.getText(), "수량");
 
             if (productName.isEmpty()
-             || categoryName == null || categoryName.isEmpty()
-             || adminName.isEmpty()) {
+             || categoryName == null || categoryName.isEmpty()) {
                 AlertUtil.showWarning("입력 오류", "필수 항목을 모두 입력/선택하세요.");
                 return;
             }
@@ -123,7 +119,6 @@ public class ProductAddPopupController implements Initializable {
                 .productQuantity(quantity)
                 .stockLocation(stockLocation)
                 .categoryName(categoryName)
-                .adminName(adminName)
                 .imageLocation(imageLocation)
                 .build();
 
