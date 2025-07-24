@@ -5,7 +5,7 @@
 <?import javafx.scene.web.WebView?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.CouponApplyPopupController"
+            fx:controller="controller.coupon.CouponApplyPopupController"
             prefWidth="800" prefHeight="400">
     <center>
         <HBox spacing="10">
