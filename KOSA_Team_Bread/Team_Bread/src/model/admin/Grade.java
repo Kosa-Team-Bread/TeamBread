@@ -1,5 +1,6 @@
 package model.admin;
 
+//Made By 나규태
 public enum Grade {
 	ADMIN(1, "관리자"), BOSS(2, "점장");
 
@@ -19,6 +20,7 @@ public enum Grade {
 		return displayName;
 	}
 
+	// 사용자 등급 수정
 	public static Grade fromCode(int code) {
 		for (Grade grade : Grade.values()) {
 			if (grade.code == code) {

@@ -2,6 +2,7 @@ package util;
 
 import java.util.regex.Pattern;
 
+//Made By 강기범
 public class ValidationUtil {
 	
 	// 이메일 정규표현식

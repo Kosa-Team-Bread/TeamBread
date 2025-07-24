@@ -14,6 +14,7 @@ import model.admin.Admin;
 import model.admin.AdminDAO;
 import util.AlertUtil;
 
+//Made By 나규태
 public class RoleEditController implements Initializable {
 	@FXML
 	private RadioButton managerRadio;

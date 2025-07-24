@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+// Made By 정영규
 public class ProductDetailPopupController implements Initializable {
 
     @FXML private ImageView productImageView;
@@ -31,16 +32,16 @@ public class ProductDetailPopupController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // 팝업 띄울 때 setProductId()에서 loadDetail() 호출됩니다.
+        // 팝업 띄울 때 setProductId()에서 loadDetail() 호출
     }
 
-    /** StockController에서 호출 */
+    // StockController에서 productId 가져오기
     public void setProductId(int id) {
         this.productId = id;
         loadDetail();
     }
 
-    /** DB에서 가져온 DTO로 화면 세팅 */
+    // 상세조회
     private void loadDetail() {
         try {
             ProductDetailSelectDto dto = productDao.getProductFromProductId(productId);
@@ -64,11 +65,11 @@ public class ProductDetailPopupController implements Initializable {
         }
     }
 
-    /** 수정하기 버튼 클릭 */
+    // 상품 정보 수정
     @FXML
     private void handleUpdate() {
         try {
-            // 1) 판매가 입력
+            // 판매가 입력 <- dialog 사용
             TextInputDialog priceDlg = new TextInputDialog();
             priceDlg.setTitle("판매가 수정");
             priceDlg.setHeaderText("새 판매가를 입력하세요");
@@ -77,7 +78,7 @@ public class ProductDetailPopupController implements Initializable {
             if (pRes == null) return;
             int newPrice = Integer.parseInt(pRes.get().trim());
 
-            // 2) 원가 입력
+            // 원가 입력 <- dialog 사용
             TextInputDialog costDlg = new TextInputDialog();
             costDlg.setTitle("원가 수정");
             costDlg.setHeaderText("새 원가를 입력하세요");
@@ -86,10 +87,8 @@ public class ProductDetailPopupController implements Initializable {
             if (cRes == null) return;
             int newCost = Integer.parseInt(cRes.get().trim());
 
-            // 3) DAO 호출 (updateProduct 시그니처: updateProduct(int productId, int newPrice, int newCost))
             ProductDAO.updateProduct(productId, newPrice, newCost);
 
-            // 4) UI 갱신
             loadDetail();
             AlertUtil.showInfo("수정 완료", "가격이 성공적으로 수정되었습니다.");
 
@@ -101,7 +100,7 @@ public class ProductDetailPopupController implements Initializable {
         }
     }
 
-    /** 삭제하기 버튼 클릭 */
+    // 상품 삭제하기
     @FXML
     private void handleDelete() {
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION,
@@ -121,7 +120,7 @@ public class ProductDetailPopupController implements Initializable {
         }
     }
 
-    /** 팝업 닫기 */
+    // 닫기
     private void close() {
         Stage stage = (Stage) nameLabel.getScene().getWindow();
         stage.close();

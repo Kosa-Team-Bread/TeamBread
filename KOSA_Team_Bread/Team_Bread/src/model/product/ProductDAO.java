@@ -183,7 +183,7 @@ public class ProductDAO {
 		}
 	}
 	
-	// 상품 삽입 <- 재고도 같이 삽입
+	// 상품 삽입 <- 재고와 이미지 같이 삽입 / 저장 프로시저 사용
 	public static void insertProduct(ProductInsertDto product) throws SQLException, ClassNotFoundException {
 		List<Object> addList = new ArrayList<>();
 		String query = "{CALL proc_add_product_with_stock_and_image("
@@ -227,7 +227,7 @@ public class ProductDAO {
 		}
 	}
 	
-	// 상품 삭제 <- 저장 프로시저 사용
+	// 상품 삭제 <- 이미지, 상품, 재고테이블에서 삭제 /저장 프로시저 사용
 	public void deleteProduct(int productId) throws SQLException, ClassNotFoundException {
 		List<Object> addList = new ArrayList<>();
 		String query = "{CALL proc_delete_product(?)}";

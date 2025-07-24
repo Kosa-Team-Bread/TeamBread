@@ -10,7 +10,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import util.DBUtil;
 
+
 public class AdminDAO {
+	//Made By 나규태
 	// 사용자 목록 전체 조회
 	public ObservableList<Admin> getAllAdmins() throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM tbl_admin";
@@ -24,6 +26,7 @@ public class AdminDAO {
 		}
 	}
 
+	//Made By 정영규
 	// 사용자 목록 리스트 받기
 	public ObservableList<Admin> getAdminList(ResultSet rs) throws SQLException, ClassNotFoundException {
 		ObservableList<Admin> adminList = FXCollections.observableArrayList();
@@ -43,6 +46,7 @@ public class AdminDAO {
 		return adminList;
 	}
 
+	//Made By 정영규
 	// 사용자 ID를 사용한 검색
 	public Admin getAdminFromId(int id) throws SQLException, ClassNotFoundException {
 		List<Object> addList = new ArrayList<>();
@@ -58,6 +62,7 @@ public class AdminDAO {
 		}
 	}
 	
+	//Made By 강기범
 	// 사용자 ID를 사용한 검색 (오버로딩)
 	public Admin getAdminFromId(int id, Connection conn) throws SQLException, ClassNotFoundException {
 		List<Object> addList = new ArrayList<>();
@@ -73,8 +78,8 @@ public class AdminDAO {
 		}
 	}
 
+	//Made By 강기범
 	// 이메일 중복 확인
-
 	public boolean checkEmailDuplicate(String email) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT COUNT(*) as count  FROM tbl_admin WHERE email = ?";
 		List<Object> params = new ArrayList<>();
@@ -90,22 +95,23 @@ public class AdminDAO {
 		return false;
 	}
 
+	//Made By 강기범
 	// 회원가입 sp 사용시
-	public boolean signupAdmin(Admin admin) throws SQLException, ClassNotFoundException {
-		String sql = "{CALL sp_insert_admin(?, ?, ?)}";
-		List<Object> params = new ArrayList<>();
-		params.add(admin.getAdminName());
-		params.add(admin.getEmail());
-		params.add(admin.getPw());
-
-		try {
-			DBUtil.dbExecuteCall(sql, params);
-			return true;
-		} catch (SQLException e) {
-			System.err.println("회원가입 실패: " + e.getMessage());
-			return signupAdminWithoutProcedure(admin);
-		}
-	}
+//	public boolean signupAdmin(Admin admin) throws SQLException, ClassNotFoundException {
+//		String sql = "{CALL sp_insert_admin(?, ?, ?)}";
+//		List<Object> params = new ArrayList<>();
+//		params.add(admin.getAdminName());
+//		params.add(admin.getEmail());
+//		params.add(admin.getPw());
+//
+//		try {
+//			DBUtil.dbExecuteCall(sql, params);
+//			return true;
+//		} catch (SQLException e) {
+//			System.err.println("회원가입 실패: " + e.getMessage());
+//			return signupAdminWithoutProcedure(admin);
+//		}
+//	}
 
 	// 회원가입 sp 사용 안할시
 	public boolean signupAdminWithoutProcedure(Admin admin) throws SQLException, ClassNotFoundException {
@@ -126,6 +132,7 @@ public class AdminDAO {
 		}
 	}
 
+	// Made By 강기범
 	// 로그인 인증
 	public Admin loginAdmin(String email, String password) throws SQLException, ClassNotFoundException {
 		String sql = "SELECT * FROM tbl_admin WHERE email = ? AND admin_pw = ?";
@@ -171,6 +178,7 @@ public class AdminDAO {
 		}
 	}
 
+	// Made By 나규태
 	// 사용자 이름을 사용한 검색
 	public Admin getAdminFromName(String name) throws SQLException, ClassNotFoundException {
 		List<Object> addList = new ArrayList<>();
@@ -185,7 +193,8 @@ public class AdminDAO {
 			throw e;
 		}
 	}
-
+	
+	// Made By 강기범
 	// 사용자 데이터셋 받기
 	public Admin getAdmin(ResultSet rs) throws SQLException, ClassNotFoundException {
 		Admin admin = null;
@@ -203,6 +212,7 @@ public class AdminDAO {
 		return admin;
 	}
 
+	// Made By 강기범
 	// 로그인 사용자 정보 변경
 	public void updateAdmin(String adminName, String adminEmail, int adminId)
 			throws SQLException, ClassNotFoundException {
@@ -224,6 +234,7 @@ public class AdminDAO {
 		DBUtil.dbExecuteUpdate(sql, params);
 	}
 	
+	// Made By 나규태
 	// 로그인 사용자 정보 변경
 	public void updateAdmin(String adminName, String adminEmail, String pw, int adminId)
 			throws SQLException, ClassNotFoundException {
@@ -246,6 +257,7 @@ public class AdminDAO {
 		DBUtil.dbExecuteUpdate(sql, params);
 	}
 
+	// Made By 나규태
 	// 사용자 등급 변경
 	public void updateAdminGrade(int newGrade, int adminId) throws SQLException, ClassNotFoundException {
 

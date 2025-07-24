@@ -24,6 +24,7 @@ import model.admin.AdminDAO;
 import util.Session;
 import util.ValidationUtil;
 
+//Made By 강기범
 public class LoginController implements Initializable {
 	
 	@FXML

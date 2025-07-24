@@ -66,6 +66,7 @@ public class ImageDAO {
 			}
 		}
 		
+		// 이미지 rs 가져오기
 		public Image getImage(ResultSet rs) throws SQLException, ClassNotFoundException {
 			Image image= null;
 			if (rs.next()) {
@@ -108,7 +109,7 @@ public class ImageDAO {
 			
 		}
 	
-	// 이미지 삭제
+	// 이미지 삭제 
 		public void deleteImage(Integer imageId) throws SQLException, ClassNotFoundException {
 			List<Object> addList = new ArrayList<>();
 			String query =  "BEGIN\n" +

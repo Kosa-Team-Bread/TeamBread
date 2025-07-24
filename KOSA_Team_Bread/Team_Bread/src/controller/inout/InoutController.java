@@ -26,6 +26,7 @@ import model.inout.InoutDAO;
 import model.inout.inoutSelectDto;
 import util.Session;
 
+// Made By 나규태
 public class InoutController implements Initializable {
 	// @FXML 못 넣은 요소 많음(넣어야함)
 	@FXML

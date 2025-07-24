@@ -682,31 +682,35 @@ BEGIN
 END;
 /
 
--- 상품 삭제시 이미지, 재고, 쿠폰, 상품삭제 --
 CREATE OR REPLACE PROCEDURE proc_delete_product (
     p_product_id IN tbl_product.product_id%TYPE
 )
 IS
 BEGIN
-    -- 1. 이미지 삭제
+    -- 1. tbl_storageRetrieval 테이블에서 관련된 기록 삭제 (상품에 의존하는 기록을 먼저 삭제)
+    DELETE FROM tbl_storageRetrieval
+     WHERE product_id = p_product_id;
+
+    -- 2. 이미지 삭제
     DELETE FROM tbl_image
      WHERE product_id = p_product_id;
 
-    -- 2. 재고 삭제
+    -- 3. 재고 삭제
     DELETE FROM tbl_stock
      WHERE product_id = p_product_id;
 
-    -- 3. 쿠폰 삭제
+    -- 4. 쿠폰 삭제
     DELETE FROM tbl_coupon
      WHERE product_id = p_product_id;
 
-    -- 4. 상품 삭제
+    -- 5. 상품 삭제
     DELETE FROM tbl_product
      WHERE product_id = p_product_id;
 
     COMMIT;
 END;
 /
+
 
 
 ALTER TABLE tbl_product

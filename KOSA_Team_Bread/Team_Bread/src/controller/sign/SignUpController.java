@@ -24,6 +24,7 @@ import model.admin.Admin;
 import model.admin.AdminDAO;
 import util.ValidationUtil;
 
+//Made By 강기범
 public class SignUpController implements Initializable {
 
 	@FXML
@@ -89,7 +90,7 @@ public class SignUpController implements Initializable {
 			Admin newAdmin = new Admin(name, email, password);
 
 			// 회원가입 처리
-			boolean success = adminDAO.signupAdmin(newAdmin);
+			boolean success = adminDAO.signupAdminWithoutProcedure(newAdmin);
 
 			if (success) {
 				showAlert(Alert.AlertType.INFORMATION, "회원가입 성공", "회원가입이 완료되었습니다.\n로그인 화면으로 이동합니다.");

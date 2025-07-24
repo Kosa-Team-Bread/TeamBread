@@ -26,6 +26,7 @@ import model.admin.Admin;
 import model.admin.AdminDAO;
 import util.Session;
 
+// Made By 나규태
 public class MyPageController implements Initializable {
 	@FXML
 	private Label currentUserLabel;

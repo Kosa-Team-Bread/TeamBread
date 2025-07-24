@@ -20,9 +20,9 @@ import model.product.ProductDAO;
 import model.product.ProductInsertDto;
 import util.AlertUtil;
 
+//Made By 정영규
 public class ProductAddPopupController implements Initializable {
 
-    // ---------- FXML ----------
     @FXML private TextField nameField;
     @FXML private TextField priceField;
     @FXML private TextField costField;
@@ -33,17 +33,13 @@ public class ProductAddPopupController implements Initializable {
     @FXML private ComboBox<String> categoryComboBox;
     @FXML private Label imageFileNameLabel;
     
-    // ---------- Local ----------
     private File selectedImageFile;
 
-    // ---------- DAOs ----------
     private final CategoryDAO cateDao = new CategoryDAO();
     private final AdminDAO adminDao     = new AdminDAO();
-    // ProductDAO는 static 메서드로 프로시저 호출
-    // productDao 인스턴스는 searchProduct 용도로만 사용
     private final ProductDAO productDao = new ProductDAO();
 
-    // ---------- 초기화 ----------
+    // 초기화부분
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initCategoryCombo();
@@ -53,6 +49,8 @@ public class ProductAddPopupController implements Initializable {
         ProductDAO.setAdminDAO(adminDao);
     }
 
+    
+    // 카테고리 combox쓸 용으로 가져오기
     private void initCategoryCombo() {
         try {
             ObservableList<Category> list = cateDao.findAllCategory();
@@ -65,6 +63,7 @@ public class ProductAddPopupController implements Initializable {
         }
     }
 
+    // Admin 가져오기
     private void initAdminCombo() {
         try {
             ObservableList<Admin> list = adminDao.getAllAdmins();
@@ -75,8 +74,8 @@ public class ProductAddPopupController implements Initializable {
             // 무시해도 무방
         }
     }
-
-    // ---------- 이벤트 ----------
+    
+    // 이미지 관리
     @FXML
     private void handleImageAdd() {
         FileChooser fc = new FileChooser();
@@ -91,6 +90,7 @@ public class ProductAddPopupController implements Initializable {
         }
     }
 
+    // 상품 삽입 관리
     @FXML
     private void handleRegister() {
         try {
@@ -111,7 +111,6 @@ public class ProductAddPopupController implements Initializable {
                 return;
             }
 
-            // DTO 조립 (imageLocation 포함)
             ProductInsertDto dto = ProductInsertDto.builder()
                 .productName(productName)
                 .price(price)
@@ -122,7 +121,7 @@ public class ProductAddPopupController implements Initializable {
                 .imageLocation(imageLocation)
                 .build();
 
-            // 상품+재고+이미지 모두 등록 (저장 프로시저 호출)
+            // 상품,재고,이미지 모두 등록 
             ProductDAO.insertProduct(dto);
 
             AlertUtil.showInfo("등록 완료", "상품이 등록되었습니다.");
@@ -141,14 +140,14 @@ public class ProductAddPopupController implements Initializable {
         }
     }
 
-    // ---------- 헬퍼 ----------
+    // 닫기
     private void close() {
         Stage stage = (Stage)nameField.getScene().getWindow();
         stage.close();
-    }
+    } // 빈칸 검사
     private String trim(String s) {
         return (s == null ? "" : s.trim());
-    }
+    } // 숫자검사
     private int parseInt(String text, String field) {
         try { return Integer.parseInt(text.trim()); }
         catch(Exception e) {

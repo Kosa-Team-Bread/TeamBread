@@ -1,5 +1,3 @@
-// CouponEditPopupController
-
 package controller.coupon;
 
 import java.net.URL;
@@ -22,6 +20,7 @@ import model.coupon.Coupon;
 import model.coupon.CouponDAO;
 import model.coupon.CouponDTO_Update;
 
+// Made By 김기성
 public class CouponEditPopupController implements Initializable {
 
     @FXML private TextField couponNameField;
@@ -62,7 +61,7 @@ public class CouponEditPopupController implements Initializable {
         categoryComboBox.setValue(currentCategoryName);
     }
 
-    /** '저장' 버튼 클릭 시 실행될 로직 */
+    // '저장' 버튼 클릭 시 실행될 로직
     @FXML
     void handleSaveAction(ActionEvent event) {
         if (!validateInput()) {
@@ -94,24 +93,24 @@ public class CouponEditPopupController implements Initializable {
         }
     }
 
-    /** '취소' 버튼 클릭 시 실행될 로직 */
+    // '취소' 버튼 클릭 시 실행될 로직
     @FXML
     void handleCancelAction(ActionEvent event) {
         closeStage();
     }
 
-    /** 팝업창을 닫는 공통 메소드 */
+    // 팝업창을 닫는 공통 메소드 
     private void closeStage() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
     
-    /** 수정 작업이 성공적으로 완료되었는지 여부를 반환 */
+    // 수정 작업이 성공적으로 완료되었는지 여부를 반환 
     public boolean isUpdated() {
         return this.updated;
     }
-    
-    /** 사용자 입력값 유효성 검증 */
+   
+    // 사용자 입력값 유효성 검증
     private boolean validateInput() {
         String couponName = couponNameField.getText();
         String percentText = percentField.getText();
@@ -154,7 +153,7 @@ public class CouponEditPopupController implements Initializable {
         return true;
     }
     
-    /** Alert 창을 띄우는 공통 메소드 */
+    // Alert 창을 띄우는 공통 메소드 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
