@@ -1,4 +1,4 @@
-package controller;
+package controller.inout;
 
 import java.net.URL;
 import java.sql.SQLException;

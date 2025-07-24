@@ -1,4 +1,4 @@
-package controller;
+package controller.stock;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -194,7 +194,7 @@ public class StockController {
                 getClass().getResource("/view/stock/ProductDetailPopup.fxml")
             );
             Parent root = loader.load();
-            controller.ProductDetailPopupController ctrl = loader.getController();
+            controller.stock.ProductDetailPopupController ctrl = loader.getController();
             ctrl.setProductId(productId);
 
             Stage popup = new Stage();

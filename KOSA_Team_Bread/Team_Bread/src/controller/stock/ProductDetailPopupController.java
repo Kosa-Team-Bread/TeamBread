@@ -1,4 +1,4 @@
-package controller;
+package controller.stock;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

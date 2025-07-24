@@ -1,4 +1,4 @@
-package controller;
+package controller.sign;
 
 import java.io.IOException;
 import java.net.URL;
@@ -82,7 +82,7 @@ public class LoginController implements Initializable {
 	private void onGotoSignup(MouseEvent event) {
 		try {
 			// 회원가입 화면으로 전환
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/signup.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/sign/signup.fxml"));
 			Parent signupRoot = loader.load();
 			
 			Scene signupScene = new Scene(signupRoot);
