@@ -13,6 +13,7 @@ import model.category.CategoryDAO;
 import model.image.Image;
 import model.image.ImageDAO;
 import util.DBUtil;
+import util.Session;
 
 
 
@@ -193,7 +194,7 @@ public class ProductDAO {
 			addList.add(product.getProductName());
 			addList.add(product.getPrice());
 			addList.add(product.getCost());
-			addList.add(adminDao.getAdminFromName(product.getAdminName()).getAdminId());
+			addList.add(Session.getCurrentUser().getAdminId());
 			addList.add(product.getProductQuantity());
 			addList.add(product.getProductName());
 			addList.add(product.getStockLocation());

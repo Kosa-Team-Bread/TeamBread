@@ -19,7 +19,7 @@ public class StockDAO {
 
 		// 재고 전체조회
 		public ObservableList<Stock> findAllStock() throws SQLException, ClassNotFoundException {
-			String query = "SELECT * FROM tbl_stock";
+			String query = "SELECT * FROM tbl_stock ORDER BY stock_id DESC";
 			try {
 				ResultSet rs = DBUtil.dbExecuteQuery(query);
 				ObservableList<Stock> stockList =  getStockList(rs);

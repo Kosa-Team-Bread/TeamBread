@@ -35,11 +35,6 @@ CREATE TABLE tbl_admin (
     email      VARCHAR2(100) NOT NULL UNIQUE
 );
 
--- email 유니크 만들기
-ALTER TABLE tbl_admin
-ADD CONSTRAINT uq_tbl_admin_email
-UNIQUE (email);
-
 -- 2. tbl_category
 CREATE TABLE tbl_category (
     category_id       INT PRIMARY KEY,
