@@ -138,10 +138,14 @@ public class AdminDAO {
 		try {
 			rs = DBUtil.dbExecuteQuery(sql, params);
 			if (rs.next()) {
-				Admin admin = Admin.builder().adminId(rs.getInt("admin_id")).adminName(rs.getString("admin_name"))
-						.email(rs.getString("email")).grade(rs.getInt("grade"))
+				Admin admin = Admin.builder()
+						.adminId(rs.getInt("admin_id"))
+						.adminName(rs.getString("admin_name"))
+						.email(rs.getString("email"))
+						.grade(rs.getInt("grade"))
 						.adminRegDate(rs.getDate("regDate").toLocalDate())
-						.adminModDate(rs.getDate("modDate").toLocalDate()).build();
+						.adminModDate(rs.getDate("modDate").toLocalDate())
+						.build();
 
 				System.out.println("로그인 성공: " + admin.getAdminName());
 				return admin;
@@ -186,20 +190,49 @@ public class AdminDAO {
 	public Admin getAdmin(ResultSet rs) throws SQLException, ClassNotFoundException {
 		Admin admin = null;
 		if (rs.next()) {
-			admin = Admin.builder().adminId(rs.getInt("ADMIN_ID")).email(rs.getString("EMAIL"))
-					.pw(rs.getString("ADMIN_PW")).adminName(rs.getString("ADMIN_NAME")).grade(rs.getInt("GRADE"))
-					.adminRegDate(rs.getDate("REGDATE").toLocalDate()).adminModDate(rs.getDate("MODDATE").toLocalDate())
+			admin = Admin.builder()
+					.adminId(rs.getInt("ADMIN_ID"))
+					.email(rs.getString("EMAIL"))
+					.pw(rs.getString("ADMIN_PW"))
+					.adminName(rs.getString("ADMIN_NAME"))
+					.grade(rs.getInt("GRADE"))
+					.adminRegDate(rs.getDate("REGDATE").toLocalDate())
+					.adminModDate(rs.getDate("MODDATE").toLocalDate())
 					.build();
 		}
 		return admin;
 	}
 
 	// 로그인 사용자 정보 변경
+	public void updateAdmin(String adminName, String adminEmail, int adminId)
+			throws SQLException, ClassNotFoundException {
+		String sql = "BEGIN\n" + 
+					 "	UPDATE tbl_admin\n"	+ 
+					 "		SET ADMIN_NAME = ?, EMAIL = ? , MODDATE = SYSDATE\n" + 
+					 "			WHERE ADMIN_ID = ?;\n" + 
+					 "	COMMIT;\n" + 
+					 "END;";
+
+
+		System.out.println(adminName + " " + adminEmail + " " + adminId);
+
+		List<Object> params = new ArrayList<>();
+		params.add(adminName);
+		params.add(adminEmail);
+		params.add(adminId);
+
+		DBUtil.dbExecuteUpdate(sql, params);
+	}
+	
+	// 로그인 사용자 정보 변경
 	public void updateAdmin(String adminName, String adminEmail, String pw, int adminId)
 			throws SQLException, ClassNotFoundException {
-		String sql = "BEGIN\n" + "	UPDATE tbl_admin\n"
-				+ "		SET ADMIN_NAME = ?, EMAIL = ? , ADMIN_PW = ?, MODDATE = SYSDATE\n"
-				+ "			WHERE ADMIN_ID = ?;\n" + "	COMMIT;\n" + "END;";
+		String sql = "BEGIN\n" + 
+					 "	UPDATE tbl_admin\n"	+ 
+					 "		SET ADMIN_NAME = ?, EMAIL = ? , ADMIN_PW = ?, MODDATE = SYSDATE\n" + 
+					 "			WHERE ADMIN_ID = ?;\n" + 
+					 "	COMMIT;\n" + 
+					 "END;";
 
 
 		System.out.println(adminName + " " + adminEmail + " " + pw + " " + adminId);
@@ -216,8 +249,12 @@ public class AdminDAO {
 	// 사용자 등급 변경
 	public void updateAdminGrade(int newGrade, int adminId) throws SQLException, ClassNotFoundException {
 
-		String sql = "BEGIN\n" + "	UPDATE tbl_admin\n" + "		SET GRADE = ?, MODDATE = SYSDATE\n"
-				+ "			WHERE ADMIN_ID = ?;\n" + "	COMMIT;\n" + "END;";
+		String sql = "BEGIN\n" + 
+					 "	UPDATE tbl_admin\n" + 
+					 "		SET GRADE = ?, MODDATE = SYSDATE\n"	+ 
+					 "			WHERE ADMIN_ID = ?;\n" + 
+					 "	COMMIT;\n" + 
+					 "END;";
 
 		List<Object> params = new ArrayList<>();
 		params.add(newGrade);
