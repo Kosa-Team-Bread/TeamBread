@@ -42,7 +42,7 @@
                                      <Insets left="8.0" />
                                  </padding>
                                  <children>
-                                     <RadioButton fx:id="managerRadio" style="-fx-font-size: 14px; -fx-text-fill: #333333;" text="사장">
+                                     <RadioButton fx:id="managerRadio" style="-fx-font-size: 14px; -fx-text-fill: #333333;" text="점장">
                                          <toggleGroup>
                                              <ToggleGroup fx:id="roleToggleGroup" />
                                          </toggleGroup>
