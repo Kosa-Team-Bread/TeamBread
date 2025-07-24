@@ -68,25 +68,20 @@ public class ProfileEditController implements Initializable {
 				String newPassword = newPasswordField.getText();
 
 				// 올바른 패스워드 처리
-				String pw;
 				if (newPassword == null || newPassword.trim().isEmpty()) {
-					// 새 패스워드가 입력되지 않았으면 기존 패스워드 유지
-					pw = currentUser.getPw();
+					// 새 패스워드가 입력되지 않았으면 기존 패스워드 유지 후 데이터베이스 업데이트
+					adminDAO.updateAdmin(adminName, adminEmail, currentUser.getAdminId());
 				} else {
-					// 새 패스워드가 입력되었으면 새 패스워드 사용
-					pw = newPassword;
+					// 새 패스워드가 입력되었으면 새 패스워드 사용 후 데이터베이스 업데이트
+					adminDAO.updateAdmin(adminName, adminEmail, newPassword, currentUser.getAdminId());
 				}
 
-				System.out.println(
-						adminName + " " + adminEmail + " " + pw + " " + currentUser.toString() + " " + newPassword);
-
-				// 데이터베이스에 업데이트하는 로직
-				adminDAO.updateAdmin(adminName, adminEmail, pw, currentUser.getAdminId());
+				System.out
+						.println(adminName + " " + adminEmail + " " + " " + currentUser.toString() + " " + newPassword);
 
 				// 로컬 객체도 업데이트
 				currentUser.setAdminName(adminName);
 				currentUser.setEmail(adminEmail);
-				currentUser.setPw(pw);
 
 				this.isSuccessful = true;
 				AlertUtil.showInfo("등록 성공", "회원 정보가 성공적으로 변경되었습니다.");
