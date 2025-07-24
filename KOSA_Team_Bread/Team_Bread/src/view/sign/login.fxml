@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="1024" prefWidth="1440" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.LoginController">
+<AnchorPane prefHeight="1024" prefWidth="1440" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.sign.LoginController">
 
    	<!-- 로고 (페이지 상단) -->
 	<ImageView fx:id="logoImage" fitHeight="118" fitWidth="222" layoutX="609.0" layoutY="94.0">

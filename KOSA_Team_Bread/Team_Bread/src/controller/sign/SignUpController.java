@@ -1,4 +1,4 @@
-package controller;
+package controller.sign;
 
 import java.io.IOException;
 import java.net.URL;
@@ -183,7 +183,7 @@ public class SignUpController implements Initializable {
 	private void goToLogin(Object event) {
 
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/login.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/sign/login.fxml"));
 			Parent loginRoot = loader.load();
 
 			Scene loginScene = new Scene(loginRoot);
