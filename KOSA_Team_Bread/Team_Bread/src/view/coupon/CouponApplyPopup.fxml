@@ -26,7 +26,7 @@
                 <Label fx:id="costLabel" style="-fx-font-weight: bold;"/>
 
                 <Label text="할인율 (%):"/>
-                <TextField fx:id="discountField" promptText="0~100"/>
+                <TextField fx:id="discountField" promptText="0~100" style="-fx-padding: 8px 12px; -fx-border-color: #dddddd; -fx-border-radius: 4px; -fx-background-color: #f8f9fa; -fx-background-radius: 4px; -fx-font-size: 14px;"/>
 
                 <Label text="시작 날짜:"/>
                 <DatePicker fx:id="startDatePicker"/>
@@ -34,7 +34,7 @@
                 <Label text="종료 날짜:"/>
                 <DatePicker fx:id="endDatePicker"/>
 
-                <Button text="쿠폰 적용" fx:id="applyButton" maxWidth="Infinity"/>
+                <Button text="쿠폰 적용" fx:id="applyButton" maxWidth="Infinity" style="-fx-background-color: #4285f4; -fx-text-fill: white; -fx-background-radius: 4px; -fx-font-size: 16px; -fx-font-weight: bold;"/>
             </VBox>
         </HBox>
     </center>
