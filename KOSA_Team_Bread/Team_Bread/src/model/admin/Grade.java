@@ -1,7 +1,7 @@
 package model.admin;
 
 public enum Grade {
-	ADMIN(1, "관리자"), BOSS(2, "사장");
+	ADMIN(1, "관리자"), BOSS(2, "점장");
 
 	private final int code;
 	private final String displayName;
