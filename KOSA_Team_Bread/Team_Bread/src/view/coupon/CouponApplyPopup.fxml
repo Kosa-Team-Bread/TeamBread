@@ -1,4 +1,4 @@
-<!-- src/main/resources/view/coupon/CouponApplyPopup.fxml -->
+!-- src/main/resources/view/coupon/CouponApplyPopup.fxml -->
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -21,6 +21,7 @@
 
                 <Label text="원가:"/>
                 <Label fx:id="costLabel" style="-fx-font-weight: bold;"/>
+<?xml version="1.0" encoding="UTF-8"?>
 
                 <Label text="할인율 (%):"/>
                 <TextField fx:id="discountField" promptText="0~100"/>
