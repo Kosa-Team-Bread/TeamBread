@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controller.ProductDetailPopupController">
+<VBox alignment="CENTER" spacing="10" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="controller.stock.ProductDetailPopupController">
     <padding>
         <Insets bottom="20" left="20" right="20" top="20" />
     </padding>
