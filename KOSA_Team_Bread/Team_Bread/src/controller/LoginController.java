@@ -137,7 +137,7 @@ public class LoginController implements Initializable {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/main/MainPage.fxml"));
 			Parent mainRoot = loader.load();
 			
-			Scene mainScene = new Scene(mainRoot);
+			Scene mainScene = new Scene(mainRoot, 1440, 900);
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			stage.setScene(mainScene);
 			stage.setTitle("성심당 할인관리 시스템 - 메인");
