@@ -8,7 +8,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.cell.*?>
 
-<VBox fillWidth="true" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StockController">
+<VBox fillWidth="true" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.stock.StockController">
    <children>
       <!-- Main Container -->
       <VBox style="-fx-background-color: #f8fafc; -fx-padding: 20;" VBox.vgrow="ALWAYS">

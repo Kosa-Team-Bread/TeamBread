@@ -6,7 +6,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SignUpController"
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.sign.SignUpController"
              prefWidth="1440" prefHeight="1024" style="-fx-background-color: white;">
     <!-- Center container equivalent to the 680 × … card with 80 px padding -->
     <VBox fx:id="card" layoutX="380" layoutY="87" prefWidth="680" alignment="TOP_CENTER"

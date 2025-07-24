@@ -35,7 +35,7 @@ public class CouponDAO {
         // tbl_coupon 테이블의 데이터만 조회
         String sql = "SELECT coupon_id, product_id, category_id, coupon_name, percent, starttime, deadline " +
                      "FROM tbl_coupon " +
-                     "ORDER BY coupon_id DESC";
+                     "ORDER BY coupon_id ASC";
 
         try {
             ResultSet rs = DBUtil.dbExecuteQuery(sql);

@@ -1,4 +1,4 @@
-package controller;
+package controller.sign;
 
 import java.io.IOException;
 import java.net.URL;
@@ -82,7 +82,7 @@ public class LoginController implements Initializable {
 	private void onGotoSignup(MouseEvent event) {
 		try {
 			// 회원가입 화면으로 전환
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/signup.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/sign/signup.fxml"));
 			Parent signupRoot = loader.load();
 			
 			Scene signupScene = new Scene(signupRoot);
@@ -137,7 +137,7 @@ public class LoginController implements Initializable {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/main/MainPage.fxml"));
 			Parent mainRoot = loader.load();
 			
-			Scene mainScene = new Scene(mainRoot);
+			Scene mainScene = new Scene(mainRoot, 1440, 900);
 			Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 			stage.setScene(mainScene);
 			stage.setTitle("성심당 할인관리 시스템 - 메인");

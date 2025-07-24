@@ -16,7 +16,7 @@
 
 <AnchorPane prefHeight="350.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.coupon.CouponEditPopupController">
    <children>
-      <!-- [수정] VBox 태그가 xmlns:fx="http://javafx.com/fxml/1"를 잘못 참조하고 있었던 것을 수정 -->
+      <!-- VBox 태그가 xmlns:fx="http://javafx.com/fxml/1"를 잘못 참조하고 있었던 것을 수정 -->
       <VBox spacing="20.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
          <children>
             <Label text="쿠폰 정보 수정">

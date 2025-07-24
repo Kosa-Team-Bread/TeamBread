@@ -18,7 +18,7 @@
 
 <!-- 루트 요소에 fx:controller를 지정합니다. -->
 
-<VBox fillWidth="true" prefHeight="750.0" prefWidth="1240.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InoutController">
+<VBox fillWidth="true" prefHeight="750.0" prefWidth="1240.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.inout.InoutController">
    <children>    
    	   <!-- Main Container -->  
        <VBox style="-fx-background-color: #f8fafc; -fx-padding: 20;" VBox.vgrow="ALWAYS">
