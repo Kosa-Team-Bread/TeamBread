@@ -25,6 +25,7 @@ public class CouponDAO {
 	private ProductDAO productDao;
 	private CategoryDAO categoryDao;
 
+	// Made By 김기성
     /**
      * 모든 쿠폰 정보를 DB에서 조회 후 반환
      * @return 쿠폰 리스트 (ObservableList)
@@ -60,6 +61,7 @@ public class CouponDAO {
         return couponList;
     }
 
+    // Made By 정영규
     // 쿠폰 삽입
     public void insertCoupon(Integer productId, Integer percent, LocalDate startTime, LocalDate DeadLine) throws SQLException, ClassNotFoundException {
 		List<Object> addList = new ArrayList<>();
@@ -81,6 +83,7 @@ public class CouponDAO {
 		}
 	}
 
+ // Made By 김기성
     /**
      * Stored Procedure 호출하여 기존 쿠폰 정보 수정
      * @param couponDto 수정할 쿠폰 정보를 담은 DTO
@@ -106,6 +109,7 @@ public class CouponDAO {
         }
     }
 
+ // Made By 김기성
     /**
      * Stored Procedure 호출하여 쿠폰 삭제
      * @param couponId 삭제할 쿠폰의 ID

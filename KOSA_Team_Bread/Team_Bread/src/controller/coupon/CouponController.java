@@ -1,5 +1,3 @@
-// CouponController.java
-
 package controller.coupon;
 
 import javafx.beans.property.SimpleIntegerProperty;
@@ -37,6 +35,8 @@ import java.util.ResourceBundle;
 
 import controller.coupon.CouponApplyPopupController;
 
+
+// Made By 김기성
 public class CouponController implements Initializable {
 
     // FXML 필드

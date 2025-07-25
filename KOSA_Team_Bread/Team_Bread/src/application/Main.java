@@ -8,9 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- * JavaFX 애플리케이션의 메인 진입점(Entry Point) 클래스. FXML 파일을 로드하여 초기 화면을 설정
- */
+// Made By 나규태
 public class Main extends Application {
 
 	@Override

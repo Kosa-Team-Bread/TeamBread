@@ -140,7 +140,7 @@ public class InoutDAO {
 			String query = "{CALL proc_insert_inout(?, ?, ?, ?, ?, ?, ?)}";
 			Integer type = 1;
 			try {
-				if(inout.getInoutType() == "출고") type=2;
+				if(inout.getInoutType().equals("출고")) type=2;
 				addList.add(stockDao.searchStock(inout.getProductName()).get(0).getStockId());
 				addList.add(adminDao.getAdminFromName(inout.getAdminName()).getAdminId());
 				addList.add(productDao.searchProduct(inout.getProductName()).get(0).getProductId());

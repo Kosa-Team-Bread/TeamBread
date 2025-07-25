@@ -1,4 +1,3 @@
-// CouponApplyPopupController.java
 package controller.coupon;
 
 import javafx.fxml.FXML;
@@ -11,6 +10,7 @@ import model.product.Product;
 
 import java.time.LocalDate;
 
+// Made By 정영규
 public class CouponApplyPopupController {
 
     @FXML private WebView chartWebView;
@@ -33,9 +33,8 @@ public class CouponApplyPopupController {
         discountField.textProperty().addListener((obs, o, n) -> updateChart());
     }
 
-    /**
-     * 팝업 호출 시 상품과 DAO를 초기화하는 메서드
-     */
+   
+    //팝업 호출 시 상품과 DAO를 초기화하는 메서드
     public void initData(Product product, CouponDAO couponDAO) {
         this.selectedProduct = product;
         this.couponDAO = couponDAO;
@@ -50,7 +49,7 @@ public class CouponApplyPopupController {
         updateChart();
     }
 
-    /** 할인율, 가격, 원가 데이터를 반영해 차트를 갱신 */
+    // 할인율, 가격, 원가 데이터를 반영해 차트를 갱신
     private void updateChart() {
         int P = selectedProduct.getPrice();
         int C = selectedProduct.getCost();
@@ -100,7 +99,7 @@ public class CouponApplyPopupController {
         webEngine.loadContent(sb.toString());
     }
 
-    /** 쿠폰을 DB에 삽입 후 팝업 닫기 */
+    // 쿠폰을 DB에 삽입 후 팝업 닫기 
     private void applyCoupon() {
         try {
             int percent = Integer.parseInt(discountField.getText());

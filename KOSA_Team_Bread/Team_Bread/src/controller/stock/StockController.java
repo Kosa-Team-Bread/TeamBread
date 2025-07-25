@@ -28,6 +28,7 @@ import model.stock.Stock;
 import model.stock.StockDAO;
 import util.AlertUtil;
 
+// Made By 정영규
 public class StockController {
 
     @FXML private TableView<Stock> stockTableView;
@@ -51,12 +52,8 @@ public class StockController {
         setupTableColumns();
         setupRowClick();
 
-        // ★ 여기를 추가
-        // 1) 카테고리 DAO 주입
         ProductDAO.setCategoryDAO(categoryDao);
-        // 2) (이미지 조회용) 이미지 DAO 주입 — 같은 categoryDao 사용 권장
         ProductDAO.setImageDAO(new ImageDAO(categoryDao));
-        // 3) (삭제 기능 등에서 필요하다면) AdminDAO 주입
         ProductDAO.setAdminDAO(new AdminDAO());
 
         loadCategoryComboBox();
@@ -64,7 +61,7 @@ public class StockController {
         setupCategoryFilter();
     }
 
-
+    // 매번 조회시 Map에서 저장하여 쿼리 중복 방지
     private void cacheCategoryMap() {
         try {
             for (Category cate : categoryDao.findAllCategory()) {
@@ -75,6 +72,7 @@ public class StockController {
         }
     }
 
+    // 조회 데이터 삽입
     private void setupTableColumns() {
         stockNameColumn.setCellValueFactory(cd ->
             Bindings.createStringBinding(() -> cd.getValue().getStockName())
@@ -99,7 +97,7 @@ public class StockController {
         );
     }
 
-    /** 테이블 행 더블클릭 시 상세 팝업 띄우기 */
+    // 더블 클릭 이벤트 처리
     private void setupRowClick() {
         stockTableView.setRowFactory(tv -> {
             TableRow<Stock> row = new TableRow<>();
@@ -113,6 +111,7 @@ public class StockController {
         });
     }
 
+    // 카테고리 combox박스 삽입
     private void loadCategoryComboBox() {
         try {
             categoryComboBox.getItems().add("전체");
@@ -129,6 +128,7 @@ public class StockController {
         }
     }
 
+    // 전체조회
     private void loadAllStock() {
         try {
             ObservableList<Stock> stockList = stockDao.findAllStock();
@@ -138,6 +138,7 @@ public class StockController {
         }
     }
 
+    // 카테고리 검색
     private void setupCategoryFilter() {
         categoryComboBox.setOnAction(evt -> {
             String sel = categoryComboBox.getValue();
@@ -153,6 +154,7 @@ public class StockController {
         });
     }
 
+    // 상품검색
     @FXML
     private void searchProducts(ActionEvent event) {
         String text = searchField.getText();
@@ -167,6 +169,7 @@ public class StockController {
         }
     }
 
+    // 상품 삽입
     @FXML
     private void addProduct(ActionEvent e) {
         try {
@@ -187,7 +190,7 @@ public class StockController {
         }
     }
 
-    /** 상품 상세 팝업 띄우기 */
+    // 더블클릭 시 상품 상세 팝업창 처리
     private void showDetailPopup(int productId) {
         try {
             FXMLLoader loader = new FXMLLoader(

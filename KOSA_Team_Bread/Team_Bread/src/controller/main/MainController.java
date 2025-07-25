@@ -12,6 +12,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 
+// Made By 나규태
 public class MainController implements Initializable {
 	@FXML
 	private TabPane tabPane;

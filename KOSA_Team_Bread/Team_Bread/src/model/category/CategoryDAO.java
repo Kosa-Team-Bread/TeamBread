@@ -122,7 +122,7 @@ public class CategoryDAO {
 			
 			addList.add(category.getCategoryName());
 			
-	
+			// 하위 카테고리 삽입시 카테고리 레벨 계산해서 삽입
 			while(true) {
 				if(id != null) {
 					level++;

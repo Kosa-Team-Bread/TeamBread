@@ -95,7 +95,7 @@ public class DBUtil {
 		}
 		return crs;
 	}
-	
+
 	// 파라미터 2개를 받아야 할때 
 	public static ResultSet dbExecuteQuery(String sql, List<Object> params) throws SQLException, ClassNotFoundException {
 		
@@ -111,7 +111,7 @@ public class DBUtil {
 		return pstmt.executeQuery();
 	}
 	// ^----------------------- 여기까지 -------------------------------^
-	
+
 	// Method to execute an INSERT, UPDATE, or DELETE statement
 	public static void dbExecuteUpdate(String sqlStmt) throws SQLException, ClassNotFoundException {
 		Statement stmt = null;
@@ -134,7 +134,7 @@ public class DBUtil {
 			dbDisconnect();
 		}
 	}
-
+	
 	// 조건 검색
 	public static ResultSet dbCaseExecuteQuery(String queryPstmt, List<Object> addList)	throws SQLException, ClassNotFoundException {
 		PreparedStatement pstmt = null;
@@ -206,6 +206,7 @@ public class DBUtil {
 		return crs;
 	}
 
+	//Made By 정영규
 	// 삽입, 삭제, 수정
 	public static void dbExecuteUpdate(String sqlPstmt, List<Object> addList) throws SQLException, ClassNotFoundException {
 		PreparedStatement pstmt = null;
@@ -231,7 +232,8 @@ public class DBUtil {
 			dbDisconnect();
 		}
 	}
-	// Stored Procedure 사용
+	//Made By 정영규
+	// 저장 프로시저 사용
     public static void dbExecuteCall(String sqlCall, List<Object> paramList) throws SQLException, ClassNotFoundException {
 		CallableStatement cstmt = null;
 
