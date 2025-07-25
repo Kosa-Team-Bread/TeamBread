@@ -1,3 +1,5 @@
+// CouponController.java
+
 package controller.coupon;
 
 import javafx.beans.property.SimpleIntegerProperty;
@@ -37,9 +39,15 @@ import controller.coupon.CouponApplyPopupController;
 
 
 // Made By 김기성
+/**
+ * '쿠폰 관리' 화면의 모든 UI 이벤트와 비즈니스 로직을 담당하는 컨트롤러 클래스
+ * MVC(Model-View-Controller)에서 Controller의 역할로, 
+ * View(CouponManagement.fxml)와 Model(CouponDAO.java) 사이의 중재자 역할 담당 
+*/
 public class CouponController implements Initializable {
 
-    // FXML 필드
+    // --- FXML UI 컴포넌트 ---
+    // fxml 파일에 정의된 UI 컨트롤들을 코드와 연결하기 위한 필드들
     @FXML private TableView<Coupon> couponTable;
     @FXML private TableColumn<Coupon, String> couponCategoryCol;
     @FXML private TableColumn<Coupon, String> couponNameCol;
@@ -48,7 +56,7 @@ public class CouponController implements Initializable {
     @FXML private TableColumn<Coupon, String> deadlineCol;
     @FXML private ComboBox<String> couponCategoryFilter;    // 카테고리 필터
     @FXML private TextField couponSearchField;              // 쿠폰명 검색
-    
+
     // 외부 버튼(쿠폰 수정/삭제 버튼)을 위한 FXML 필드 추가
     @FXML private Button addCouponBtn;
     @FXML private Button editCouponBtn;
@@ -62,24 +70,35 @@ public class CouponController implements Initializable {
     @FXML private ComboBox<String> productCategoryFilter;   // 카테고리 필터
     @FXML private TextField productSearchField;             // 상품명 검색
 
-    // DAO
+    // --- 데이터 접근 객체 (DAO) ---
+    // 각 DB 테이블과의 통신을 담당하는 클래스 인스턴스
     private CouponDAO couponDAO;
     private ProductDAO productDAO;
     private CategoryDAO categoryDAO;
 
-    // 데이터 리스트
-    private ObservableList<Coupon> couponMasterList;
-    private FilteredList<Coupon> couponFilteredList;
+    // --- 데이터 모델 리스트 ---
+    // TableView에 데이터를 표시하기 위한 리스트들
+    private ObservableList<Coupon> couponMasterList;        // DB에서 가져온 모든 쿠폰의 원본 데이터
+    private FilteredList<Coupon> couponFilteredList;        // 검색 및 필터 조건이 적용된 후, 실제 화면에 보여질 데이터
     
-    private ObservableList<Product> productMasterList;
-    private FilteredList<Product> productFilteredList;
+    private ObservableList<Product> productMasterList;      // DB에서 가져온 모든 상품의 원본 데이터
+    private FilteredList<Product> productFilteredList;      // 검색 및 필터 조건이 적용된 후, 실제 화면에 보여질 데이터
 
+    // --- 데이터 캐시 ---
     // 카테고리 정보를 저장할 Map (ID-이름 매핑)
+    // DB 조회를 최소화하기 위해 카테고리 정보를 메모리에 저장해두는 Map
     private Map<Integer, String> categoryMap;
 
+    // fxml 로드가 완료된 후, 컨트롤러 초기화 코드
+    // UI 컴포넌트 설정, 데이터 로딩, 이벤트 리스너 등록 등 초기 상태 설정 로직 담당'
+    // * @param location FXML 파일의 경로
+    // * @param resources FXML 파일에서 사용하는 리소스
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // 1) 필드 DAO 객체 생성 및 초기화
+        // 1) 필드 DAO 객체 생성 및 초기화 (의존성 주입)
+        // CouponDAO / ProductDAO가 다른 DAO를 필요로 하므로, 의존성이 낮은 객체부터 생성, 
+        // 생성자의 인자로 전달 (생성자 주입) 
+        // >>> 객체 간의 결합도를 낮추고 코드 구조 명확성 높임
         categoryDAO = new CategoryDAO();
         AdminDAO adminDAO = new AdminDAO();
 
@@ -91,19 +110,19 @@ public class CouponController implements Initializable {
         productDAO = new ProductDAO(categoryDAO, adminDAO);
         couponDAO  = new CouponDAO(productDAO, categoryDAO);
 
-        // 2) 테이블 컬럼 설정
-        setupTableColumns();
-
-        // 3) DB에서 데이터 로드
+        // 2) DB에서 데이터 로드
         loadDataFromDB();
 
-        // 4) 필터링 기능 설정
+        // 3) 테이블 컬럼 내용 및 형식 설정
+        setupTableColumns();
+
+        // 4) 검색 & 필터링 기능 설정
         setupFilterListeners();
 
-        // 버튼 상태 관리 기능 설정
+        // 5) 버튼 상태(활성화/비활성화) 관리 기능 설정
         setupButtonControls();
 
-        // 5) 더블 클릭 팝업 호출
+        // 6) 더블 클릭 팝업 호출 (더블 클릭 이벤트 핸들러 설정)
         productTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2 &&
                 productTable.getSelectionModel().getSelectedItem() != null) {
@@ -112,50 +131,11 @@ public class CouponController implements Initializable {
         });
     }
 
-    /** 테이블의 각 컬럼과 데이터 모델의 필드 연결(바인딩) */
-    private void setupTableColumns() {
-        // --- 쿠폰 테이블 설정 ---
-        couponCategoryCol.setCellValueFactory(cellData -> {
-            Integer categoryId = cellData.getValue().getCategoryId();
-            return new SimpleStringProperty(categoryMap.getOrDefault(categoryId, "미분류"));
-        });
-        couponNameCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCouponName()));
-        percentCol.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getPercent()).asObject());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // 날짜 포맷은 시/분 제외
-        startTimeCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStartTime().format(formatter)));
-        deadlineCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDeadLine().format(formatter)));
-        
-        // --- 상품 테이블 설정 ---
-        productCategoryCol.setCellValueFactory(cellData -> {
-            Integer categoryId = cellData.getValue().getCategoryId();
-            return new SimpleStringProperty(categoryMap.getOrDefault(categoryId, "미분류"));
-        });
-        productNameCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProductName()));
-        priceCol.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getPrice()));
-        costCol.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getCost()));
-
-        // 가격/원가 컬럼의 표시 형식 변경
-        DecimalFormat currencyFormatter = new DecimalFormat("#,###");
-
-        Callback<TableColumn<Product, Number>, TableCell<Product, Number>> currencyCellFactory = column -> {
-            return new TableCell<Product, Number>() {
-                @Override
-                protected void updateItem(Number item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (empty || item == null) {
-                        setText(null);
-                    } else {
-                        setText(currencyFormatter.format(item.doubleValue()));
-                    }
-                }
-            };
-        };
-
-        priceCol.setCellFactory(currencyCellFactory);
-        costCol.setCellFactory(currencyCellFactory);
-    }
-
-    /** DB에서 카테고리, 쿠폰, 상품 데이터를 로드 */
+    
+    /**
+     * 2) DB에서 데이터 로드
+     * DB에서 카테고리, 쿠폰, 상품 데이터를 로드 
+    */
     private void loadDataFromDB() {
         // 1. 카테고리 정보 로드 및 ComboBox 채우기
         categoryMap = new HashMap<>();
@@ -182,7 +162,58 @@ public class CouponController implements Initializable {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    /** ComboBox와 TextField의 값이 변경될 때 필터링이 동작하도록 리스너 설정 */
+    /**
+     * 3) 테이블 컬럼 내용 및 형식 설정
+     * 테이블의 각 컬럼과 데이터 모델의 필드 연결(바인딩) 정의 메소드
+     * TableView의 각 컬럼에 어떤 데이터를 어떻게 표시할지 정의
+     * setCellValueFactory를 통해 데이터 모델(Coupon, Product)의 필드와 테이블 셀 연결(바인딩)
+    */
+    private void setupTableColumns() {
+        // --- 쿠폰 테이블 컬럼 설정 ---
+        // 카테고리 ID를 categoryMap을 참조, 실제 카테고리 이름으로 변환하여 표시
+        couponCategoryCol.setCellValueFactory(cellData -> {
+            Integer categoryId = cellData.getValue().getCategoryId();
+            return new SimpleStringProperty(categoryMap.getOrDefault(categoryId, "미분류"));
+        });
+        couponNameCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCouponName()));
+        percentCol.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getPercent()).asObject());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        startTimeCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStartTime().format(formatter)));
+        deadlineCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDeadLine().format(formatter)));
+        
+        // --- 상품 테이블 설정 ---
+        productCategoryCol.setCellValueFactory(cellData -> {
+            Integer categoryId = cellData.getValue().getCategoryId();
+            return new SimpleStringProperty(categoryMap.getOrDefault(categoryId, "미분류"));
+        });
+        productNameCol.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getProductName()));
+        priceCol.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getPrice()));
+        costCol.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getCost()));
+
+        // 가격/원가 컬럼의 표시 형식 정의
+        DecimalFormat currencyFormatter = new DecimalFormat("#,###");
+        Callback<TableColumn<Product, Number>, TableCell<Product, Number>> currencyCellFactory = column -> {
+            return new TableCell<Product, Number>() {
+                @Override
+                protected void updateItem(Number item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                    } else {
+                        setText(currencyFormatter.format(item.doubleValue()));
+                    }
+                }
+            };
+        };
+        priceCol.setCellFactory(currencyCellFactory);
+        costCol.setCellFactory(currencyCellFactory);
+    }
+
+    /**
+     * 4) 검색 & 필터링 기능 설정
+     * ComboBox와 TextField의 값이 변경될 때마다 실시간으로 테이블 내용을 필터링하도록 리스너 설정 
+     * FilteredList는 원본 리스트(couponMasterList)를 래핑, 원본 데이터는 그대로 둔 채 보여지는 데이터만 필터링
+    */
     private void setupFilterListeners() {
         // 쿠폰 목록 필터링
         couponFilteredList = new FilteredList<>(couponMasterList, p -> true);
@@ -197,11 +228,13 @@ public class CouponController implements Initializable {
         productSearchField.textProperty().addListener((obs, old, val) -> applyProductFilter());
     }
 
-    /** 현재 선택된 필터 조건들을 쿠폰 목록에 적용 */
+    /* 현재 선택된 필터 조건들을 쿠폰 목록에 적용 (필터링) */
     private void applyCouponFilter() {
         String selectedCategory = couponCategoryFilter.getValue();
         String searchText = couponSearchField.getText().toLowerCase();
 
+        // setPredicate: FilteredList가 어떤 항목을 보여줄지 결정하는 규칙(Predicate) 정의
+        // 이 람다식은 리스트의 모든 항목에 대해 실행, true를 반환하는 항목만 화면에 출력
         couponFilteredList.setPredicate(coupon -> {
             String couponCategoryName = categoryMap.getOrDefault(coupon.getCategoryId(), "");
             boolean categoryMatch = "전체".equals(selectedCategory) || couponCategoryName.equals(selectedCategory);
@@ -210,7 +243,7 @@ public class CouponController implements Initializable {
         });
     }
 
-    /** 현재 선택된 필터 조건들을 상품 목록에 적용 */
+    /* 현재 선택된 필터 조건들을 상품 목록에 적용 */
     private void applyProductFilter() {
         String selectedCategory = productCategoryFilter.getValue();
         String searchText = productSearchField.getText().toLowerCase();
@@ -223,9 +256,10 @@ public class CouponController implements Initializable {
         });
     }
 
-    
-
-    // 테이블 선택 상태에 따라 쿠폰 수정/삭제 버튼의 활성화/비활성화 상태를 관리
+    /**
+     * 5) 버튼 상태(활성화/비활성화) 관리 기능 설정
+     * 테이블 선택 상태에 따라 쿠폰 수정/삭제 버튼의 활성화/비활성화 상태 관리
+    */
     private void setupButtonControls() {
         // 초기에는 수정/삭제 버튼을 비활성화
         editCouponBtn.setDisable(true);
@@ -239,11 +273,12 @@ public class CouponController implements Initializable {
             deleteCouponBtn.setDisable(!isItemSelected);
         });
     }
-    
+
+
     /**
      * '쿠폰 수정' 버튼 클릭 시 실행될 로직
      * @param event 액션 이벤트 객체
-     */
+    */
     @FXML
     private void handleEditAction(ActionEvent event) {
         Coupon selectedCoupon = couponTable.getSelectionModel().getSelectedItem();
@@ -280,7 +315,7 @@ public class CouponController implements Initializable {
     /**
      * '쿠폰 삭제' 버튼 클릭 시 실행될 로직
      * @param event 액션 이벤트 객체
-     */
+    */
     @FXML
     private void handleDeleteAction(ActionEvent event) {
         Coupon selectedCoupon = couponTable.getSelectionModel().getSelectedItem();
@@ -306,7 +341,10 @@ public class CouponController implements Initializable {
         }
     }
     
-    // 쿠폰 목록 테이블을 새로고침하는 메소드
+    /**
+     * 쿠폰 목록 테이블을 새로고침하는 메소드
+     * 쿠폰이 추가/수정/삭제되었을 때 호출, 화면을 최신 상태로 유지
+    */
     private void refreshCouponTable() {
         this.couponMasterList = couponDAO.getAllCoupons();
         this.couponFilteredList = new FilteredList<>(couponMasterList, p -> true);
@@ -314,7 +352,12 @@ public class CouponController implements Initializable {
         applyCouponFilter();
     }
     
-    // Alert 창을 띄우는 공통 메소드
+    /**
+     * Alert 창을 띄우는 공통 헬퍼 메소드
+     * @param alertType 경고, 정보, 오류 등 Alert의 종류
+     * @param title 창 제목
+     * @param message 창에 표시할 메시지
+    */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
