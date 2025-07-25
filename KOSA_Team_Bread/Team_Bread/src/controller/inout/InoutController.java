@@ -26,9 +26,10 @@ import model.inout.InoutDAO;
 import model.inout.inoutSelectDto;
 import util.Session;
 
-// Made By 나규태
+// Made By 나규태 + CHATGPT
+// 입출고 관리 화면 컨트롤러
 public class InoutController implements Initializable {
-	// @FXML 못 넣은 요소 많음(넣어야함)
+	// FXML 요소 선언
 	@FXML
 	private DatePicker startDatePicker;
 	@FXML
@@ -58,14 +59,18 @@ public class InoutController implements Initializable {
 	@FXML
 	private TableColumn<inoutSelectDto, String> adminNameColumn;
 
+	// 전체 입출고 데이터 목록
 	private ObservableList<inoutSelectDto> allInoutData;
 
+	// DAO 객체 생성
 	private final InoutDAO inoutDAO = new InoutDAO();
 
+	// 초기화 메서드
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		// 입출고 리스트
 		try {
+			// DB에서 입출고 데이터 불러오기
 			allInoutData = getInoutData();
 			inoutTableView.setItems(allInoutData);
 		} catch (Exception e) {
@@ -73,7 +78,7 @@ public class InoutController implements Initializable {
 			allInoutData = FXCollections.observableArrayList();
 		}
 
-		// 필터 조건 바뀔 때마다 필터링 실행
+		// 필터 조건 이벤트 리스너를 등록하여 바뀔 때마다 필터링 실행
 		inoutTypeComboBox.setOnAction(e -> filterData());
 		categoryComboBox.setOnAction(e -> filterData());
 		startDatePicker.setOnAction(e -> filterData());
@@ -81,6 +86,7 @@ public class InoutController implements Initializable {
 		productNameField.textProperty().addListener((obs, oldVal, newVal) -> filterData());
 	}
 
+	// DAO를 통해 전체 입출고 데이터를 가져오는 메서드
 	public ObservableList<inoutSelectDto> getInoutData() {
 		try {
 			return inoutDAO.findAllInout();
@@ -90,12 +96,13 @@ public class InoutController implements Initializable {
 		}
 	}
 
-	// 필터 조건 보관
+	// 전체 필터 조건을 결합한 Predicate 반환
 	private Predicate<inoutSelectDto> buildFilterPredicate() {
 		return item -> matchesDateRange(item) && matchesInoutType(item) && matchesCategory(item)
 				&& matchesProductName(item);
 	}
 
+	// 날짜 범위 조건 필터
 	private boolean matchesDateRange(inoutSelectDto item) {
 		LocalDate start = startDatePicker.getValue();
 		LocalDate end = endDatePicker.getValue();
@@ -108,6 +115,7 @@ public class InoutController implements Initializable {
 		return true;
 	}
 
+	// 입출고 유형 조건 필터
 	private boolean matchesInoutType(inoutSelectDto item) {
 		String selectedType = inoutTypeComboBox.getValue();
 		if (selectedType == null || selectedType.equals("전체"))
@@ -116,6 +124,7 @@ public class InoutController implements Initializable {
 		return item.getTypeName().equals(selectedType);
 	}
 
+	// 카테고리 조건 필터
 	private boolean matchesCategory(inoutSelectDto item) {
 		String selectedCategory = categoryComboBox.getValue();
 		if (selectedCategory == null || selectedCategory.equals("전체"))
@@ -124,6 +133,7 @@ public class InoutController implements Initializable {
 		return item.getCategoryName().equals(selectedCategory);
 	}
 
+	// 제품명 키워드 조건 필터
 	private boolean matchesProductName(inoutSelectDto item) {
 		String keyword = productNameField.getText();
 		if (keyword == null || keyword.trim().isEmpty())
@@ -132,12 +142,13 @@ public class InoutController implements Initializable {
 		return item.getProductName().toLowerCase().contains(keyword.toLowerCase());
 	}
 
-	// 메인 필터 함수
+	// 필터링된 데이터로 테이블 뷰 갱신
 	public void filterData() {
 		ObservableList<inoutSelectDto> filtered = allInoutData.filtered(buildFilterPredicate());
 		inoutTableView.setItems(filtered);
 	}
 
+	// 입출고 신규 등록 버튼 클릭 시 실행
 	@FXML
 	private void handleNewInoutAction() {
 		try {
@@ -148,14 +159,14 @@ public class InoutController implements Initializable {
 			// 컨트롤러 가져오기
 			InoutCreateController inoutCreateController = loader.getController();
 
-			// 현재 사용자 정보
+			// 현재 사용자 정보 전달
 			inoutCreateController.setCurrentUser(Session.getCurrentUser());
 
-			// 품목명 리스트 추출 후 전달
+			// 제품명 리스트 전달
 			ObservableList<String> productNames = allInoutData.stream()
-					.map(inoutSelectDto::getProductName)
-					.distinct()
-					.collect(Collectors.toCollection(FXCollections::observableArrayList));
+												 .map(inoutSelectDto::getProductName)
+												 .distinct()
+											   	 .collect(Collectors.toCollection(FXCollections::observableArrayList));
 			inoutCreateController.setProductNames(productNames);
 
 			// 새 stage 생성
@@ -171,10 +182,11 @@ public class InoutController implements Initializable {
 
 			// 창 표시 및 대기
 			dialogStage.showAndWait();
-			
-			if(inoutCreateController.isSuccessful()) {
+
+			// 등록 성공시 테이블 뷰 갱신
+			if (inoutCreateController.isSuccessful()) {
 				allInoutData = getInoutData(); // DB 다시 읽기
-				filterData(); 				   // 필터 적용해서 갱신
+				filterData(); // 필터 적용해서 갱신
 			}
 
 		} catch (Exception e) {

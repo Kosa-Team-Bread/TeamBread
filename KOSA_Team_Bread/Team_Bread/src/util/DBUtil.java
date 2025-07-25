@@ -172,6 +172,7 @@ public class DBUtil {
 		return crs;
 	}
 	
+	// Made by 나규태
 	// (조건 검색 오버로딩) 이미 열려있는 Connection을 받아서 쿼리만 실행하고 결과를 반환
 	public static ResultSet dbCaseExecuteQuery(Connection conn, String queryPstmt, List<Object> addList)	throws SQLException, ClassNotFoundException {
 		PreparedStatement pstmt = null;

@@ -14,36 +14,42 @@ import model.admin.Admin;
 import model.admin.AdminDAO;
 import util.AlertUtil;
 
-//Made By 나규태
+//Made By 나규태 + CHATGPT
 public class ProfileEditController implements Initializable {
+	// 이름, 이메일, 새 비밀번호 입력 필드
 	@FXML
 	private TextField nameField;
 	@FXML
 	private TextField emailField;
 	@FXML
 	private PasswordField newPasswordField;
+
+	// 취소 및 저장 버튼
 	@FXML
 	private Button cancelButton;
 	@FXML
 	private Button saveButton;
 
-	// 현재 사용자 정보 (부모 창에서 전달받을 데이터)
+	// 현재 로그인한 사용자 정보
 	private Admin currentUser;
 
+	// DB 접근을 위한 관리자 DAO 인스턴스 생성
 	private final AdminDAO adminDAO = new AdminDAO();
 
+	// 저장 성공 여부
 	private boolean isSuccessful = false;
 
+	// 저장 성공 여부 반환
 	public boolean isSuccessful() {
 		return isSuccessful;
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// 초기화 로직
+		// 초기화 시 별도 로직 없음
 	}
 
-	// 현재 유저 상태 설정 메서드
+	// 외부에서 현재 로그인한 사용자 설정 시 호출
 	public void setCurrentUser(Admin user) {
 		this.currentUser = user;
 
@@ -54,11 +60,13 @@ public class ProfileEditController implements Initializable {
 		}
 	}
 
+	// [취소] 버튼 클릭 시 창 닫기
 	@FXML
 	private void handleCancel() {
 		((Stage) cancelButton.getScene().getWindow()).close();
 	}
 
+	// [저장] 버튼 클릭 시 사용자 정보 DB 업데이트
 	@FXML
 	private void handleSave() {
 		// 저장 로직
@@ -77,13 +85,11 @@ public class ProfileEditController implements Initializable {
 					adminDAO.updateAdmin(adminName, adminEmail, newPassword, currentUser.getAdminId());
 				}
 
-				System.out
-						.println(adminName + " " + adminEmail + " " + " " + currentUser.toString() + " " + newPassword);
-
 				// 로컬 객체도 업데이트
 				currentUser.setAdminName(adminName);
 				currentUser.setEmail(adminEmail);
 
+				// 성공 알림
 				this.isSuccessful = true;
 				AlertUtil.showInfo("등록 성공", "회원 정보가 성공적으로 변경되었습니다.");
 

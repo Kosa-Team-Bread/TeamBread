@@ -26,8 +26,9 @@ import model.admin.Admin;
 import model.admin.AdminDAO;
 import util.Session;
 
-// Made By 나규태
+// Made By 나규태 + CHAT
 public class MyPageController implements Initializable {
+	// FXML로부터 연결된 UI 컴포넌트
 	@FXML
 	private Label currentUserLabel;
 	@FXML
@@ -59,16 +60,16 @@ public class MyPageController implements Initializable {
 	@FXML
 	private TableColumn<Admin, Void> actionsColumn;
 
+	// 모든 관리자 데이터 목록
 	private ObservableList<Admin> allAdminData;
 
+	// 관리자 DAO 인스턴스
 	private final AdminDAO adminDAO = new AdminDAO();
 
-	/**
-	 * 컨트롤러가 초기화될 때 호출되는 메소드입니다. 이곳에서 테이블 데이터 로딩 등 초기화 작업을 수행합니다.
-	 */
+	// 초기화 시 관리자 리스트와 사용자 정보 표시
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// 멤버 리스트
+		// 관리자 데이터 로드 실패시 빈 리스트 반환
 		try {
 			allAdminData = getAdminData();
 			adminTableView.setItems(allAdminData);
@@ -77,17 +78,15 @@ public class MyPageController implements Initializable {
 			allAdminData = FXCollections.observableArrayList();
 		}
 
-		// 현재 로그인한 사용자 이름
+		// 현재 로그인한 사용자 정보 표시
 		currentUserLabel.setText("현재 사용자: " + Session.getCurrentUser().getAdminName());
-
-		// 현재 로그인한 사용자 등급
 		currentUserGradeLabel.setText(Session.getCurrentUser().getGradeDisplayName());
 
 		// 등급 표시 글자로 변경
 		gradeColumn
 				.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGradeDisplayName()));
 
-		// 작업 컬럼에 버튼 추가
+		// 작업 컬럼에 '등급 변경' 버튼 추가
 		actionsColumn.setCellFactory(column -> {
 			return new TableCell<Admin, Void>() {
 				private final Button modifyRoleBtn = new Button("등급 변경");
@@ -112,14 +111,14 @@ public class MyPageController implements Initializable {
 						// 현재 행의 사용자(Admin) 정보를 가져옴
 						Admin rowAdmin = getTableView().getItems().get(getIndex());
 						// 버튼을 표시할지 여부 결정
-						// 조건. 로그인한 유저가 '최고 관리자'이고, 현재 행의 유저가 '사장'인 경우
+						// 조건. 로그인한 유저가 '최고 관리자'이고, 현재 행의 유저가 '점장'인 경우
 						boolean showButton = (Session.getCurrentUser().getGrade() == 1 && rowAdmin.getGrade() == 2);
 
 						if (showButton) {
 							// 조건을 만족하면 버튼 표시
 							setGraphic(modifyRoleBtn);
 						} else {
-							// 로그인한 유저가 사장이거나, 같은 관리자 등급일 때에는 버튼 숨김
+							// 로그인한 유저가 점장이거나, 같은 관리자 등급일 때에는 버튼 숨김
 							setGraphic(null);
 						}
 					}
@@ -128,6 +127,7 @@ public class MyPageController implements Initializable {
 		});
 	}
 
+	// 관리자 목록을 DB에서 가져옴
 	public ObservableList<Admin> getAdminData() {
 		try {
 			return adminDAO.getAllAdmins();
@@ -137,6 +137,7 @@ public class MyPageController implements Initializable {
 		}
 	}
 
+	// 개인정보 수정 버튼 클릭 시 호출
 	@FXML
 	private void onModifyUser() {
 		try {
@@ -144,10 +145,8 @@ public class MyPageController implements Initializable {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/profileEdit/profileEdit.fxml"));
 			Parent root = loader.load();
 
-			// 컨트롤러 가져오기
+			// 컨트롤러에 현재 로그인한 사용자 정보 전달
 			ProfileEditController profileEditController = loader.getController();
-
-			// 현재 사용자 정보
 			profileEditController.setCurrentUser(Session.getCurrentUser());
 
 			// 새 stage 생성
@@ -164,6 +163,7 @@ public class MyPageController implements Initializable {
 			// 창 표시 및 대기
 			dialogStage.showAndWait();
 
+			// 수정 성공 시 테이블 및 라벨 갱신
 			if (profileEditController.isSuccessful()) {
 				allAdminData = getAdminData();
 				adminTableView.setItems(allAdminData);
@@ -180,6 +180,7 @@ public class MyPageController implements Initializable {
 		}
 	}
 
+	// 등급 변경 버튼 클릭 시 호출
 	@FXML
 	private void onModifyRole(Admin currentUser) {
 		try {
@@ -187,9 +188,8 @@ public class MyPageController implements Initializable {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/profileEdit/roleEdit.fxml"));
 			Parent root = loader.load();
 
+			// 컨트롤러에 현재 로그인한 사용자 정보 전달
 			RoleEditController roleEditController = loader.getController();
-
-			// 현재 사용자 정보
 			roleEditController.setCurrentUser(currentUser);
 
 			// 새 stage 생성
@@ -206,6 +206,7 @@ public class MyPageController implements Initializable {
 			// 창 표시 및 대기
 			dialogStage.showAndWait();
 
+			// 등급 변경 성공 시 테이블 갱신
 			if (roleEditController.isSuccessful()) {
 				// DB에서 최신 데이터를 가져옵니다.
 				allAdminData = getAdminData();
