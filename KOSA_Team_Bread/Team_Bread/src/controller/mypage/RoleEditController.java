@@ -14,24 +14,29 @@ import model.admin.Admin;
 import model.admin.AdminDAO;
 import util.AlertUtil;
 
-//Made By 나규태
+//Made By 나규태 + CHATGPT
 public class RoleEditController implements Initializable {
+	// 라디오 버튼: 관리자, 점장
 	@FXML
 	private RadioButton managerRadio;
 	@FXML
 	private RadioButton adminRadio;
 	@FXML
 	private ToggleGroup roleToggleGroup;
+
+	// 취소 및 저장 버튼
 	@FXML
 	private Button cancelButton;
 	@FXML
 	private Button saveButton;
 
-	// 현재 사용자 정보 (부모 창에서 전달받을 데이터)
+	// 현재 등급 변경 대상인 사용자
 	private Admin currentUser;
 
+	// 관리자 DAO 인스턴스 생성
 	private final AdminDAO adminDAO = new AdminDAO();
-	
+
+	// 저장 성공 여부
 	private boolean isSuccessful = false;
 
 	public boolean isSuccessful() {
@@ -40,10 +45,10 @@ public class RoleEditController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		// 초기화 로직
+		// 초기화 시 별도 로직 없음
 	}
 
-	// 현재 유저 상태 설정 메서드
+	// 외부에서 사용자 정보 세팅 시 호출
 	public void setCurrentUser(Admin user) {
 		this.currentUser = user;
 
@@ -53,16 +58,18 @@ public class RoleEditController implements Initializable {
 			if (user.getGrade() == 1) { // 관리자
 				adminRadio.setSelected(true);
 			} else if (user.getGrade() == 2) {
-				managerRadio.setSelected(true); // 사장
+				managerRadio.setSelected(true); // 점장
 			}
 		}
 	}
 
+	// [취소] 버튼 클릭 시 창 닫기
 	@FXML
 	private void handleCancel() {
 		((Stage) cancelButton.getScene().getWindow()).close();
 	}
 
+	// [저장] 버튼 클릭 시 등급 변경 처리
 	@FXML
 	private void handleSave() {
 		// 저장 로직
@@ -84,16 +91,16 @@ public class RoleEditController implements Initializable {
 				// 로컬 객체도 업데이트
 				currentUser.setGrade(newGrade);
 				this.isSuccessful = true;
-				
-				AlertUtil.showInfo("등록 성공","등급이 성공적으로 변경되었습니다.");
-				
+
+				AlertUtil.showInfo("등록 성공", "등급이 성공적으로 변경되었습니다.");
+
 				((Stage) saveButton.getScene().getWindow()).close();
 			} catch (SQLException | ClassNotFoundException e) {
 				e.printStackTrace();
-				AlertUtil.showError("등록 실패","등급 변경에 실패했습니다: " + e.getMessage());
+				AlertUtil.showError("등록 실패", "등급 변경에 실패했습니다: " + e.getMessage());
 				this.isSuccessful = false;
 			}
 		}
-		
+
 	}
 }

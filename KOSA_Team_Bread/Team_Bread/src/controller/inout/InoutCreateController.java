@@ -20,7 +20,10 @@ import model.inout.InoutDAO;
 import model.inout.InoutInsertDto;
 import util.AlertUtil;
 
+// Made by 나규태 + CHATGPT
+// 입출고 등록 화면 컨트롤러
 public class InoutCreateController implements Initializable {
+	// FXML로부터 연결된 UI 컴포넌트
 	@FXML
 	private TextField productNameField;
 	@FXML
@@ -38,15 +41,15 @@ public class InoutCreateController implements Initializable {
 	@FXML
 	private Button saveButton;
 
-	// 현재 사용자 정보 (부모 창에서 전달받을 데이터)
+	// 현재 로그인된 사용자 정보
 	private Admin currentUser;
 	// 입출고 제품명 리스트
 	private ObservableList<String> productNames;
-	// 자동 완성 리스트
+	// 자동 완성 팝업
 	private ContextMenu suggestions = new ContextMenu();
-
+	// DB 접근 객체
 	private final InoutDAO inoutDAO = new InoutDAO();
-	
+	// 등록 성공 여부
 	private boolean isSuccessful = false;
 
 	public boolean isSuccessful() {
@@ -55,10 +58,10 @@ public class InoutCreateController implements Initializable {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
+		// 초기화시 특별한 동작 없음
 	}
 	
-	// 현재 유저 상태 설정 메서드
+	// 로그인한 사용자 정보를 세팅하는 메서드
 	public void setCurrentUser(Admin user) {
 		this.currentUser = user;
 
@@ -68,6 +71,7 @@ public class InoutCreateController implements Initializable {
 		}
 	}
 
+	// 제품명 자동완성 기능 설정
 	public void setProductNames(ObservableList<String> names) {
 		this.productNames = names;
 
@@ -78,7 +82,7 @@ public class InoutCreateController implements Initializable {
 				return;
 			}
 
-			// 필터링된 이름 목록
+			// 필터링된 제품명 최대 5개 표시
 			List<String> filtered = productNames.stream()
 					.filter(name -> name.toLowerCase().contains(newVal.toLowerCase())).limit(5)
 					.collect(Collectors.toList());
@@ -88,6 +92,7 @@ public class InoutCreateController implements Initializable {
 			} else {
 				suggestions.getItems().clear();
 
+				// 항목 선택 시 텍스트 필드에 반영
 				for (String name : filtered) {
 					MenuItem item = new MenuItem(name);
 					item.setOnAction(e -> {
@@ -97,6 +102,7 @@ public class InoutCreateController implements Initializable {
 					suggestions.getItems().add(item);
 				}
 
+				// 팝업 위치 설정 후 표시
 				if (!suggestions.isShowing()) {
 					suggestions.show(productNameField,
 							productNameField.localToScreen(0, productNameField.getHeight()).getX(),
@@ -106,22 +112,27 @@ public class InoutCreateController implements Initializable {
 		});
 	}
 
+	// 취소 버튼 클릭 시 창 닫기
 	@FXML
 	private void handleCancel() {
 		((Stage) cancelButton.getScene().getWindow()).close();
 	}
 
+	// 저장 버튼 클릭 시 등록 처리
 	@FXML
 	private void handleSave() {
 		// 등록 로직
 		if (currentUser != null) {
 			try {
+				// 입력 값 추출
 				String productName = productNameField.getText();
 				String adminName = adminNameField.getText();
 				String inoutType = inoutTypeComboBox.getValue();
 				String categoryName = categoryComboBox.getValue();
 				Integer inoutQuantity = Integer.valueOf(inoutQuantityField.getText());
 				String content = contentField.getText();
+				
+				// DTO 생성
 				InoutInsertDto inoutInsert = InoutInsertDto.builder()
 						.productName(productName)
 						.adminName(adminName)
@@ -130,7 +141,8 @@ public class InoutCreateController implements Initializable {
 						.inoutQuantity(inoutQuantity)
 						.content(content)
 						.build();
-
+				
+				// DB 저장
 				inoutDAO.insertCategory(inoutInsert);
 				this.isSuccessful = true;
 				

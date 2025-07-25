@@ -62,7 +62,7 @@ public class AdminDAO {
 		}
 	}
 	
-	//Made By 강기범
+	//Made By 나규태
 	// 사용자 ID를 사용한 검색 (오버로딩)
 	public Admin getAdminFromId(int id, Connection conn) throws SQLException, ClassNotFoundException {
 		List<Object> addList = new ArrayList<>();
@@ -194,7 +194,7 @@ public class AdminDAO {
 		}
 	}
 	
-	// Made By 강기범
+	// Made By 정영규
 	// 사용자 데이터셋 받기
 	public Admin getAdmin(ResultSet rs) throws SQLException, ClassNotFoundException {
 		Admin admin = null;
@@ -212,8 +212,8 @@ public class AdminDAO {
 		return admin;
 	}
 
-	// Made By 강기범
-	// 로그인 사용자 정보 변경
+	// Made By 나규태
+	// 로그인 사용자 정보 변경 (pw 제외)
 	public void updateAdmin(String adminName, String adminEmail, int adminId)
 			throws SQLException, ClassNotFoundException {
 		String sql = "BEGIN\n" + 
