@@ -1,3 +1,5 @@
+// CouponEditPopupController
+
 package controller.coupon;
 
 import java.net.URL;
@@ -21,8 +23,11 @@ import model.coupon.CouponDAO;
 import model.coupon.CouponDTO_Update;
 
 // Made By 김기성
+/**
+ * 쿠폰 수정 팝업창(CouponEditPopup.fxml)의 UI 이벤트 & 로직을 처리하는 컨트롤러 클래스
+ */
 public class CouponEditPopupController implements Initializable {
-
+    // fxml UI 컴포넌트
     @FXML private TextField couponNameField;
     @FXML private TextField percentField;
     @FXML private DatePicker startDatePicker;
@@ -31,10 +36,11 @@ public class CouponEditPopupController implements Initializable {
     @FXML private Button saveButton;
     @FXML private Button cancelButton;
 
-    private Coupon editingCoupon;
-    private CouponDAO couponDAO;
-    private Map<String, Integer> categoryNameToIdMap; // 카테고리 이름 -> ID 변환용
-    private boolean updated = false;
+    // --- 비즈니스 로직을 위한 필드 ---
+    private Coupon editingCoupon;       // 메인 컨트롤러로부터 전달받은, 현재 수정 중인 쿠폰 객체
+    private CouponDAO couponDAO;        // DB 업데이트를 위한 DAO 객체
+    private Map<String, Integer> categoryNameToIdMap;   // 카테고리 이름 -> ID 변환용 Map
+    private boolean updated = false;    // 수정 작업이 성공적으로 완료되었는지 여부를 저장하는 플래그
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {}
@@ -55,21 +61,24 @@ public class CouponEditPopupController implements Initializable {
         startDatePicker.setValue(coupon.getStartTime());
         endDatePicker.setValue(coupon.getDeadLine());
         
-        // 카테고리 ComboBox 채우기 및 현재 카테고리 선택
+        // 카테고리 ComboBox 채우기 및 현재 쿠폰의 카테고리 선택
         categoryComboBox.getItems().setAll(categoryNameToIdMap.keySet());
         String currentCategoryName = categoryIdToNameMap.get(coupon.getCategoryId());
         categoryComboBox.setValue(currentCategoryName);
     }
 
-    // '저장' 버튼 클릭 시 실행될 로직
+    /** 
+     * '저장' 버튼 클릭 시 실행될 로직
+     * 사용자 입력값 검증, 유효하다면 DB에 업데이트 요청
+    */
     @FXML
     void handleSaveAction(ActionEvent event) {
         if (!validateInput()) {
-            return; // 입력값 검증 실패
+            return; // 입력값 검증 실패 시, 더 이상 진행 x
         }
 
         try {
-            // DTO 생성
+            // UI 컨트롤에서 사용자가 수정한 값을 가져와 CouponDTO_Update 객체 생성
             CouponDTO_Update dto = CouponDTO_Update.builder()
                 .couponId(editingCoupon.getCouponId())
                 .couponName(couponNameField.getText())
@@ -80,9 +89,9 @@ public class CouponEditPopupController implements Initializable {
                 .productId(editingCoupon.getProductId()) // 상품 ID는 변경되지 않음
                 .build();
             
-            // DAO를 통해 DB 업데이트
+            // DAO를 통해 DB 업데이트 실행
             couponDAO.updateCoupon(dto);
-            this.updated = true; // 성공 플래그 설정
+            this.updated = true; // DB 업데이트 성공 시, 성공 플래그 true로 설정
             closeStage();
 
         } catch (NumberFormatException e) {
@@ -99,18 +108,19 @@ public class CouponEditPopupController implements Initializable {
         closeStage();
     }
 
-    // 팝업창을 닫는 공통 메소드 
+    // 팝업창(Stage) 을 닫는 공통 메소드 
     private void closeStage() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
     
     // 수정 작업이 성공적으로 완료되었는지 여부를 반환 
+    // @return 수정이 성공적으로 완료: true, 그렇지 않으면: false
     public boolean isUpdated() {
         return this.updated;
     }
    
-    // 사용자 입력값 유효성 검증
+    // 사용자 입력값 유효성 검증 메소드
     private boolean validateInput() {
         String couponName = couponNameField.getText();
         String percentText = percentField.getText();
@@ -153,7 +163,7 @@ public class CouponEditPopupController implements Initializable {
         return true;
     }
     
-    // Alert 창을 띄우는 공통 메소드 
+    // Alert 창을 띄우는 공통 헬퍼 메소드 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
