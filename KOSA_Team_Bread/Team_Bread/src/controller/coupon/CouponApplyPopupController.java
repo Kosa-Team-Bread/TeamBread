@@ -57,6 +57,8 @@ public class CouponApplyPopupController {
         try {
             int pct = Integer.parseInt(discountField.getText());
             D = Math.max(0, Math.min(pct, 100)) / 100.0;
+
+            System.out.println(D);
         } catch (NumberFormatException e) {
             D = 0;
         }

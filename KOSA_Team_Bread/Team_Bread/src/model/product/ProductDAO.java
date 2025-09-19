@@ -22,8 +22,9 @@ import util.Session;
 public class ProductDAO {
 	
 	private static CategoryDAO cateDao;
-	private static AdminDAO adminDao;
 	private static ImageDAO imageDao;
+	@SuppressWarnings("unused")
+	private static AdminDAO adminDao;
 	
 	// ProductDAO.java (맨 위 import 아래 아무데나)
 	public static void setCategoryDAO(CategoryDAO dao){ ProductDAO.cateDao = dao; }

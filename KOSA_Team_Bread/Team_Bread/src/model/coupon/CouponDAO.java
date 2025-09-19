@@ -10,8 +10,8 @@ import java.util.List;
 import java.time.LocalDate;
 
 // DTO 클래스 임포트
-import model.coupon.CouponDTO_Add;
-import model.coupon.CouponDTO_Update;
+//import model.coupon.CouponDTO_Add;
+//import model.coupon.CouponDTO_Update;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

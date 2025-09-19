@@ -37,7 +37,7 @@ public class ProductAddPopupController implements Initializable {
 
     private final CategoryDAO cateDao = new CategoryDAO();
     private final AdminDAO adminDao     = new AdminDAO();
-    private final ProductDAO productDao = new ProductDAO();
+    //private final ProductDAO productDao = new ProductDAO();
 
     // 초기화부분
     @Override

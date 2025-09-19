@@ -9,8 +9,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.AllArgsConstructor;
 import model.category.CategoryDAO;
-import model.inout.inoutSelectDto;
-import model.product.Product;
+//import model.inout.inoutSelectDto;
+//import model.product.Product;
 import util.DBUtil;
 
 // Made by 정영규
